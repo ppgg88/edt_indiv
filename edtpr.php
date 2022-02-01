@@ -1,11 +1,11 @@
 <?php 
-if(isset($_GET['ide'])){
-    if($_GET['ide'] == 0 && isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
+if(isset($_GET['idp'])){
+    if($_GET['idp'] == 0 && isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
         header("Location: index.php?key=consecteturadipiscingelit");
     }
     if(!isset($_GET['semaine'])){
-        if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit") header("Location: edt.php?ide=".$_GET['ide']."&semaine=".date('W', time())."&key=consecteturadipiscingelit");
-        else header("Location: edt.php?ide=".$_GET['ide']."&semaine=".date('W', time()));
+        if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit") header("Location: edt.php?idp=".$_GET['idp']."&semaine=".date('W', time())."&key=consecteturadipiscingelit");
+        else header("Location: edtpr.php?idp=".$_GET['idp']."&semaine=".date('W', time()));
     }
     include('log_bdd.php');
     include('fonction.php');
@@ -21,18 +21,18 @@ if(isset($_GET['ide'])){
 
         if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
             if(isset($_GET['id'])){
-                header("Location: edt.php?ide=".$_GET['ide']."&semaine=".$s."&id=".$_GET['id']."&key=consecteturadipiscingelit");
+                header("Location: edtpr.php?idp=".$_GET['idp']."&semaine=".$s."&id=".$_GET['id']."&key=consecteturadipiscingelit");
             }
             else{
-                header("Location: edt.php?ide=".$_GET['ide']."&semaine=".$s."&key=consecteturadipiscingelit");
+                header("Location: edtpr.php?idp=".$_GET['idp']."&semaine=".$s."&key=consecteturadipiscingelit");
             } 
         }
         else{
             if(isset($_GET['id'])){
-                header("Location: edt.php?ide=".$_GET['ide']."&semaine=".$s."&id=".$_GET['id']);
+                header("Location: edtpr.php?idp=".$_GET['idp']."&semaine=".$s."&id=".$_GET['id']);
             }
             else{
-                header("Location: edt.php?ide=".$_GET['ide']."&semaine=".$s);
+                header("Location: edtpr.php?idp=".$_GET['idp']."&semaine=".$s);
             } 
         }    
     }
@@ -75,7 +75,6 @@ if(isset($_GET['ide'])){
 
     //creation des craineaux horraires
     class craineau{
-        public $id;
         public $date;
         public $nom;
         public $durré;
@@ -83,9 +82,33 @@ if(isset($_GET['ide'])){
         public $id_proph = NULL;
         public $id_eleves;
         public $lieu;
-        public $suite = FALSE;
-    }
 
+        function __construct($d, $n, $du,$c, $ide, $idp, $l){
+            $this->date = $d;
+            $this->nom = $n;
+            $this->durré = $du;
+            $this->couleur = $c;
+            $this->id_eleves[] = $ide;
+            $this->id_proph = $idp;
+            $this->lieu = $l;
+        }
+    }
+    
+    $craineau_max = 0;
+    $craineau = array();
+    foreach($rdv_ as $rdv){
+        $crai_exist = false;
+        foreach($craineau as $crai){
+            if($rdv->date == $crai->date && $rdv->durré == $crai->durré){
+                $crai->id_eleves[]=$rdv->id_eleves;
+                $crai_exist = true;
+            }
+        }
+        if($crai_exist == false){
+            $craineau[$craineau_max] = new craineau($rdv->date, $rdv->nom, $rdv->durré, $rdv->couleur, $rdv->id_eleves, $rdv->id_proph, $rdv->lieu);
+            $craineau_max =$craineau_max + 1;
+        }
+    }
 }
 ?>
 <html>
@@ -181,35 +204,37 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
                 if($c<10)$c = "0".$c;
                 $heure = $b.":".$c;
                 if(substr($heure,-3,3) == ":00"){
-                    echo("<td onclick=\"location.href='?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&key=consecteturadipiscingelit'\" class=\"time\" rowspan=\"60\">".$b."h-".($b+1)."h</td>");
+                    echo("<td onclick=\"location.href='?idp=".$_GET['idp']."&semaine=".$_GET['semaine']."&key=consecteturadipiscingelit'\" class=\"time\" rowspan=\"60\">".$b."h-".($b+1)."h</td>");
                 }
             }
             $test = FALSE;
-            for ($k = 0; isset($rdv_[$k]->nom); $k++) {
+            for ($k = 0; isset($craineau[$k]->nom); $k++) {
                 //echo($heure." // ".date("H:i", $rdv_[$k]->date)."\n");
-                if(date("l", $rdv_[$k]->date) == $jour[$i+1] && date("H:i", $rdv_[$k]->date) == $heure && $rdv_[$k]->id_eleves == $_GET['ide']&& date('W', $rdv_[$k]->date) == $_GET['semaine']){
-                $a = "ROWSPAN=\"".($rdv_[$k]->durré)."\"";
+                if(date("l", $craineau[$k]->date) == $jour[$i+1] && date("H:i", $craineau[$k]->date) == $heure && $craineau[$k]->id_proph == $_GET['idp']&& date('W', $craineau[$k]->date) == $_GET['semaine']){
+                $a = "ROWSPAN=\"".($craineau[$k]->durré)."\"";
                 if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
-                    echo("<td ".$a." onclick=\"location.href='?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&id=".$rdv_[$k]->id."&key=consecteturadipiscingelit'\" style=\"background-color:".$rdv_[$k]->couleur."; border : 1px solid black !important;\">");
+                    echo("<td ".$a." onclick=\"location.href='?idp=".$_GET['idp']."&semaine=".$_GET['semaine']."&key=consecteturadipiscingelit'\" style=\"background-color:".$craineau[$k]->couleur."; border : 1px solid black !important;\">");
                 }
                 else{
-                    echo("<td ".$a." style=\"background-color:".$rdv_[$k]->couleur.";border : 1px solid black !important;\">");
+                    echo("<td ".$a." style=\"background-color:".$craineau[$k]->couleur.";border : 1px solid black !important;\">");
                 }?>
                 <p style="font-weight: bold;">
-                <?php echo($rdv_[$k]->nom); ?>
+                <?php echo($craineau[$k]->nom); ?>
                 </p>
                 <p>
-                <?php echo($heure." / ".date("H:i", strtotime(" +".$rdv_[$k]->durré."minutes", $rdv_[$k]->date))); ?>
+                <?php echo($heure." / ".date("H:i", strtotime(" +".$craineau[$k]->durré."minutes", $craineau[$k]->date))); ?>
                 </p>
                     <?php 
-                    echo(($rdv_[$k]->lieu));
-                    $sqlquery = "SELECT * FROM `proph` WHERE `id` = ".($rdv_[$k]->id_proph);
-                    $recipesStatement = $pdo->prepare($sqlquery);
-                    $recipesStatement->execute();
-                    $recipes = $recipesStatement->fetchAll();
-                    foreach ($recipes as $res){
-                        echo("<p>".$res['prenom'][0]." ".$res['nom']."</p>");
-                    }            
+                    echo("<p style='margin-bottom:1vh!important;'>".$craineau[$k]->lieu."</p>");
+                    foreach($craineau[$k]->id_eleves as $ell){
+                        $sqlquery = "SELECT * FROM `elleve` WHERE `id` = ".($ell);
+                        $recipesStatement = $pdo->prepare($sqlquery);
+                        $recipesStatement->execute();
+                        $recipes = $recipesStatement->fetchAll();
+                        foreach ($recipes as $res){
+                            echo("<p style='font-size: calc(0.7vh + 0.3vw)!important'>".$res['prenom'][0]." ".$res['nom']." ".$res['classe']."</p>");
+                        }
+                    }      
                     $test = TRUE;
                     $rdv_[$k]->durré = $rdv_[$k]->durré - 1;
                     if($rdv_[$k]->durré != 0){
@@ -218,7 +243,7 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
                 }
             }
             if($test == FALSE && $pass_day[$i]==0){
-                echo "<td onclick=\"test-False:location.href='?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&time=".$heure."&jour=".$jour[$i+1]."&key=consecteturadipiscingelit'\">";
+                echo "<td onclick=\"test-False:location.href='?idp=".$_GET['idp']."&semaine=".$_GET['semaine']."&time=".$heure."&jour=".$jour[$i+1]."&key=consecteturadipiscingelit'\">";
             }
             else if($pass_day[$i]!=0) $pass_day[$i] = $pass_day[$i]-1;
             echo "</td>";
@@ -239,9 +264,3 @@ if(isset($_GET['key'])){
 }}
 ?>
 </body>
-
-<?php }
-else{
-    echo('<h1>merci d\'utiliser le lien de connexion</h1>');
-}
-?>
