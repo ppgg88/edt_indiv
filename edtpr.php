@@ -76,32 +76,39 @@ if(isset($_GET['idp'])){
     //creation des craineaux horraires
     class craineau{
         public $date;
+        public $date_min;
         public $nom;
         public $durré;
+        public $durré_max;
         public $couleur;
         public $id_proph = NULL;
         public $id_eleves;
         public $lieu;
 
         function __construct($d, $n, $du,$c, $ide, $idp, $l){
-            $this->date = $d;
+            $this->date[] = $d;
+            $this->date_min = $d;
             $this->nom = $n;
-            $this->durré = $du;
+            $this->durré[] = $du;
+            $this->durré_max = $du;
             $this->couleur = $c;
             $this->id_eleves[] = $ide;
             $this->id_proph = $idp;
             $this->lieu = $l;
         }
     }
-    
     $craineau_max = 0;
     $craineau = array();
     foreach($rdv_ as $rdv){
         $crai_exist = false;
         foreach($craineau as $crai){
-            if($rdv->date == $crai->date && $rdv->durré == $crai->durré){
+            if((($crai->date_min >= $rdv->date) and (($rdv->date+60*$rdv->durré) > $crai->date_min)) or ((($crai->date_min+60*$crai->durré_max) >$rdv->date) and (($rdv->date+60*$rdv->durré) > ($crai->date_min+60*$crai->durré_max)))){
                 $crai->id_eleves[]=$rdv->id_eleves;
+                $crai->date[]=$rdv->date;
+                $crai->durré[]=$rdv->durré;
                 $crai_exist = true;
+                if($crai->date_min>$rdv->date) $crai->date_min = $rdv->date;
+                if($crai->date_min+$crai->durré_max*60 < $rdv->date+60*$rdv->durré) $crai->durré_max = (($rdv->date+60*$rdv->durré)-$crai->date_min)/60;
             }
         }
         if($crai_exist == false){
@@ -210,35 +217,35 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
             $test = FALSE;
             for ($k = 0; isset($craineau[$k]->nom); $k++) {
                 //echo($heure." // ".date("H:i", $rdv_[$k]->date)."\n");
-                if(date("l", $craineau[$k]->date) == $jour[$i+1] && date("H:i", $craineau[$k]->date) == $heure && $craineau[$k]->id_proph == $_GET['idp']&& date('W', $craineau[$k]->date) == $_GET['semaine']){
-                $a = "ROWSPAN=\"".($craineau[$k]->durré)."\"";
+                if(date("l", $craineau[$k]->date_min) == $jour[$i+1] && date("H:i", $craineau[$k]->date_min) == $heure && $craineau[$k]->id_proph == $_GET['idp']&& date('W', $craineau[$k]->date_min) == $_GET['semaine']){
+                $a = "ROWSPAN=\"".($craineau[$k]->durré_max)."\"";
                 if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
                     echo("<td ".$a." onclick=\"location.href='?idp=".$_GET['idp']."&semaine=".$_GET['semaine']."&key=consecteturadipiscingelit'\" style=\"background-color:".$craineau[$k]->couleur."; border : 1px solid black !important;\">");
                 }
                 else{
                     echo("<td ".$a." style=\"background-color:".$craineau[$k]->couleur.";border : 1px solid black !important;\">");
                 }?>
-                <p style="font-weight: bold;">
-                <?php echo($craineau[$k]->nom); ?>
+                <p style="margin-bottom:1vh!important; font-weight: bold;">
+                <?php echo($craineau[$k]->lieu); ?>
                 </p>
-                <p>
-                <?php echo($heure." / ".date("H:i", strtotime(" +".$craineau[$k]->durré."minutes", $craineau[$k]->date))); ?>
-                </p>
-                    <?php 
-                    echo("<p style='margin-bottom:1vh!important;'>".$craineau[$k]->lieu."</p>");
-                    foreach($craineau[$k]->id_eleves as $ell){
-                        $sqlquery = "SELECT * FROM `elleve` WHERE `id` = ".($ell);
-                        $recipesStatement = $pdo->prepare($sqlquery);
-                        $recipesStatement->execute();
-                        $recipes = $recipesStatement->fetchAll();
-                        foreach ($recipes as $res){
-                            echo("<p style='font-size: calc(0.7vh + 0.3vw)!important'>".$res['prenom'][0]." ".$res['nom']." ".$res['classe']."</p>");
-                        }
-                    }      
+                <?php
+                        foreach($craineau[$k]->id_eleves as $ell){
+                           
+                            $sqlquery = "SELECT * FROM `elleve` WHERE `id` = ".($ell);
+                            $recipesStatement = $pdo->prepare($sqlquery);
+                            $recipesStatement->execute();
+                            $recipes = $recipesStatement->fetchAll();
+                            foreach ($recipes as $res){
+                                $index = array_search($res['id'], $craineau[$k]->id_eleves);
+                                $date_end = strtotime(date("Y-m-d H:i:s", $craineau[$k]->date[$index])."+ {$craineau[$k]->durré[$index]} minutes");
+                                echo("<p style='font-size: calc(0.7vh + 0.3vw)!important'><b>".$res['prenom'][0]." ".$res['nom']." ".$res['classe']." </b>".date("H:i", $craineau[$k]->date[$index])."-".date("H:i", $date_end)."</p>");
+                            }
+            
+                        }   
                     $test = TRUE;
-                    $rdv_[$k]->durré = $rdv_[$k]->durré - 1;
-                    if($rdv_[$k]->durré != 0){
-                        $pass_day[$i] = $rdv_[$k]->durré;
+                    $craineau[$k]->durré_max = $craineau[$k]->durré_max -1;
+                    if($craineau[$k]->durré_max != 0){
+                        $pass_day[$i] = $craineau[$k]->durré_max;
                     }
                 }
             }

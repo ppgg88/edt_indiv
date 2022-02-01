@@ -217,13 +217,13 @@ if(isset($_GET['id']) && isset($_GET['key']) && $_GET['key'] == "consecteturadip
                     echo("<td ".$a." style=\"background-color:".$rdv_[$k]->couleur.";border : 1px solid black !important;\">");
                 }?>
                 <p style="font-weight: bold;">
-                <?php echo($rdv_[$k]->nom); ?>
+                <?php echo($rdv_[$k]->lieu); ?>
                 </p>
                 <p>
                 <?php echo($heure." / ".date("H:i", strtotime(" +".$rdv_[$k]->durré."minutes", $rdv_[$k]->date))); ?>
                 </p>
                     <?php 
-                    echo(($rdv_[$k]->lieu));
+                    echo(($rdv_[$k]->nom));
                     $sqlquery = "SELECT * FROM `proph` WHERE `id` = ".($rdv_[$k]->id_proph);
                     $recipesStatement = $pdo->prepare($sqlquery);
                     $recipesStatement->execute();

@@ -59,6 +59,7 @@
     $recipesStatement->execute();
     $recipes = $recipesStatement->fetchAll();
     $index_rdv  = 0;
+    $rdv = array();
     foreach ($recipes as $res)
     {
         $rdv[$index_rdv] = new rdv($res['id'], strtotime($res['date']), $res['nom'], $res['durre'], $res['couleur'], $res['p_nom'], $res['p_prenom'], $res['e_nom'], $res['e_prenom'], $res['e_classe'], $res['lieu'], $res['ide'], $res['idp']);

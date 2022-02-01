@@ -41,8 +41,8 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
             $classe_e = trim($column[4]);
             $nom_p = trim($column[5]);
             $prenom_p = trim($column[6]);
-            $lieu = trim($column[7]);
-            $observ = trim($column[8]);
+            $lieu = trim($column[8]);
+            $observ = trim($column[7]);
             $couleur = trim($column[9]);
 
             if(!ctype_digit($duree)){
