@@ -1,0 +1,59 @@
+caption /* Titre du tableau */
+{
+   margin: auto!important; /* Centre le titre du tableau */
+   font-family: Arial, Times, "Times New Roman", serif!important;
+   font-weight: bold!important;
+   font-size: 1.2em!important;
+   color: #009900!important;
+   margin-bottom: 20px!important; /* Pour éviter que le titre ne soit trop collé au tableau en-dessous */
+}
+
+table /* Le tableau en lui-même */
+{
+   margin: auto!important; /* Centre le tableau */
+   border: 4px outset green!important; /* Bordure du tableau avec effet 3D (outset) */
+   border-collapse: collapse!important; /* Colle les bordures entre elles */
+   width:100%!important;
+}
+th /* Les cellules d'en-tête */
+{
+   background-color: #006600 !important;
+   color: white!important;
+   font-size: 1.1em!important;
+   font-family: Arial, "Arial Black", Times, "Times New Roman", serif!important;
+   border:1px solid red!important;
+}
+
+td /* Les cellules normales */
+{
+    font-size: calc(0.8vh + 0.4vw)!important;
+    border: 0px solid black!important;
+    border-right: 1px solid black!important;
+    font-family: Verdana, "Trebuchet MS", Times, "Times New Roman", serif!important;
+    text-align: center!important; /* Tous les textes des cellules seront centrés*/
+    padding: 0px!important; /* Petite marge intérieure aux cellules pour éviter que le texte touche les bordures */
+    height:0.13vh!important;
+    width:18%!important;
+}
+td.time
+{
+    font-size:1em!important;
+    height:40px!important;
+    width:10%!important;
+    border: 1px solid black!important;
+}
+td a {
+    display: block!important;
+}
+p {
+    margin : 0px!important;
+}
+
+#nom_prenom{
+    margin-left: 10vw!important;
+}
+
+#logo{
+    height: 5vh!important;
+    float: right!important;
+}
