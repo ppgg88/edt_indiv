@@ -101,6 +101,19 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
     </form>
 
     </br></br>
+
+    <h3>AFFICHER L'EDT PROFS :</h3>
+    <form action="edtpr.php" method="get" id="ell">
+        <div>
+            <label for="ide">De qui voulez-vous afficher l'EDT ?</label>
+            <?php select_profs();?>
+            <label for="semaine">quelle semaine ?</label> <input type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".date('W', time())); ?>"require/>
+            <input type="HIDDEN" name = "key" value="consecteturadipiscingelit"/>
+            <button>Validé</button>
+        </div>
+    </form>
+
+    </br></br>
     <h3>AFFICHER L'EDT GENERAL :</h3>
     <form action="./edt_general.php" method="GET" id="pr">
     <div>
