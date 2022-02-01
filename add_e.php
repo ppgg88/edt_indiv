@@ -14,7 +14,7 @@ include('log_bdd.php');
 
 <html>
 <head>
-    <title>EDT-Ajouter elleves</title>
+    <title>EDT-Ajouter eleves</title>
     <style type="text/css">
         .head {
                 background-color: #006600 !important;
@@ -47,7 +47,7 @@ if(isset($_GET['key'])){
     if($_GET['key'] == "consecteturadipiscingelit"){
 ?>
 
-<h3>AJOUTER UN ELLEVE :</h3>
+<h3>AJOUTER UN ELEVE :</h3>
 <form method="post" action="">
         <label for="nom">nom</label> <input type="text"  name="nom" id="nom" value="Nom"/><br />
         <label for="prenom">prenom</label> <input type="text"  name="prenom" id="prenom" value="Prenom"/><br />

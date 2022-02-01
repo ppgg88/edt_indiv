@@ -9,7 +9,8 @@ if(isset($_GET['ide'])){
     }
     include('log_bdd.php');
     include('fonction.php');
-    //extraction du numero de la semaine :
+
+    //extraction du numero de la semaine
     if(strpos($_GET['semaine'],"-W")!=FALSE){
         if(isset($_GET['semaine'][7])){
             $s = $_GET['semaine'][6].$_GET['semaine'][7];
@@ -61,7 +62,7 @@ if(isset($_GET['ide'])){
     }
     
     //recuperation des RDV dans la BDD
-    $sqlquery = "SELECT * FROM `rdv` WHERE id_elleve = ".$_GET['ide'];
+    $sqlquery = "SELECT * FROM `rdv` WHERE id_proph = ".$_GET['idp'];
     $recipesStatement = $pdo->prepare($sqlquery);
     $recipesStatement->execute();
     $recipes = $recipesStatement->fetchAll();
@@ -72,10 +73,24 @@ if(isset($_GET['ide'])){
         $id_max = $id_max + 1;
     }
 
+    //creation des craineaux horraires
+    class craineau{
+        public $id;
+        public $date;
+        public $nom;
+        public $durré;
+        public $couleur;
+        public $id_proph = NULL;
+        public $id_eleves;
+        public $lieu;
+        public $suite = FALSE;
+    }
+
+}
 ?>
 <html>
 <head>
-    <title>EDT-Elèves</title>
+    <title>EDT-Profs</title>
     <link rel="stylesheet" type="text/css" href="ent.css" />
     <style>
         body{
@@ -113,51 +128,13 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
     <form class="no_print" action="" method="get">
     <div>
         <label for="ide">De qui voulez vous afficher l'EDT ?</label>
-        <?php select_elleves($_GET['ide']); ?>
+        <?php select_profs($_GET['idp']); ?>
         <label for="semaine">quelle semaine ?</label> <input type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".date('W', time())); ?>"require/>
         <input type="HIDDEN" name="key" value="consecteturadipiscingelit"/>
         <button>Validé</button>
     </div>
     </form>
 <?php } ?>
-
-    <!-- modification eventuel de l'EDT -->
-<?php 
-if(isset($_GET['id']) && isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
-    //requette sql de recherche du rdv dans la bdd :
-    $sqlquery = "SELECT * FROM rdv WHERE id =".$_GET['id'];
-        $recipesStatement = $pdo->prepare($sqlquery);
-        $recipesStatement->execute();
-        $recipes = $recipesStatement->fetchAll();
-        foreach ($recipes as $res){ ?>
-            <form class="no_print" method="post" action="update.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if($_GET['key'] == "consecteturadipiscingelit"){echo("&key=consecteturadipiscingelit");}?>">
-                <label for="rdv">nom du rdv</label> <input type="text"  name="rdv" id="rdv" value="<?php echo($res['nom']);?>"/><br />
-                <label for="ide"> eleves</label>
-                <?php select_elleves($res['id_elleve']); ?>
-                <br />
-                <label for="idp"> prof</label>
-                <?php select_profs($res['id_proph']); ?>
-                <br />
-                <label for="date_j">date</label> <input type="date"  name="date_j" id="date_j" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
-                <label for="date">heure</label> <input type="time"  name="date" id="date" value="<?php echo(date('H:i:s', strtotime($res['date'])));?>"/><br />
-                <label for="durre"> durre</label> <input type="number"  name="durre" id="durre" value="<?php echo($res['durre']);?>"/><br />
-                <label for="lieu">Lieu</label> <input type="texte"  name="lieu" id="lieu" value="<?php echo($res['lieu']);?>"/><br />
-                <label for="coulleur">couleur</label>
-                <select name="coulleur">
-                <option style="background:#9BD9EE;" value='#9BD9EE' <?php if($res['couleur']=='#9BD9EE') echo('selected="selected"'); ?>>CDR
-                    </option>
-                <option style="background:#7CCB06;" value='#7CCB06' <?php if($res['couleur']=='#7CCB06') echo('selected="selected"'); ?>>Pépinière</option>
-                <option style="background:#ADFF2F;" value='#ADFF2F' <?php if($res['couleur']=='#ADFF2F') echo('selected="selected"'); ?>>Serres</option>
-                <option style="background:#DF9FDF;" value='#DF9FDF' <?php if($res['couleur']=='#DF9FDF') echo('selected="selected"'); ?>>Individualisation</option>
-                <option style="background:#DBE2D0;" value='#DBE2D0' <?php if($res['couleur']=='#DBE2D0') echo('selected="selected"'); ?>>Cours prof</option>
-                <option style="background:#F3E768;" value='#F3E768' <?php if($res['couleur']=='#F3E768') echo('selected="selected"'); ?>>Arexhor</option>
-                <option style="background:#FD9BAA;" value='#FD9BAA' <?php if($res['couleur']=='#FD9BAA') echo('selected="selected"'); ?>>A confirmer</option>
-            </select><br />
-                <input type="submit" name="Envoyer" value="Envoyer" />
-                <a href = "<?php echo("edt.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']);if($_GET['key'] == "consecteturadipiscingelit"){echo("&key=consecteturadipiscingelit");}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
-                <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=consecteturadipiscingelit");?>"><img src="icon/trash.png" style="height : 5vh;"/></a>
-            </form>
-<?php } } ?>
 
     <!-- EMPLOIE DU TEMPS -->
 <table  id="page-wrapper">
@@ -172,13 +149,13 @@ if(isset($_GET['id']) && isset($_GET['key']) && $_GET['key'] == "consecteturadip
       }
       
     //affichage du nom est prenom
-    $sqlquery = "SELECT * FROM `elleve` where id = ".$_GET['ide'];
+    $sqlquery = "SELECT * FROM `proph` where id = ".$_GET['idp'];
     $recipesStatement = $pdo->prepare($sqlquery);
     $recipesStatement->execute();
     $recipes = $recipesStatement->fetchAll();
     foreach ($recipes as $res)
     {
-        echo('<h3 id="nom_prenom"  id="page-wrapper">'.$res['prenom'].' '.$res['nom'].' '.$res['classe'].'</h3>');
+        echo('<h3 id="nom_prenom"  id="page-wrapper">'.$res['prenom'].' '.$res['nom'].'</h3>');
     }
     echo('<h3 id="nom_prenom"  id="page-wrapper">Semaine du '.getStartAndEndDate($_GET['semaine'], date('Y', time()))['week_start'].' au '.getStartAndEndDate($_GET['semaine'], date('Y', time()))['week_end'].'</h3>');
     //afichage de l'edt

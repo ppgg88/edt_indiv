@@ -16,17 +16,17 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
             $d=$column[0];
             if($d[0]!='d'){
             $d = str_replace('janvier', 'january 2022', $d);
-            $d = str_replace('fevrier', 'february 2022', $d);
+            $d = str_replace('février', 'february 2022', $d);
             $d = str_replace('mars', 'march 2022', $d);
             $d = str_replace('avril', 'april 2022', $d);
             $d = str_replace('mai', 'may 2022', $d);
             $d = str_replace('juin', 'june 2022', $d);
             $d = str_replace('juillet', 'july 2022', $d);
-            $d = str_replace('aout', 'august 2022', $d);
+            $d = str_replace('août', 'august 2022', $d);
             $d = str_replace('septembre', 'september 2022', $d);
             $d = str_replace('octobre', 'october 2022', $d);
             $d = str_replace('novembre', 'november 2022', $d);
-            $d = str_replace('decembre', 'december 2022', $d);
+            $d = str_replace('décembre', 'december 2022', $d);
 
             $d = str_replace('lundi ', '', $d);
             $d = str_replace('mardi ', '', $d);
