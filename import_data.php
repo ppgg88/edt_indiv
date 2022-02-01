@@ -91,7 +91,7 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
                 foreach ($recipess as $ress){
                     $ide = $ress['id'];
                 }
-                echo('<p>ajout elleve : '.$prenom_e.' '.$nom_e.' classe : '.$classe_e.'</p>');
+                echo('<p>ajout élève : '.$prenom_e.' '.$nom_e.' classe : '.$classe_e.'</p>');
             }
             if($idp == 0){
                 $query=$pdo->prepare("INSERT INTO proph (nom, prenom) VALUES (:n, :p)");
