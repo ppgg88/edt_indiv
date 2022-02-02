@@ -222,8 +222,8 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
                 //echo($heure." // ".date("H:i", $rdv_[$k]->date)."\n");
                 if(date("l", $craineau[$k]->date_min) == $jour[$i+1] && date("H:i", $craineau[$k]->date_min) == $heure && $craineau[$k]->id_proph == $_GET['idp']&& date('W', $craineau[$k]->date_min) == $_GET['semaine']){
                 $a = "ROWSPAN=\"".($craineau[$k]->durré_max)."\"";
-                if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
-                    echo("<td ".$a." onclick=\"location.href='?idp=".$_GET['idp']."&semaine=".$_GET['semaine']."&key=consecteturadipiscingelit'\" style=\"background-color:".$craineau[$k]->couleur."; border : 1px solid black !important;\">");
+                if(isset($_GET['key']) && (test_id($_GET['key']) || test_id_prof($_GET['idp'], $_GET['semaine'], $_GET['key']))){
+                    echo("<td ".$a." onclick=\"location.href='appel.php?idp=".$_GET['idp']."&semaine=".$_GET['semaine']."&key=".$_GET['key']."&id_craineau=".$k."'\" style=\"background-color:".$craineau[$k]->couleur."; border : 1px solid black !important;\">");
                 }
                 else{
                     echo("<td ".$a." style=\"background-color:".$craineau[$k]->couleur.";border : 1px solid black !important;\">");

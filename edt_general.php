@@ -36,7 +36,9 @@
         public $lieu;
         public $suite = FALSE;
 
-        function __construct($id, $d, $n, $du,$c, $nprof = NULL, $pprof = NULL, $neleve, $peleve, $celeve, $l, $ide, $idp){
+        public $abs;
+
+        function __construct($id, $d, $n, $du,$c, $nprof = NULL, $pprof = NULL, $neleve, $peleve, $celeve, $l, $ide, $idp, $abs){
             $this->id = $id;
             $this->date = $d;
             $this->nom = $n;
@@ -50,11 +52,12 @@
             $this->lieu = $l;
             $this->id_eleve = $ide;
             $this->id_prof = $idp;
+            $this->abs = $abs;
 
         }
     }
 
-    $sqlquery = "SELECT rdv.id, rdv.nom, rdv.date, rdv.durre, rdv.couleur, rdv.lieu, elleve.nom as e_nom, elleve.prenom as e_prenom, elleve.classe as e_classe, elleve.id as ide ,proph.nom as p_nom, proph.prenom as p_prenom, proph.id as idp FROM rdv, elleve, proph WHERE rdv.id_elleve = elleve.id and rdv.id_proph = proph.id order by date;";
+    $sqlquery = "SELECT rdv.id, rdv.nom, rdv.date, rdv.durre, rdv.couleur, rdv.lieu, elleve.nom as e_nom, elleve.prenom as e_prenom, elleve.classe as e_classe, elleve.id as ide ,proph.nom as p_nom, proph.prenom as p_prenom, proph.id as idp, abs FROM rdv, elleve, proph WHERE rdv.id_elleve = elleve.id and rdv.id_proph = proph.id order by date;";
     $recipesStatement = $pdo->prepare($sqlquery);
     $recipesStatement->execute();
     $recipes = $recipesStatement->fetchAll();
@@ -62,7 +65,7 @@
     $rdv = array();
     foreach ($recipes as $res)
     {
-        $rdv[$index_rdv] = new rdv($res['id'], strtotime($res['date']), $res['nom'], $res['durre'], $res['couleur'], $res['p_nom'], $res['p_prenom'], $res['e_nom'], $res['e_prenom'], $res['e_classe'], $res['lieu'], $res['ide'], $res['idp']);
+        $rdv[$index_rdv] = new rdv($res['id'], strtotime($res['date']), $res['nom'], $res['durre'], $res['couleur'], $res['p_nom'], $res['p_prenom'], $res['e_nom'], $res['e_prenom'], $res['e_classe'], $res['lieu'], $res['ide'], $res['idp'], $res['abs']);
         $index_rdv++;
     } 
 
@@ -218,6 +221,9 @@
                 <td class="head" style="width : 14vw">
                     Observations
                 </td>
+                <td class="head" style="width : 4vw">
+                    Abs
+                </td>
             </tr>
         <?php
             for($i = 0; $i<$index_rdv; $i++){ 
@@ -234,7 +240,7 @@
                                         $recipes = $recipesStatement->fetchAll();
                                         foreach ($recipes as $res){ ?>
                                             <tr>
-                                                <td colspan="7" id="position">
+                                                <td colspan="8" id="position">
                                                     <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if($_GET['key'] == "consecteturadipiscingelit"){echo("&key=consecteturadipiscingelit");}?>">
                                                         <label for="rdv">nom du rdv</label> <input type="text"  name="rdv" id="rdv" value="<?php echo($res['nom']);?>"/><br />
                                                         <label for="ide"> eleves</label>
@@ -291,6 +297,13 @@
                                     </td>
                                     <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important;">
                                         <?php echo($rdv[$i]->nom);?>
+                                    </td>
+                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important;">
+                                        <?php 
+                                        if($rdv[$i]->abs == -1) echo("Abs");
+                                        elseif($rdv[$i]->abs == 1)echo("Pre");
+                                        elseif($rdv[$i]->abs == 2)echo("Exc");
+                                        else echo("NR"); ?>
                                     </td>
                                 </tr>
             <?php

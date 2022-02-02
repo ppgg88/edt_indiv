@@ -1,7 +1,7 @@
 <?php 
-    if(isset($_GET['idp']) && isset($_GET['key']) && isset($_GET['id_craineau']) && isset($_GET['semaine'])){
     include('fonction.php');
     include('log_bdd.php');
+    if(isset($_GET['idp']) && isset($_GET['key']) && isset($_GET['id_craineau']) && isset($_GET['semaine']) && (test_id($_GET['key']) || test_id_prof($_GET['idp'], $_GET['semaine'], $_GET['key']))){
     class rdv{
         public $id;
         public $date;
@@ -79,7 +79,7 @@
         $id_max = $id_max + 1;
     }
 
-    //validation de l'apelle, abs = 1 present, 0 abs, 2 excuser
+    //validation de l'apelle, abs = 1 present, -1 abs, 2 excuser
     if(isset($_POST['Envoyer'])){
         foreach ($craineau[$_GET['id_craineau']]->id_rdv as $id){
             $sqlquery = "SELECT * FROM `rdv` WHERE id = ".$id;
@@ -94,7 +94,7 @@
                     $query->CloseCursor();
                 }
                 elseif($res['abs']!=2){
-                    $query=$pdo->prepare("UPDATE rdv SET abs = 0 WHERE id = :id");
+                    $query=$pdo->prepare("UPDATE rdv SET abs = -1 WHERE id = :id");
                     $query->bindValue(':id', $res['id'], PDO::PARAM_INT);
                     $query->execute();
                     $query->CloseCursor();
@@ -107,6 +107,80 @@
 <!DOCTYPE html>
 <html>
     <head>
+    <style>
+        body{
+            margin: 0px;
+            padding: 8px;
+            background-color: #F4FFF4;
+        }
+        /* The container */
+        .container {
+            display: block;
+            position: relative;
+            padding-left: 10vw;
+            margin-bottom: 1vh;
+            cursor: pointer;
+            font-size: 4vh;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Hide the browser's default checkbox */
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        /* Create a custom checkbox */
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 4vh;
+            width: 4vh;
+            background-color: #eee;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .container:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+        .container input:checked ~ .checkmark {
+            background-color: #2196F3;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+        .container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .container .checkmark:after {
+            left: 0.5vh;
+            top: 0.5vh;
+            width: 2vh;
+            height: 2vh;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+    </style>
     </head>
     <body>
         <form method="post" action="">
@@ -117,12 +191,16 @@
                 $recipesStatement->execute();
                 $recipes = $recipesStatement->fetchAll();
                 foreach ($recipes as $res){
-                    echo('<div><input type="checkbox" id="'.$res['id'].'" name="'.$res['id'].'" value="'.$res['id'].'" checked><label for="'.$res['id'].'">'.$res['nom'].' '.$res['prenom'].'</label></div>');
+                    echo('<div><label class="container" for="'.$res['id'].'">'.$res['nom'].' '.$res['prenom'].'<input type="checkbox" id="'.$res['id'].'" name="'.$res['id'].'" value="'.$res['id'].'" checked><span class="checkmark"></span></label></div>');
                 }
             }
             ?>
             <input type="submit" name="Envoyer" value="Envoyer" />
         </form>
+        </br></br></br>
+        <form class="no_print" action="edtpr.php?idp=<?php echo($_GET['idp']); ?>&key=<?php echo($_GET['key']); ?>&semaine=<?php echo($_GET['semaine']); ?>" method="POST">
+        <button>RETOUR EDT PROFS</button>
+    </form>
     </body>
 </html>
 
