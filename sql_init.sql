@@ -36,8 +36,11 @@ create table `rdv`(
 )ENGINE=InnoDB;
 
 create table `importation`(
-    `id` int AUTO_INCREMENT,
+    `id` int not null  AUTO_INCREMENT,
+    `nom` varchar(100),
     `date` timestamp not null,
+    primary key(`id`)
 )ENGINE=InnoDB;
+
 
 SHOW TABLE STATUS;
