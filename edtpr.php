@@ -62,11 +62,12 @@ if(isset($_GET['idp'])){
     }
     
     //recuperation des RDV dans la BDD
-    $sqlquery = "SELECT * FROM `rdv` WHERE id_proph = ".$_GET['idp'];
+    $sqlquery = "SELECT * FROM `rdv` WHERE id_proph = ".$_GET['idp']." ORDER BY date";
     $recipesStatement = $pdo->prepare($sqlquery);
     $recipesStatement->execute();
     $recipes = $recipesStatement->fetchAll();
     $id_max = 0;
+    $rdv_ = array();
     foreach ($recipes as $res)
     {
         $rdv_[$id_max] = new rdv($res['id'],strtotime($res['date']), $res['nom'], $res['durre'], $res['couleur'],$res['id_elleve'], $res['id_proph'], $res['lieu']);

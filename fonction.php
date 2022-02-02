@@ -60,4 +60,18 @@ function day($n){
     if($n==7) return("Dimanche");
     
 }
+
+function test_id($id){
+    if($id == "consecteturadipiscingelit") return True;
+    else return false;
+}
+
+function id_prof($id_proph, $n_semaine){
+    return($id_proph*$id_proph+$n_semaine*$n_semaine);
+}
+function test_id_prof($id_proph, $n_semaine, $id_test){
+    if(id_prof($id_proph, $n_semaine) == $id_test) return True;
+    else return false;
+}
+
 ?>

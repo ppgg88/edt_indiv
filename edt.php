@@ -17,7 +17,7 @@ if(isset($_GET['ide'])){
         else {
             $s = $_GET['semaine'][6];
         }
-
+        
         if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
             if(isset($_GET['id'])){
                 header("Location: edt.php?ide=".$_GET['ide']."&semaine=".$s."&id=".$_GET['id']."&key=consecteturadipiscingelit");

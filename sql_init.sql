@@ -29,6 +29,7 @@ create table `rdv`(
     `id_proph` int not null,
     `lieu` varchar(50) not null,
     `id_importation` int,
+    `abs` int,
     CONSTRAINT uc_rdv unique(`date`, `id_elleve`),
     primary key(`id`),
     foreign key(`id_elleve`) references elleve(`id`),
