@@ -94,7 +94,7 @@ echo('<tr style="padding-right: 0vw; width : 30vw" class="head">
     </tr>');
 foreach ($recipess as $ress){
     if(isset($_GET['id']) && $_GET['id']==$ress['id']){
-        echo('<tr>
+        echo('<tr id="position">
                 <td colspan="2">
                     <form method="post" action="">
                         <label for="nom">nom</label> <input type="text"  name="nom" id="nom" value="'.$ress['nom'].'"/><br />
@@ -113,9 +113,9 @@ foreach ($recipess as $ress){
             </tr>');
     }
     echo('<tr>
-            <td onclick="location.href=\'?id='.$ress['id'].'&key=consecteturadipiscingelit\'" >'.$ress['nom'].'</td>
-            <td onclick="location.href=\'?id='.$ress['id'].'&key=consecteturadipiscingelit\'" >'.$ress['prenom'].'</td>
-            <td onclick="location.href=\'?id='.$ress['id'].'&key=consecteturadipiscingelit\'" >'.$ress['classe'].'</td>
+            <td onclick="location.href=\'?id='.$ress['id'].'&key=consecteturadipiscingelit#position\'" >'.$ress['nom'].'</td>
+            <td onclick="location.href=\'?id='.$ress['id'].'&key=consecteturadipiscingelit#position\'" >'.$ress['prenom'].'</td>
+            <td onclick="location.href=\'?id='.$ress['id'].'&key=consecteturadipiscingelit#position\'" >'.$ress['classe'].'</td>
         </tr>');
 }
 echo('</table>');
