@@ -126,9 +126,8 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
             $query->bindValue(':lieu', $lieu, PDO::PARAM_STR);
             $query->execute();
             
-            if($pdo->errorInfo()[0] != 0000){
-                echo("<p>".$pdo->errorInfo()[0]."</p>");
-                echo('<p>erreur d\'ajout de données</p>');
+            if($query->errorInfo()[0] != 0000){
+                echo('<p>erreur d\'ajout de données rdv de '.$prenom_e.' '.$nom_e.' du '.$date.'</p>');
             }
             $i++;
             }}
