@@ -162,7 +162,9 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
         <label for="semaine">quelle semaine ?</label> <input type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".date('W', time())); ?>"require/>
         <input type="HIDDEN" name="key" value="consecteturadipiscingelit"/>
         <button>Validé</button>
-    </div>
+    </form>
+    <form class="no_print" action="index.php?key=consecteturadipiscingelit" method="POST">
+        <button>RETOUR ACCUEIL</button>
     </form>
 <?php } ?>
 
@@ -260,14 +262,4 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
 ?>
 </table>
 </br>
-<?php 
-if(isset($_GET['key'])){
-    if($_GET['key'] == "consecteturadipiscingelit"){
-?>
-<form class="no_print" action="index.php?key=consecteturadipiscingelit" method="POST">
-    <button>RETOUR ACCUEIL</button>
-</form>
-<?php     
-}}
-?>
 </body>
