@@ -191,7 +191,9 @@
                 $recipesStatement->execute();
                 $recipes = $recipesStatement->fetchAll();
                 foreach ($recipes as $res){
-                    echo('<div><label class="container" for="'.$res['id'].'">'.$res['nom'].' '.$res['prenom'].'<input type="checkbox" id="'.$res['id'].'" name="'.$res['id'].'" value="'.$res['id'].'" checked><span class="checkmark"></span></label></div>');
+                    $exc = '';
+                    /*if($res['abs'] == 2)$exc = 'Excuser';*/
+                    echo('<div><label class="container" for="'.$res['id'].'">'.$res['nom'].' '.$res['prenom'].'<input type="checkbox" id="'.$res['id'].'" name="'.$res['id'].'" value="'.$res['id'].'" checked><span class="checkmark"></span> '.$exc.' </label></div>');
                 }
             }
             ?>

@@ -263,6 +263,13 @@
                                                             <option style="background:#F3E768;" value='#F3E768' <?php if($res['couleur']=='#F3E768') echo('selected="selected"'); ?>>Arexhor</option>
                                                             <option style="background:#FD9BAA;" value='#FD9BAA' <?php if($res['couleur']=='#FD9BAA') echo('selected="selected"'); ?>>A confirmer</option>
                                                         </select><br />
+                                                        <label for="abs">statut absence</label>
+                                                        <select name="abs">
+                                                            <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
+                                                            <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
+                                                            <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
+                                                            <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Excuser</option>
+                                                        </select><br />
                                                         <input type="submit" name="Envoyer" value="Envoyer" />
                                                         <a href = "<?php echo("edt_general.php?semaine=".$_GET['semaine']);if($_GET['key'] == "consecteturadipiscingelit"){echo("&key=consecteturadipiscingelit");}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
                                                         <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr_general.php?semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=consecteturadipiscingelit");?>"><img src="icon/trash.png" style="height : 5vh;"/></a>
