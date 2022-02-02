@@ -10,8 +10,29 @@ include('log_bdd.php');
         $query->execute();
         $query->CloseCursor();
     }
-?>
 
+    if(isset($_POST['Modifier'])){
+        $query=$pdo->prepare("UPDATE elleve SET nom = :n , prenom = :p , classe = :c WHERE id = :id");
+        $query->bindValue(':n', $_POST['nom'], PDO::PARAM_STR);
+        $query->bindValue(':p', $_POST['prenom'], PDO::PARAM_STR);
+        $query->bindValue(':c', $_POST['class'], PDO::PARAM_STR);
+        $query->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
+        $query->execute();
+        $query->CloseCursor();
+    }
+
+    if(isset($_POST['Supprimer'])){
+        $queryy=$pdo->prepare("DELETE FROM `rdv` WHERE id_elleve = :id");
+        $queryy->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
+        $queryy->execute();
+        $queryy->CloseCursor();
+        $query=$pdo->prepare("DELETE FROM `elleve` WHERE id = :id");
+        $query->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
+        $query->execute();
+        $query->CloseCursor();
+    }
+
+?>
 <html>
 <head>
     <title>EDT-Ajouter eleves</title>
@@ -60,9 +81,8 @@ if(isset($_GET['key'])){
     <button>RETOUR ACCUEIL</button>
 </form>
 <?php     
-}}
 
-$sqlqueryy = "SELECT * FROM `elleve`";
+$sqlqueryy = "SELECT * FROM `elleve` ORDER BY `nom`";
 $recipesStatementt = $pdo->prepare($sqlqueryy);
 $recipesStatementt->execute();
 $recipess = $recipesStatementt->fetchAll();
@@ -73,13 +93,32 @@ echo('<tr style="padding-right: 0vw; width : 30vw" class="head">
         <td>Classe</td>
     </tr>');
 foreach ($recipess as $ress){
+    if(isset($_GET['id']) && $_GET['id']==$ress['id']){
+        echo('<tr>
+                <td colspan="2">
+                    <form method="post" action="">
+                        <label for="nom">nom</label> <input type="text"  name="nom" id="nom" value="'.$ress['nom'].'"/><br />
+                        <label for="prenom">prenom</label> <input type="text"  name="prenom" id="prenom" value="'.$ress['prenom'].'"/><br />
+                        <label for="class">classe</label> <input type="text"  name="class" id="class" value="'.$ress['classe'].'"/><br />
+                        <input type="HIDDEN" name = "id" value="'.$ress['id'].'"/>
+                        <input type="submit" name="Modifier" value="Modifier" />
+                    </form>
+                </td>
+                <td>
+                    <form method="post" action="">
+                        <input type="HIDDEN" name = "id" value="'.$ress['id'].'"/>
+                        <input type="submit" name="Supprimer" value="Supprimer" />
+                    </form>
+                </td>
+            </tr>');
+    }
     echo('<tr>
-            <td>'.$ress['nom'].'</td>
-            <td>'.$ress['prenom'].'</td>
-            <td>'.$ress['classe'].'</td>
+            <td onclick="location.href=\'?id='.$ress['id'].'&key=consecteturadipiscingelit\'" >'.$ress['nom'].'</td>
+            <td onclick="location.href=\'?id='.$ress['id'].'&key=consecteturadipiscingelit\'" >'.$ress['prenom'].'</td>
+            <td onclick="location.href=\'?id='.$ress['id'].'&key=consecteturadipiscingelit\'" >'.$ress['classe'].'</td>
         </tr>');
 }
 echo('</table>');
-?>
+}}?>
 </body>
 </html>
