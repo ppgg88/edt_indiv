@@ -88,14 +88,16 @@
             $recipes = $recipesStatement->fetchAll();
             foreach ($recipes as $res){
                 if(isset($_POST[$res['id_elleve']])){
-                    $query=$pdo->prepare("UPDATE rdv SET abs = 1 WHERE id = :id");
+                    $query=$pdo->prepare("UPDATE `rdv` SET `date`= :d, `abs` = 1 WHERE id = :id");
                     $query->bindValue(':id', $res['id'], PDO::PARAM_INT);
+                    $query->bindValue(':d', $res['date'], PDO::PARAM_STR);
                     $query->execute();
                     $query->CloseCursor();
                 }
                 elseif($res['abs']!=2){
-                    $query=$pdo->prepare("UPDATE rdv SET abs = -1 WHERE id = :id");
+                    $query=$pdo->prepare("UPDATE `rdv` SET `date`= :d, `abs` = -1 WHERE id = :id");
                     $query->bindValue(':id', $res['id'], PDO::PARAM_INT);
+                    $query->bindValue(':d', $res['date'], PDO::PARAM_STR);
                     $query->execute();
                     $query->CloseCursor();
                 }
