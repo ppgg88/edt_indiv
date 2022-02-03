@@ -33,9 +33,6 @@ if(isset($_POST['Envoyer'])){
     $query->bindValue(':lieu', $_POST['lieu'], PDO::PARAM_STR);
     $query->bindValue(':ab', $_POST['abs'], PDO::PARAM_INT);
     $query->execute();
-    echo($query->errorInfo()[0]);
-    echo($query->errorInfo()[1]);
-    echo($query->errorInfo()[2]);
     
 }
 
