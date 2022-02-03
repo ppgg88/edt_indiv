@@ -1,6 +1,6 @@
 <?php
 if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
-    include('log_bdd.php');
+    //include('log_bdd.php');
     include('fonction.php');
     //insertion de RDV
     if(isset($_POST['Envoyer'])){

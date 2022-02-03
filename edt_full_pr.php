@@ -1,4 +1,16 @@
 <?php
+
+if(strpos($_GET['semaine'],"-W")!=FALSE){
+    if(isset($_GET['semaine'][7])){
+        $s = $_GET['semaine'][6].$_GET['semaine'][7];
+    }
+    else {
+        $s = $_GET['semaine'][6];
+    }
+    header("Location: edt_full_pr.php?idp=".$id_p."&semaine=".$s."&key=consecteturadipiscingelit");
+} 
+
+
 include('log_bdd.php');
 include('fonction.php');
 ?>
@@ -34,17 +46,6 @@ $url_base .= "://";
 $url_base .= $_SERVER['HTTP_HOST']; 
 
 if(!(isset($_GET['key']) && $_GET['key'] == 'consecteturadipiscingelit')) header("Location: edt.php");
-
-    //extraction du numero de la semaine
-    if(strpos($_GET['semaine'],"-W")!=FALSE){
-        if(isset($_GET['semaine'][7])){
-            $s = $_GET['semaine'][6].$_GET['semaine'][7];
-        }
-        else {
-            $s = $_GET['semaine'][6];
-        }
-        header("Location: edt_full_pr.php?idp=".$id_p."&semaine=".$s."&key=consecteturadipiscingelit");
-    } 
     function getStartAndEndDate($week, $year) {
         $dto = new DateTime();
         $dto->setISODate($year, $week*1);
@@ -180,7 +181,7 @@ if(!(isset($_GET['key']) && $_GET['key'] == 'consecteturadipiscingelit')) header
 <table  id="page-wrapper">
     
 <?php
-    $url = $url_base.'/edtpr.php?idp='.$id_p.'&semaine='.$_GET['semaine']."&key=".id_prof($id_p, $_GET['semaine']);
+    $url = $url_base.'/edtpr.php?idp='.$id_p.'%26semaine='.$_GET['semaine']."%26key=".id_prof($id_p, $_GET['semaine']);
     $qr_path = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl='.$url.'%2F&choe=UTF-8';
     echo('<img  id="page-wrapper" src="icon/roville_logo.png" id="logo" style="height: 20vh; float: right; margin-right:5vw; margin-top:5vh;"/>');
     if(!(isset($_GET['qr']) && $_GET['qr'] == 'off')){
