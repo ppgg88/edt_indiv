@@ -17,7 +17,7 @@ if(isset($_GET['ide'])){
         else {
             $s = $_GET['semaine'][6];
         }
-        
+
         if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
             if(isset($_GET['id'])){
                 header("Location: edt.php?ide=".$_GET['ide']."&semaine=".$s."&id=".$_GET['id']."&key=consecteturadipiscingelit");
@@ -145,13 +145,20 @@ if(isset($_GET['id']) && isset($_GET['key']) && $_GET['key'] == "consecteturadip
                 <label for="lieu">Lieu</label> <input type="texte"  name="lieu" id="lieu" value="<?php echo($res['lieu']);?>"/><br />
                 <label for="coulleur">couleur</label>
                 <select name="coulleur">
-                <option style="background:#7CCB06;" value='#7CCB06' <?php if($res['couleur']=='#7CCB06') echo('selected="selected"'); ?>>Pépinière</option>
-                <option style="background:#ADFF2F;" value='#ADFF2F' <?php if($res['couleur']=='#ADFF2F') echo('selected="selected"'); ?>>Serres</option>
-                <option style="background:#DF9FDF;" value='#DF9FDF' <?php if($res['couleur']=='#DF9FDF') echo('selected="selected"'); ?>>Individualisation</option>
-                <option style="background:#DBE2D0;" value='#DBE2D0' <?php if($res['couleur']=='#DBE2D0') echo('selected="selected"'); ?>>Cours prof</option>
-                <option style="background:#F3E768;" value='#F3E768' <?php if($res['couleur']=='#F3E768') echo('selected="selected"'); ?>>Arexhor</option>
-                <option style="background:#FD9BAA;" value='#FD9BAA' <?php if($res['couleur']=='#FD9BAA') echo('selected="selected"'); ?>>A confirmer</option>
-            </select><br />
+                    <option style="background:#7CCB06;" value='#7CCB06' <?php if($res['couleur']=='#7CCB06') echo('selected="selected"'); ?>>Pépinière</option>
+                    <option style="background:#ADFF2F;" value='#ADFF2F' <?php if($res['couleur']=='#ADFF2F') echo('selected="selected"'); ?>>Serres</option>
+                    <option style="background:#DF9FDF;" value='#DF9FDF' <?php if($res['couleur']=='#DF9FDF') echo('selected="selected"'); ?>>Individualisation</option>
+                    <option style="background:#DBE2D0;" value='#DBE2D0' <?php if($res['couleur']=='#DBE2D0') echo('selected="selected"'); ?>>Cours prof</option>
+                    <option style="background:#F3E768;" value='#F3E768' <?php if($res['couleur']=='#F3E768') echo('selected="selected"'); ?>>Arexhor</option>
+                    <option style="background:#FD9BAA;" value='#FD9BAA' <?php if($res['couleur']=='#FD9BAA') echo('selected="selected"'); ?>>A confirmer</option>
+                </select><br />
+                <label for="abs">statut absence</label>
+                <select name="abs">
+                    <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
+                    <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
+                    <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
+                    <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Excuser</option>
+                </select><br />
                 <input type="submit" name="Envoyer" value="Envoyer" />
                 <a href = "<?php echo("edt.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']);if($_GET['key'] == "consecteturadipiscingelit"){echo("&key=consecteturadipiscingelit");}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
                 <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=consecteturadipiscingelit");?>"><img src="icon/trash.png" style="height : 5vh;"/></a>

@@ -9,7 +9,6 @@ if(isset($_POST['Envoyer'])){
     else{
         $d = $_POST['date_j']." ".$_POST['date'].":00";
     }
-    
     $query=$pdo->prepare("UPDATE rdv
         SET `nom` = :rdv,
         `id_elleve` = :ide, 
@@ -17,7 +16,8 @@ if(isset($_POST['Envoyer'])){
         `date` = :dates, 
         `durre` = :durre, 
         `couleur` = :coulleur, 
-        `lieu` = :lieu 
+        `lieu` = :lieu,
+        `abs` = :ab
         WHERE id = ".$_GET['id']);
     $query->bindValue(':rdv', $_POST['rdv'], PDO::PARAM_STR);
     $query->bindValue(':ide', $_POST['ide'], PDO::PARAM_INT);
@@ -31,6 +31,7 @@ if(isset($_POST['Envoyer'])){
     $query->bindValue(':durre', $_POST['durre'], PDO::PARAM_INT);
     $query->bindValue(':coulleur', $_POST['coulleur'], PDO::PARAM_STR);
     $query->bindValue(':lieu', $_POST['lieu'], PDO::PARAM_STR);
+    $query->bindValue(':ab', $_POST['abs'], PDO::PARAM_INT);
     $query->execute();
     echo($query->errorInfo()[0]);
     echo($query->errorInfo()[1]);
