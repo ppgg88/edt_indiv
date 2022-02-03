@@ -3,10 +3,25 @@ include('log_bdd.php');
 include('fonction.php');
 ?>
 <h4 onclick="window.print();" class="no_print" style="background: #ADFF2F; display: inline-block; padding: 1vh;"> Imprimer </h4>
-<form class="no_print" action="index.php?key=consecteturadipiscingelit" method="POST">
+<form class="no_print" action="index.php?key=consecteturadipiscingelit" method="POST" style = "display: inline-block">
     <button>RETOUR ACCUEIL</button>
 </form>
-<?php
+<?php if(isset($_GET['qr']) && $_GET['qr'] == 'off'){ ?>
+        <form class="no_print" action="" method="get" style="margin-left : 7vw; display: inline-block;">
+            <input type="HIDDEN"  name="semaine" id="semaine" value="<?php echo($_GET['semaine']); ?>"/>
+            <input type="HIDDEN" name="key" value="consecteturadipiscingelit"/>
+            <input type="HIDDEN" name="qr" value="on"/>
+            <button>Afficher les QR codes</button>
+        </form>
+    <?php }else{ ?>
+        <form class="no_print" action="" method="get" style="margin-left : 7vw; display: inline-block;">
+            <input type="HIDDEN"  name="semaine" id="semaine" value="<?php echo($_GET['semaine']); ?>"/>
+            <input type="HIDDEN" name="key" value="consecteturadipiscingelit"/>
+            <input type="HIDDEN" name="qr" value="off"/>
+            <button>Cacher les QR codes</button>
+        </form>
+<?php }
+
 if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 {
     $url_base = "https";

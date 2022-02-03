@@ -130,6 +130,13 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
         <button>afficher tout les edt pour impression</button>
     </form>
     </br></br>
+    <h3>IMPRIMER LES EDT PROFS</h3>
+    <form action="edt_full_pr.php" method="get">
+        <label for="semaine">quelle semaine ?</label> <input type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".date('W', time())); ?>"require/>
+        <input type="HIDDEN" name = "key" value="consecteturadipiscingelit"/>
+        <button>afficher tout les edt pour impression</button>
+    </form>
+    </br></br>
     <h3>AFFICHER LES LIENS DES EDT</h3>
     <form action="all_edt.php" method="get">
         <label for="semaine">quelle semaine ?</label> <input type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".date('W', time())); ?>"require/>
