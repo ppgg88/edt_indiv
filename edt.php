@@ -47,8 +47,9 @@ if(isset($_GET['ide'])){
         public $id_eleves;
         public $lieu;
         public $suite = FALSE;
+        public $abs;
 
-        function __construct($id, $d, $n, $du,$c, $ide, $idp = NULL, $l){
+        function __construct($id, $d, $n, $du,$c, $ide, $idp = NULL, $l, $abs){
             $this->id = $id;
             $this->date = $d;
             $this->nom = $n;
@@ -57,6 +58,7 @@ if(isset($_GET['ide'])){
             $this->id_eleves = $ide;
             $this->id_proph = $idp;
             $this->lieu = $l;
+            $this->abs = $abs;
         }
     }
     
@@ -68,7 +70,7 @@ if(isset($_GET['ide'])){
     $id_max = 0;
     foreach ($recipes as $res)
     {
-        $rdv_[$id_max] = new rdv($res['id'],strtotime($res['date']), $res['nom'], $res['durre'], $res['couleur'],$res['id_elleve'], $res['id_proph'], $res['lieu']);
+        $rdv_[$id_max] = new rdv($res['id'],strtotime($res['date']), $res['nom'], $res['durre'], $res['couleur'],$res['id_elleve'], $res['id_proph'], $res['lieu'], $res['abs']);
         $id_max = $id_max + 1;
     }
 
@@ -238,7 +240,9 @@ if(isset($_GET['id']) && isset($_GET['key']) && $_GET['key'] == "consecteturadip
                     $recipes = $recipesStatement->fetchAll();
                     foreach ($recipes as $res){
                         echo("<p>".$res['prenom'][0]." ".$res['nom']."</p>");
-                    }            
+                    }
+                    if($rdv_[$k]->abs == -1) echo('<p style="color:red">Absent</p>');
+                    elseif($rdv_[$k]->abs == 2) echo('<p style="color:#CC8822">Excuser</p>');     
                     $test = TRUE;
                     $rdv_[$k]->durré = $rdv_[$k]->durré - 1;
                     if($rdv_[$k]->durré != 0){
