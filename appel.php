@@ -108,6 +108,11 @@
 <html>
     <head>
     <style>
+        #stat{
+            display: inline;
+            font-size: 4vh;
+            margin-left: 2vh;
+        }
         body{
             margin: 0px;
             padding: 8px;
@@ -115,7 +120,7 @@
         }
         /* The container */
         .container {
-            display: block;
+            display: inline-block;
             position: relative;
             padding-left: 10vw;
             margin-bottom: 1vh;
@@ -180,28 +185,47 @@
             -ms-transform: rotate(45deg);
             transform: rotate(45deg);
         }
+
+        .btn{
+            font-size: 3vh;
+        }
     </style>
     </head>
     <body>
         <form method="post" action="">
             <?php 
-            foreach($craineau[$_GET['id_craineau']]->id_eleves as $ide){
-                $sqlquery = "SELECT * FROM `elleve` WHERE id = ".$ide;
-                $recipesStatement = $pdo->prepare($sqlquery);
-                $recipesStatement->execute();
-                $recipes = $recipesStatement->fetchAll();
-                foreach ($recipes as $res){
-                    $exc = '';
-                    /*if($res['abs'] == 2)$exc = 'Excuser';*/
-                    echo('<div><label class="container" for="'.$res['id'].'">'.$res['nom'].' '.$res['prenom'].'<input type="checkbox" id="'.$res['id'].'" name="'.$res['id'].'" value="'.$res['id'].'" checked><span class="checkmark"></span> '.$exc.' </label></div>');
+            foreach($craineau[$_GET['id_craineau']]->id_rdv as $idr){
+
+                $sqlqueryy = "SELECT * FROM `rdv` WHERE id = ".$idr;
+                $recipesStatementt = $pdo->prepare($sqlqueryy);
+                $recipesStatementt->execute();
+                $recipess = $recipesStatementt->fetchAll();
+                foreach ($recipess as $ress){
+                    $ide = $ress['id_elleve'];
+                    $sqlquery = "SELECT * FROM `elleve` WHERE id = ".$ide;
+                    $recipesStatement = $pdo->prepare($sqlquery);
+                    $recipesStatement->execute();
+                    $recipes = $recipesStatement->fetchAll();
+                    foreach ($recipes as $res){
+                        $exc = '';
+                        $abs = '';
+                        $ch = '';
+                        if($ress['abs'] == 2){
+                            $exc = 'Excuser';
+                            $ch = 'disabled="disabled"';
+                        }
+                        elseif($ress['abs'] == -1)$abs = 'Absent';
+                        else $ch = 'checked';
+                        echo('<div><label class="container" for="'.$res['id'].'">'.$res['nom'].' '.$res['prenom'].'<input type="checkbox" id="'.$res['id'].'" name="'.$res['id'].'" value="'.$res['id'].'"'.$ch.'><span class="checkmark"></span> </label><p id="stat" style="color: orange;">'.$exc.' </p><p id="stat" style="color: red;">'.$abs.' </p></div>');
+                    }
                 }
             }
             ?>
-            <input type="submit" name="Envoyer" value="Envoyer" />
+            <input class="btn" type="submit" name="Envoyer" value="Envoyer" />
         </form>
         </br></br></br>
         <form class="no_print" action="edtpr.php?idp=<?php echo($_GET['idp']); ?>&key=<?php echo($_GET['key']); ?>&semaine=<?php echo($_GET['semaine']); ?>" method="POST">
-        <button>RETOUR EDT PROFS</button>
+        <button class="btn">RETOUR EDT PROFS</button>
     </form>
     </body>
 </html>

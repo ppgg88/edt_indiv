@@ -60,22 +60,9 @@ if(isset($_GET['idp'])){
             $this->lieu = $l;
         }
     }
-    
-    //recuperation des RDV dans la BDD
-    $sqlquery = "SELECT * FROM `rdv` WHERE id_proph = ".$_GET['idp']." ORDER BY date";
-    $recipesStatement = $pdo->prepare($sqlquery);
-    $recipesStatement->execute();
-    $recipes = $recipesStatement->fetchAll();
-    $id_max = 0;
-    $rdv_ = array();
-    foreach ($recipes as $res)
-    {
-        $rdv_[$id_max] = new rdv($res['id'],strtotime($res['date']), $res['nom'], $res['durre'], $res['couleur'],$res['id_elleve'], $res['id_proph'], $res['lieu']);
-        $id_max = $id_max + 1;
-    }
-
-    //creation des craineaux horraires
     class craineau{
+        public $id_rdv;
+        public $abs;
         public $date;
         public $date_min;
         public $nom;
@@ -86,7 +73,7 @@ if(isset($_GET['idp'])){
         public $id_eleves;
         public $lieu;
 
-        function __construct($d, $n, $du,$c, $ide, $idp, $l){
+        function __construct($d, $n, $du,$c, $ide, $idp, $l, $id, $abs){
             $this->date[] = $d;
             $this->date_min = $d;
             $this->nom = $n;
@@ -94,28 +81,41 @@ if(isset($_GET['idp'])){
             $this->durré_max = $du;
             $this->couleur = $c;
             $this->id_eleves[] = $ide;
+            $this->id_rdv[] = $id;
             $this->id_proph = $idp;
             $this->lieu = $l;
+            $this->abs[] = $abs;
         }
     }
+    //recuperation des RDV dans la BDD
+    $sqlquery = "SELECT * FROM `rdv` WHERE id_proph = ".$_GET['idp']." ORDER BY date";
+    $recipesStatement = $pdo->prepare($sqlquery);
+    $recipesStatement->execute();
+    $recipes = $recipesStatement->fetchAll();
+    $id_max = 0;
     $craineau_max = 0;
     $craineau = array();
-    foreach($rdv_ as $rdv){
+    $rdv_ = array();
+    foreach ($recipes as $res){
+        $rdv_[$id_max] = new rdv($res['id'],strtotime($res['date']), $res['nom'], $res['durre'], $res['couleur'],$res['id_elleve'], $res['id_proph'], $res['lieu']);
         $crai_exist = false;
         foreach($craineau as $crai){
-            if((($crai->date_min >= $rdv->date) and (($rdv->date+60*$rdv->durré) > $crai->date_min)) or ((($crai->date_min+60*$crai->durré_max) >$rdv->date) and (($rdv->date+60*$rdv->durré) > ($crai->date_min+60*$crai->durré_max)))){
-                $crai->id_eleves[]=$rdv->id_eleves;
-                $crai->date[]=$rdv->date;
-                $crai->durré[]=$rdv->durré;
+            if((($crai->date_min >= $rdv_[$id_max]->date) and (($rdv_[$id_max]->date+60*$rdv_[$id_max]->durré) > $crai->date_min)) or ((($crai->date_min+60*$crai->durré_max) >$rdv_[$id_max]->date) and (($rdv_[$id_max]->date+60*$rdv_[$id_max]->durré) > ($crai->date_min+60*$crai->durré_max)))){
+                $crai->id_eleves[]=$rdv_[$id_max]->id_eleves;
+                $crai->abs[]= $res['abs'];
+                $crai->date[]=$rdv_[$id_max]->date;
+                $crai->durré[]=$rdv_[$id_max]->durré;
+                $crai->id_rdv[]=$rdv_[$id_max]->id;
                 $crai_exist = true;
-                if($crai->date_min>$rdv->date) $crai->date_min = $rdv->date;
-                if($crai->date_min+$crai->durré_max*60 < $rdv->date+60*$rdv->durré) $crai->durré_max = (($rdv->date+60*$rdv->durré)-$crai->date_min)/60;
+                if($crai->date_min>$rdv_[$id_max]->date) $crai->date_min = $rdv_[$id_max]->date;
+                if($crai->date_min+$crai->durré_max*60 < $rdv_[$id_max]->date+60*$rdv_[$id_max]->durré) $crai->durré_max = (($rdv_[$id_max]->date+60*$rdv_[$id_max]->durré)-$crai->date_min)/60;
             }
         }
         if($crai_exist == false){
-            $craineau[$craineau_max] = new craineau($rdv->date, $rdv->nom, $rdv->durré, $rdv->couleur, $rdv->id_eleves, $rdv->id_proph, $rdv->lieu);
+            $craineau[$craineau_max] = new craineau($rdv_[$id_max]->date, $rdv_[$id_max]->nom, $rdv_[$id_max]->durré, $rdv_[$id_max]->couleur, $rdv_[$id_max]->id_eleves, $rdv_[$id_max]->id_proph, $rdv_[$id_max]->lieu,$rdv_[$id_max]->id, $res['abs']);
             $craineau_max =$craineau_max + 1;
         }
+        $id_max = $id_max + 1;
     }
 }
 ?>
@@ -234,14 +234,18 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
                 <?php
                         foreach($craineau[$k]->id_eleves as $ell){
                            
-                            $sqlquery = "SELECT * FROM `elleve` WHERE `id` = ".($ell);
+                            $sqlquery = "SELECT * FROM `elleve` WHERE `id` = ".$ell;
+                            $color = '';
                             $recipesStatement = $pdo->prepare($sqlquery);
                             $recipesStatement->execute();
                             $recipes = $recipesStatement->fetchAll();
                             foreach ($recipes as $res){
                                 $index = array_search($res['id'], $craineau[$k]->id_eleves);
+                                if($craineau[$k]->abs[$index]==-1)$color = 'red';
+                                elseif($craineau[$k]->abs[$index]==2)$color = '#CC8822 ';
+                                else $color = 'black';
                                 $date_end = strtotime(date("Y-m-d H:i:s", $craineau[$k]->date[$index])."+ {$craineau[$k]->durré[$index]} minutes");
-                                echo("<p style='font-size: calc(0.7vh + 0.3vw)!important'><b>".$res['prenom'][0]." ".$res['nom']." ".$res['classe']." </b>".date("H:i", $craineau[$k]->date[$index])."-".date("H:i", $date_end)."</p>");
+                                echo("<p style='font-size: calc(0.7vh + 0.3vw)!important; color:".$color."!important;'><b>".$res['prenom'][0]." ".$res['nom']." ".$res['classe']." </b>".date("H:i", $craineau[$k]->date[$index])."-".date("H:i", $date_end)."</p>");
                             }
             
                         }   
