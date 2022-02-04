@@ -7,15 +7,19 @@
     include('log_bdd.php');
     include('fonction.php');
 
-    $r = $pdo->query('SELECT rdv.date, rdv.durre, elleve.nom as e_nom, elleve.prenom as e_prenom, elleve.classe as e_classe, proph.nom as p_nom, proph.prenom as p_prenom, rdv.lieu, rdv.nom, rdv.couleur FROM rdv, elleve, proph WHERE rdv.id_elleve = elleve.id and rdv.id_proph = proph.id ORDER BY rdv.date');
+    $r = $pdo->query('SELECT rdv.date, rdv.durre, elleve.nom as e_nom, elleve.prenom as e_prenom, elleve.classe as e_classe, proph.nom as p_nom, proph.prenom as p_prenom, rdv.lieu, rdv.nom, rdv.couleur, rdv.abs FROM rdv, elleve, proph WHERE rdv.id_elleve = elleve.id and rdv.id_proph = proph.id ORDER BY rdv.date');
 
     $tabeleves = [];
-    $tabeleves[] = ['DATE', 'DURRE', 'NOM ELEVES', 'PRENOM ELEVES', 'CLASSE ELEVES', 'NOM PROFS', 'PRENOM PROFS', 'LIEU', 'OBSERVATION', 'COULEUR'];
+    $tabeleves[] = ['DATE', 'DURRE', 'NOM ELEVES', 'PRENOM ELEVES', 'CLASSE ELEVES', 'NOM PROFS', 'PRENOM PROFS', 'LIEU', 'OBSERVATION', 'COULEUR', 'ABS'];
     //$tabeleves[] = ['', '', '', '', '', '', '', '', '', ''];
  
     while($rs = $r->fetch(PDO::FETCH_ASSOC)){
         if(date('W', strtotime($rs['date']))==$s){
-            $tabeleves[] = [$rs['date'], $rs['durre'],$rs['e_nom'],$rs['e_prenom'],$rs['e_classe'],$rs['p_nom'],$rs['p_prenom'],$rs['lieu'],$rs['nom'],$rs['couleur']];
+            if($rs['abs'] == -1) $abs = "Absent";
+            elseif($rs['abs'] == 2) $abs = "Anuller";
+            elseif($rs['abs'] == 1) $abs = "Present";
+            else $abs = "NR";
+            $tabeleves[] = [$rs['date'], $rs['durre'],$rs['e_nom'],$rs['e_prenom'],$rs['e_classe'],$rs['p_nom'],$rs['p_prenom'],$rs['lieu'],$rs['nom'],$rs['couleur'], $abs];
         }
     }
     $name = "export/export_S".$s.".csv";

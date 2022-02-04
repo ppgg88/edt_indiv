@@ -283,29 +283,45 @@
                                     <?php
                                     if(isset($_GET['key']) && $_GET['key']='consecteturadipiscingelit')$lien_rdv = 'onclick="location.href=\'?semaine='.$_GET['semaine'].'&id='.$rdv[$i]->id.'&key=consecteturadipiscingelit#position\'"';
                                     else $lien_rdv = '';
+                                    
+                                    $color = "";
+                                    $deco = "";
+                                    if($rdv[$i]->abs == -1){
+                                        $color = "red";
+                                        $deco = "bold";
+                                    }
+                                    elseif($rdv[$i]->abs == 2){
+                                        $color = "#CC8822";
+                                        $deco = "bold";
+                                    }
+                                    else{
+                                        $color = "black";
+                                        $deco = "normal";
+                                    }
+
                                     ?>
-                                    <td <?php echo($lien_rdv); ?> class = "content" style="padding-right: 0vw !important; background-color: <?php echo($rdv[$i]->couleur);?> !important;">
+                                    <td <?php echo($lien_rdv); ?> class = "content" style="padding-right: 0vw !important; background-color: <?php echo($rdv[$i]->couleur);?> !important; color:<?php echo($color);?> !important">
                                         <?php echo(day(date("N", $rdv[$i]->date))." ".date("d/m", $rdv[$i]->date));?>
                                     </td>
-                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important;">
+                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important; color:<?php echo($color);?> !important">
                                         <?php echo(date("H:i", $rdv[$i]->date)."-".date("H:i", strtotime(" +".$rdv[$i]->durée."minutes", $rdv[$i]->date)));?>
                                     </td>
-                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important;">
+                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important; color:<?php echo($color);?> !important">
                                         <?php echo($rdv[$i]->nom_eleve." ".($rdv[$i]->prenom_eleve)[0]);?>
                                     </td>
-                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important;">
+                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important; color:<?php echo($color);?> !important">
                                         <?php echo($rdv[$i]->classe_eleve);?>
                                     </td>
-                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important;">
+                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important; color:<?php echo($color);?> !important">
                                         <?php echo($rdv[$i]->lieu);?>
                                     </td>
-                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important;">
+                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important; color:<?php echo($color);?> !important">
                                         <?php echo($rdv[$i]->nom_prof." ".($rdv[$i]->prenom_prof)[0]);?>
                                     </td>
-                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important;">
+                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important; color:<?php echo($color);?> !important">
                                         <?php echo($rdv[$i]->nom);?>
                                     </td>
-                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important;">
+                                    <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important; color:<?php echo($color);?> !important">
                                         <?php 
                                         if($rdv[$i]->abs == -1) echo("Abs");
                                         elseif($rdv[$i]->abs == 1)echo("Pre");
