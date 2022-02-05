@@ -110,7 +110,7 @@ $key=$_GET['key'];
         </script>
     </head>
     <body onload="nothing();">
-        <div class= "head" id="head">
+        <div class= "head" id="head" onclick="nothing();">
             <img id="logo" src="icon/roville_logo.png"/>
             <h1 class="title">Emplois du temps Individualisation</h1>
             <form method="get" action="" class="select_week">
@@ -118,7 +118,7 @@ $key=$_GET['key'];
                 <label for="semaine" class="select_week">Semaine ?</label> <input class="select_week" type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".$semaine); ?>" onChange="this.form.submit();" require/>
             </form>
         </div>
-        <div class="main">
+        <div class="main" onclick="nothing();">
             <table class="main">
                 <tr class="main">
                     <td class="main">
@@ -133,10 +133,10 @@ $key=$_GET['key'];
                 </tr>
                 <tr class="main">
                     <td class="main">
-                        <a href="import_data.php?key=<?php echo($key);?>"><img onclick="nothing()" src="icon/cercle.png" class="lien main"/></a>
+                        <a href="all_edt.php?key=<?php echo($key);?>&semaine=<?php echo($semaine);?>"><img onclick="nothing()" src="icon/cercle.png" class="lien main"/></a>
                     </td>
                     <td class="main">
-                        <a href="import_data.php?key=<?php echo($key);?>"><img onclick="nothing()" src="icon/cercle.png" class="ge main"/></a>
+                        <a href="edt_general.php?key=<?php echo($key);?>&semaine=<?php echo($semaine);?>"><img onclick="nothing()" src="icon/cercle.png" class="ge main"/></a>
                     </td>
                     <td class="main">
                         <a href="new_rdv.php?key=<?php echo($key);?>"><img onclick="nothing()" src="icon/cercle.png" class="rdv_new main"/></a>

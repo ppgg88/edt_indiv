@@ -8,7 +8,12 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
     echo "  ";
     }
     else{
-        header("Location: accueil.php?key=".$_GET['key']);
+        if(isset($_GET["semaine"])){
+            header("Location: accueil.php?key=".$_GET['key']."&semaine=".$_GET["semaine"]);
+        }
+        else{
+            header("Location: accueil.php?key=".$_GET['key']);
+        }
     }
     //include('log_bdd.php');
     include('fonction.php');
