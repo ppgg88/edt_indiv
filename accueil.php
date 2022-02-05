@@ -118,39 +118,39 @@ $key=$_GET['key'];
                 <label for="semaine" class="select_week">Semaine ?</label> <input class="select_week" type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".$semaine); ?>" onChange="this.form.submit();" require/>
             </form>
         </div>
-        <div class="main" onclick="nothing();">
+        <div class="main">
             <table class="main">
                 <tr class="main">
                     <td class="main">
-                        <a href="import_data.php?key=<?php echo($key);?>"><img onclick="nothing()" src="icon/cercle.png" class="import main"/></a>
+                        <a href="import_data.php?key=<?php echo($key);?>"><img onclick="nothing()" src="icon/cercle_importer.png" class="import main"/></a>
                     </td>
                     <td class="main">
-                        <a href="export_csv.php?key=<?php echo($key);?>&semaine=<?php echo($semaine);?>"><img onclick="nothing()" src="icon/cercle.png" class="export main"/></a>
+                        <a href="export_csv.php?key=<?php echo($key);?>&semaine=<?php echo($semaine);?>"><img onclick="nothing()" src="icon/cercle_exporter.png" class="export main"/></a>
                     </td>
                     <td class="main">
-                        <a href="parametre.php?key=<?php echo($key);?>"><img onclick="nothing()" src="icon/cercle.png" class="param main"/></a>
-                    </td>
-                </tr>
-                <tr class="main">
-                    <td class="main">
-                        <a href="all_edt.php?key=<?php echo($key);?>&semaine=<?php echo($semaine);?>"><img onclick="nothing()" src="icon/cercle.png" class="lien main"/></a>
-                    </td>
-                    <td class="main">
-                        <a href="edt_general.php?key=<?php echo($key);?>&semaine=<?php echo($semaine);?>"><img onclick="nothing()" src="icon/cercle.png" class="ge main"/></a>
-                    </td>
-                    <td class="main">
-                        <a href="new_rdv.php?key=<?php echo($key);?>"><img onclick="nothing()" src="icon/cercle.png" class="rdv_new main"/></a>
+                        <a href="parametre.php?key=<?php echo($key);?>"><img onclick="nothing()" src="icon/cercle_parametres.png" class="param main"/></a>
                     </td>
                 </tr>
                 <tr class="main">
                     <td class="main">
-                        <img onclick="portail();event.stopPropagation();" src="icon/cercle.png" id="portail_img" class="portail main"/>
+                        <a href="all_edt.php?key=<?php echo($key);?>&semaine=<?php echo($semaine);?>"><img onclick="nothing()" src="icon/cercle_liens.png" class="lien main"/></a>
                     </td>
                     <td class="main">
-                        <img onclick="edt();event.stopPropagation();" src="icon/cercle.png" class="edt main"/>
+                        <a href="edt_general.php?key=<?php echo($key);?>&semaine=<?php echo($semaine);?>"><img onclick="nothing()" src="icon/cercle_edt_general.png" class="ge main"/></a>
                     </td>
                     <td class="main">
-                        <img onclick="imp();event.stopPropagation();" src="icon/cercle.png" class="imp main"/>
+                        <a href="new_rdv.php?key=<?php echo($key);?>"><img onclick="nothing()" src="icon/cercle_rdv.png" class="rdv_new main"/></a>
+                    </td>
+                </tr>
+                <tr class="main">
+                    <td class="main">
+                        <img onclick="portail();event.stopPropagation();" src="icon/cercle_portail.png" id="portail_img" class="portail main"/>
+                    </td>
+                    <td class="main">
+                        <img onclick="edt();event.stopPropagation();" src="icon/cercle_edt_individuel.png" class="edt main"/>
+                    </td>
+                    <td class="main">
+                        <img onclick="imp();event.stopPropagation();" src="icon/cercle_imprimer.png" class="imp main"/>
                     </td>
                 </tr>
             </table>
@@ -166,15 +166,8 @@ $key=$_GET['key'];
                 <?php select_profs(); ?></br>
                 <input type="image" onclick="" src="icon/cercle.png" class="pr_edt"/>
             </form>
-
-            <form method="get" action="edt.php" id="i_ell" class="ell_imp">
-                <?php select_elleves(); ?></br>
-                <input type="image" onclick="" src="icon/cercle.png" id="i_ell" class="ell_imp"/>
-            </form>
-            <form method="get" action="edtpr.php" id="i_pr" class="pr_imp">
-                <?php select_profs(); ?></br>
-                <input type="image" onclick="" src="icon/cercle.png" id="i_pr" class="pr_imp"/>
-            </form>
+            <a href="edt_full.php?key=<?php echo($key); ?>&semaine=<?php echo($semaine); ?>"><img onclick="" src="icon/cercle.png" id="i_ell" class="ell_imp"/></a>
+            <a href="edt_full_pr.php?key=<?php echo($key); ?>&semaine=<?php echo($semaine); ?>"><img onclick="" src="icon/cercle.png" id="i_pr" class="pr_imp"/></a>
 
         </div>
     </body>

@@ -64,7 +64,7 @@ td.main{
 img.main{
     display: block;
     width: 7vw;
-    height: 7vw;
+    height: 7.91vw;
 }
 p.main.c{
     text-align: center;
@@ -121,6 +121,7 @@ input.ell_edt{
     height: 5.5vw;            
 }
 form.ell_edt{
+    margin-top: 1vh;
     width: 5.5vw;
     position: absolute;
     left : 41.25vw;
@@ -131,28 +132,25 @@ input.pr_edt{
     
 }
 form.pr_edt{
+    margin-top: 1vh;
     width: 5.5vw;
     position: absolute;
     left : 53.25vw;
 }
 
-input.ell_imp{
+.ell_imp{
+    margin-top: 1vh;
     width: 5.5vw;
     height: 5.5vw;
-}
-form.ell_imp{
-    width: 5.5vw;
-    position: absolute;
-    right : 27.75vw;
-}
-input.pr_imp{
-    width: 5.5vw;
-    height: 5.5vw;
-}
-form.pr_imp{
-    width: 5.5vw;
     position: absolute;
     right : 39.75vw;
+}
+.pr_imp{
+    margin-top: 1vh;
+    width: 5.5vw;
+    height: 5.5vw;
+    position: absolute;
+    right : 27.75vw;
 }
 
 .s_eleves{
