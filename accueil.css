@@ -84,11 +84,11 @@ p.main.r{
     color: black;
     margin : 0px;
 }
-img.main:hover{
+img.main:hover, input.pr_imp:hover, input.ell_imp:hover, input.pr_edt:hover, input.ell_edt:hover, .ell_portail:hover, .pr_portail:hover{
     /*l'image est grossit de 15%*/
     transform:scale(1.15);
 }
-img.main:active{
+img.main:active, input.pr_imp:active, input.ell_imp:active, input.pr_edt:active, input.ell_edt:active, .ell_portail:active, .pr_portail:active{
     /*l'image est grossit de 15%*/
     transform:scale(1) !important;
 }
