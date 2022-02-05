@@ -2,7 +2,7 @@
 
 function select_elleves($sellected_id = NULL){
     include("log_bdd.php");
-    echo('<select name="ide"><option value=0>--Elèves--</option>');
+    echo('<select name="ide" class="s_eleves"><option value=0>--Elèves--</option>');
     $sqlqueryy = "SELECT * FROM `elleve` order by `nom`";
     $recipesStatementt = $pdo->prepare($sqlqueryy);
     $recipesStatementt->execute();
@@ -20,7 +20,7 @@ function select_elleves($sellected_id = NULL){
 
 function select_profs($sellected_id = NULL){
     include("log_bdd.php");
-    echo('<select name="idp"><option value=0>--Profs--</option>');
+    echo('<select class="s_profs" name="idp"><option value=0>--Profs--</option>');
     $sqlqueryy = "SELECT * FROM `proph` order by `nom`";
     $recipesStatementt = $pdo->prepare($sqlqueryy);
     $recipesStatementt->execute();
@@ -38,7 +38,7 @@ function select_profs($sellected_id = NULL){
 
 function select_classe(){
     include("log_bdd.php");
-    echo('<select name="classe"><option value="no">--classe--</option>');
+    echo('<select class="s_classe" name="classe"><option value="no">--classe--</option>');
     $sqlqueryy = "SELECT distinct classe FROM `elleve` order by `classe`";
     $recipesStatementt = $pdo->prepare($sqlqueryy);
     $recipesStatementt->execute();

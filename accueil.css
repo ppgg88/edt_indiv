@@ -1,0 +1,167 @@
+body{
+    margin:0px;
+    padding: 0px;
+    background-image: url(icon/acueil_fond2.jpg);
+    background-size: 100vw;
+}
+a{
+    text-decoration: none;
+}
+
+
+.head{
+    margin : 0px;
+    width: 100vw;
+    height : 17vh;
+    background-color: #83af65;
+}
+#logo{
+    height : 17vh;
+    position: absolute;
+    left : 2vw;
+}
+.title{
+    font-family: Impact, fantasy;
+    font-weight: normal;
+    display: inline-block;
+    position: absolute;
+    margin: 0vh;
+    font-size: 5vh;
+    left : 10vw;
+    height: 5vh;
+    top : 6vh;
+}
+form.select_week{
+    display: inline-block;
+    position: absolute;
+    right: 5vw;
+    height: 5vh;
+    top: 6vh;
+}
+
+label.select_week{
+    font-size: 3vh;
+    font-weight: bolder;
+    margin-right: 2vw;
+}
+.select_week{
+    height: 5vh;
+}
+
+table.main{
+    margin-top: 4vh;
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 60vh;
+    width: 60vw;
+}
+td.main{
+    align-items: center;
+    width: 20vw;
+    height: 20vh;
+}
+img.main{
+    display: block;
+    width: 7vw;
+    height: 7vw;
+}
+p.main.c{
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    margin : 0px;
+}
+p.main.l{
+    text-align: right;
+    text-decoration: none;
+    color: black;
+    margin : 0px;
+}
+p.main.r{
+    text-align: left;
+    text-decoration: none;
+    color: black;
+    margin : 0px;
+}
+img.main:hover{
+    /*l'image est grossit de 15%*/
+    transform:scale(1.15);
+}
+img.main:active{
+    /*l'image est grossit de 15%*/
+    transform:scale(1) !important;
+}
+.import, .lien, .portail{
+    margin-left: 13vw;
+}
+.export, .ge, .edt{
+    margin-left: auto;
+    margin-right: auto;
+}
+.param, .rdv_new, .imp{
+    margin-left: 0vw;
+}
+
+.ell_portail{
+    width: 5.5vw;
+    height: 5.5vw;
+    position: absolute;
+    left : 27.75vw;
+}
+.pr_portail{
+    width: 5.5vw;
+    height: 5.5vw;
+    position: absolute;
+    left : 39.75vw;
+}
+
+input.ell_edt{
+    width: 5.5vw;
+    height: 5.5vw;            
+}
+form.ell_edt{
+    width: 5.5vw;
+    position: absolute;
+    left : 41.25vw;
+}
+input.pr_edt{
+    width: 5.5vw;
+    height: 5.5vw;
+    
+}
+form.pr_edt{
+    width: 5.5vw;
+    position: absolute;
+    left : 53.25vw;
+}
+
+input.ell_imp{
+    width: 5.5vw;
+    height: 5.5vw;
+}
+form.ell_imp{
+    width: 5.5vw;
+    position: absolute;
+    right : 27.75vw;
+}
+input.pr_imp{
+    width: 5.5vw;
+    height: 5.5vw;
+}
+form.pr_imp{
+    width: 5.5vw;
+    position: absolute;
+    right : 39.75vw;
+}
+
+.s_eleves{
+    width: 11vw;
+    position: absolute;
+    right : -50%;
+}
+.s_profs{
+    width: 11vw;
+    position: absolute;
+    right : -50%;
+}
