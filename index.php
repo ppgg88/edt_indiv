@@ -1,9 +1,20 @@
 <?php
+$user_agent = $_SERVER["HTTP_USER_AGENT"];
+
 if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
+
+    if(preg_match("/(android|webos|avantgo|iphone|ipod|ipad|bolt|boost|cricket|docomo|fone|hiptop|opera mini|mini|kitkat|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i",$user_agent ))
+    {
+    echo "  ";
+    }
+    else{
+        header("Location: accueil.php?key=".$_GET['key']);
+    }
     //include('log_bdd.php');
     include('fonction.php');
     //insertion de RDV
     if(isset($_POST['Envoyer'])){
+        include('log_bdd.php');
         $repeat = $_POST['nrepeat'];
         $dd = new DateTime($_POST['date_j']." ".$_POST['date'].":00");
         while($repeat>=1){

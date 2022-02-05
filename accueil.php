@@ -1,7 +1,5 @@
 <?php
 include('fonction.php');
-$key = "consecteturadipiscingelit";
-$semaine = 5;
 
 if(isset($_GET['semaine'])){
     if(strpos($_GET['semaine'],"-W")!=FALSE){
@@ -13,24 +11,21 @@ if(isset($_GET['semaine'])){
         }
 
         if(isset($_GET['key']) && test_id($_GET['key'])){
+            $key=$_GET['key'];
             header("Location: accueil.php?semaine=".$s."&key=".$key);
-        }
-        else{
-            header("Location: accueil.php?semaine=".$s);  
-        }    
+        } 
     }
     $semaine = $_GET['semaine'];
 }
 else{
     $semaine = date('W', time());
 }
-
-
+if(isset($_GET['key']) && test_id($_GET['key'])){
+$key=$_GET['key'];
 ?>
 
-<html>
-    <head>
-    <!DOCTYPE html>
+
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -119,8 +114,8 @@ else{
             <img id="logo" src="icon/roville_logo.png"/>
             <h1 class="title">Emplois du temps Individualisation</h1>
             <form method="get" action="" class="select_week">
+                <input type="HIDDEN" name = "key" value="consecteturadipiscingelit"/>
                 <label for="semaine" class="select_week">Semaine ?</label> <input class="select_week" type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".$semaine); ?>" onChange="this.form.submit();" require/>
-                <input type="HIDDEN" name = "key" value="<?php echo($key) ?>"/>
             </form>
         </div>
         <div class="main">
@@ -144,7 +139,7 @@ else{
                         <a href="import_data.php?key=<?php echo($key);?>"><img onclick="nothing()" src="icon/cercle.png" class="ge main"/></a>
                     </td>
                     <td class="main">
-                        <a href="import_data.php?key=<?php echo($key);?>"><img onclick="nothing()" src="icon/cercle.png" class="rdv_new main"/></a>
+                        <a href="new_rdv.php?key=<?php echo($key);?>"><img onclick="nothing()" src="icon/cercle.png" class="rdv_new main"/></a>
                     </td>
                 </tr>
                 <tr class="main">
@@ -184,3 +179,5 @@ else{
         </div>
     </body>
 </html>
+
+<?php } ?>
