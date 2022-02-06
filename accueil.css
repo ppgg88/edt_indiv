@@ -1,9 +1,3 @@
-body{
-    margin:0px;
-    padding: 0px;
-    background-image: url(icon/acueil_fond2.jpg);
-    background-size: 100vw;
-}
 a{
     text-decoration: none;
 }
@@ -121,7 +115,7 @@ input.ell_edt{
     height: 5.5vw;            
 }
 form.ell_edt{
-    margin-top: 1vh;
+    margin-top: 2vh;
     width: 5.5vw;
     position: absolute;
     left : 41.25vw;
@@ -132,7 +126,7 @@ input.pr_edt{
     
 }
 form.pr_edt{
-    margin-top: 1vh;
+    margin-top: 2vh;
     width: 5.5vw;
     position: absolute;
     left : 53.25vw;

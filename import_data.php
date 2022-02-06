@@ -1,6 +1,13 @@
 <?php 
-
-if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
+include("fonction.php");
+if(isset($_GET['key']) && test_id($_GET['key'])){
+    $key=$_GET['key'];
+    if(isset($_GET['semaine'])){
+        $semaine=$_GET['semaine'];
+    }
+    else{
+        $semaine = date('W', time());
+    }
     $i = 0;
     // Connect to database
     include("log_bdd.php");
@@ -189,25 +196,29 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
 <html>
 <head>
   <title>Importation csv</title>
+  <link rel="stylesheet" href="all.css" />
   <style type="text/css">
         .head {
-                background-color: #006600 !important;
-                color: white !important;
-                font-size: 1.5vw !important;
-                font-family: Arial, "Arial Black", Times, "Times New Roman", serif !important;
-                border:1px solid red !important;
-                text-align: center !important;
+            background-color: #006600 !important;
+            color: white !important;
+            font-size: 1.5vw !important;
+            font-family: Arial, "Arial Black", Times, "Times New Roman", serif !important;
+            border:1px solid red !important;
+            text-align: center !important;
         }
         td{
-                border-top: 1px solid black !important;
-                font-size: 1.3vw !important;
-                border-bottom: 1px solid black !important;
-                border-collapse: collapse !important;
-                padding-top: 1vw !important;
-                padding-bottom: 1vw !important;
-                padding-right: 0.3vw !important;
-                font-weight: bold !important;
+            border-top: 1px solid black !important;
+            font-size: 1.3vw !important;
+            border-bottom: 1px solid black !important;
+            border-collapse: collapse !important;
+            padding-top: 1vw !important;
+            padding-bottom: 1vw !important;
+            padding-right: 0.3vw !important;
+            font-weight: bold !important;
             }
+        tr{
+            background-color: #b9edc3;
+        }
         table{
             width: 100% !important;
         }
@@ -226,7 +237,7 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
         </div>
     </form>
     <br/><br/>
-    <form action="index.php?key=consecteturadipiscingelit" method="POST">
+    <form action="index.php?key=<?php echo($key);?>&semaine=<?php echo($semaine);?>" method="POST">
         <button>RETOUR ACCUEIL</button>
     </form>
     <?php     

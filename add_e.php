@@ -1,7 +1,13 @@
 <?php 
-include('log_bdd.php');
-// INSERTION rdv : INSERT INTO `rdv` (`id`, `nom`, `date`, `durre`, `couleur`, `id_elleve`, `id_proph`) VALUES (NULL, 'test_rdv_bdd', '2021-12-10 16:00:00', '60', '#FF00FF', '1', '1');
-// Ecriture de la requête
+include('fonction.php');
+if(isset($_GET['key']) && test_id($_GET['key'])){
+
+    if(!isset($_GET['semaine']))$s = date('W', time());
+    else if(isset($_GET['semaine'][7]))$s = $_GET['semaine'][6].$_GET['semaine'][7];
+    else $s = $_GET['semaine'];
+    include('log_bdd.php');
+    // INSERTION rdv : INSERT INTO `rdv` (`id`, `nom`, `date`, `durre`, `couleur`, `id_elleve`, `id_proph`) VALUES (NULL, 'test_rdv_bdd', '2021-12-10 16:00:00', '60', '#FF00FF', '1', '1');
+    // Ecriture de la requête
     if(isset($_POST['Envoyer'])){
         $query=$pdo->prepare("INSERT INTO elleve (nom, prenom, classe) VALUES (:n, :p, :c)");
         $query->bindValue(':n', $_POST['nom'], PDO::PARAM_STR);
@@ -55,20 +61,19 @@ include('log_bdd.php');
                 padding-right: 0.3vw !important;
                 font-weight: bold !important;
             }
+            tr{
+            background-color: #b9edc3;
+        }
         table{
             width: 100% !important;
         }
     </style>
+    <link rel="stylesheet" href="all.css" />
     <script>
     </script>
 </head>
 <body>
-<?php 
-if(isset($_GET['key'])){
-    if($_GET['key'] == "consecteturadipiscingelit"){
-?>
-
-<h3>AJOUTER UN ELEVE :</h3>
+<h3>AJOUTER / MODIFIER UNE FICHE ELEVE :</h3>
 <form method="post" action="">
         <label for="nom">nom</label> <input type="text"  name="nom" id="nom" value="Nom"/><br />
         <label for="prenom">prenom</label> <input type="text"  name="prenom" id="prenom" value="Prenom"/><br />
@@ -77,7 +82,7 @@ if(isset($_GET['key'])){
 </form>
 </br></br>
 
-<form action="index.php?key=consecteturadipiscingelit" method="POST">
+<form action="index.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($s);?>" method="POST">
     <button>RETOUR ACCUEIL</button>
 </form>
 <?php     
@@ -93,8 +98,17 @@ echo('<tr style="padding-right: 0vw; width : 30vw" class="head">
         <td>Classe</td>
     </tr>');
 foreach ($recipess as $ress){
+    $id='';
     if(isset($_GET['id']) && $_GET['id']==$ress['id']){
-        echo('<tr id="position">
+        $id = 'id="position"';
+    }
+    echo('<tr '.$id.'>
+            <td onclick="location.href=\'?id='.$ress['id'].'&key='.$_GET['key'].'&semaine='.$s.'#position\'" >'.$ress['nom'].'</td>
+            <td onclick="location.href=\'?id='.$ress['id'].'&key='.$_GET['key'].'&semaine='.$s.'#position\'" >'.$ress['prenom'].'</td>
+            <td onclick="location.href=\'?id='.$ress['id'].'&key='.$_GET['key'].'&semaine='.$s.'#position\'" >'.$ress['classe'].'</td>
+        </tr>');
+    if(isset($_GET['id']) && $_GET['id']==$ress['id']){
+        echo('<tr>
                 <td colspan="2">
                     <form method="post" action="">
                         <label for="nom">nom</label> <input type="text"  name="nom" id="nom" value="'.$ress['nom'].'"/><br />
@@ -112,13 +126,8 @@ foreach ($recipess as $ress){
                 </td>
             </tr>');
     }
-    echo('<tr>
-            <td onclick="location.href=\'?id='.$ress['id'].'&key=consecteturadipiscingelit#position\'" >'.$ress['nom'].'</td>
-            <td onclick="location.href=\'?id='.$ress['id'].'&key=consecteturadipiscingelit#position\'" >'.$ress['prenom'].'</td>
-            <td onclick="location.href=\'?id='.$ress['id'].'&key=consecteturadipiscingelit#position\'" >'.$ress['classe'].'</td>
-        </tr>');
 }
 echo('</table>');
-}}?>
+}?>
 </body>
 </html>

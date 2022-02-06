@@ -23,8 +23,8 @@ else
 }  
 $url_base .= "://"; 
 $url_base .= $_SERVER['HTTP_HOST']; 
-
-    if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
+include('fonction.php');
+    if(isset($_GET['key']) && test_id($_GET['key'])){
         if(strpos($_GET['semaine'],"-W")!=FALSE){
             if(isset($_GET['semaine'][7])){
                 $s = $_GET['semaine'][6].$_GET['semaine'][7];
@@ -32,7 +32,7 @@ $url_base .= $_SERVER['HTTP_HOST'];
             else {
                 $s = $_GET['semaine'][6];
             }
-            header("Location: all_edt.php?semaine=".$s."&key=consecteturadipiscingelit");
+            header("Location: all_edt.php?semaine=".$s."&key=".$_GET['key']);
         }
         include('log_bdd.php');
         echo("<p> - EDT ELLEVES</p>");
@@ -49,9 +49,9 @@ $url_base .= $_SERVER['HTTP_HOST'];
         echo('<h1>merci d\'utiliser le lien de connexion</h1>');
     }
  
-    if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
+    if(isset($_GET['key']) && test_id($_GET['key'])){
     ?>
-    <form action="index.php?key=consecteturadipiscingelit" method="POST">
+    <form action="index.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>" method="POST">
         <button>RETOUR ACCUEIL</button>
     </form>
     <?php     

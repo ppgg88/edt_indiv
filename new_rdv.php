@@ -31,10 +31,22 @@
 <html>
     <head>
         <meta charset="utf-8" />
+        <link rel="stylesheet" href="all.css" />
+        <style>
+            form{
+                margin-left: 4vw;
+            }
+            input, select{
+                margin-bottom: 1vh;
+            }
+            .head{
+                margin-left: 2vw;
+            }
+        </style>
         <title>Nouveau RDV</title>
     </head>
     <body>
-        <h3>AJOUTER UN RENDEZ-VOUS :</h3>
+        <h3 class="head">AJOUTER UN RENDEZ-VOUS :</h3>
         <form method="post" action="">
                 <label for="ide"> élève : </label><?php select_elleves(); ?><br />
                 <label for="date_j">Date</label> <input type="date"  name="date_j" id="date_j" value=""/><br />
@@ -58,7 +70,7 @@
                 <input type="submit" name="Envoyer" value="Envoyer" />
         </form>
         <br/><br/><br/>
-        <form action="index.php?key=<?php echo($_GET['key']); ?>" method="POST">
+        <form action="index.php?key=<?php echo($_GET['key']); ?>&semaine=<?php echo($_GET['semaine']); ?>" method="POST">
             <button>RETOUR ACCUEIL</button>
         </form>
     </body>

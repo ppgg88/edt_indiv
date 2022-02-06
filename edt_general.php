@@ -11,8 +11,8 @@
                 $s = $_GET['semaine'][6];
             }
     
-            if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
-                header("Location: edt_general.php?semaine=".$s."&key=consecteturadipiscingelit");
+            if(isset($_GET['key']) && test_id($_GET['key'])){
+                header("Location: edt_general.php?semaine=".$s."&key=".$_GET['key']);
             }
             else{
                 header("Location: edt_general.php?semaine=".$s);  
@@ -68,13 +68,13 @@
         $rdv[$index_rdv] = new rdv($res['id'], strtotime($res['date']), $res['nom'], $res['durre'], $res['couleur'], $res['p_nom'], $res['p_prenom'], $res['e_nom'], $res['e_prenom'], $res['e_classe'], $res['lieu'], $res['ide'], $res['idp'], $res['abs']);
         $index_rdv++;
     } 
-
     //echo($rdv[10]->durée)
     //echo(date("d/m/Y H:i", strtotime(" +".$rdv_[$k]->durré."minutes", $rdv_[$k]->date))
 ?>
 <html>
     <head>
         <title>EDT-General</title>
+        <link rel="stylesheet" href="all.css" />
         <style>
             .modif{
                 margin-top: 5vh;
@@ -133,23 +133,24 @@
 
         <!-- Selection de la semaine -->
         <form action="" method="get" style="display: inline-block;">
-            <label for="semaine">Quelle Semaine ?</label> <input type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".date('W', time())); ?>"require/>
-            <?php if(isset($_GET['key']) && $_GET['key']='consecteturadipiscingelit') echo('<input type="HIDDEN" name = "key" value="consecteturadipiscingelit"/>'); ?>
+            <label for="semaine">Quelle Semaine ?</label> <input type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".$_GET['semaine']); ?>"require/>
+            <?php if(isset($_GET['key']) && test_id($_GET['key'])) echo('<input type="HIDDEN" name = "key" value="'.$_GET['key'].'"/>'); ?>
             <button>Validé</button>
         </form>
         
         <!-- retour à l'accueil si key check -->
-        <?php if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
-            <form class="no_print" style ="display: inline-block; margin-left :7vw" action="index.php?key=consecteturadipiscingelit" method="POST">
+        <?php if(isset($_GET['key']) && test_id($_GET['key'])){ ?>
+            <form class="no_print" style ="display: inline-block; margin-left :7vw" action="index.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>" method="POST">
                 <button>RETOUR ACCUEIL</button>
             </form>
-        <?php } ?>
+        <?php }  ?>
 
         <!-- reinitialiser filtre(s) si besoin -->
-        <?php if(isset($_GET['ide'])||isset($_GET['idp'])||isset($_GET['classe'])){ ?>
+        <?php   
+        if(isset($_GET['ide'])||isset($_GET['idp'])||isset($_GET['classe'])){ ?>
             <form action="" method="get" style ="display: inline-block; margin-left :7vw">
                 <input type="HIDDEN" name="semaine" value="<?php echo($_GET['semaine']);?>"/>
-                <?php if(isset($_GET['key']) && $_GET['key']='consecteturadipiscingelit') echo('<input type="HIDDEN" name = "key" value="consecteturadipiscingelit"/>'); ?>
+                <?php if(isset($_GET['key']) && test_id($_GET['key'])) echo('<input type="HIDDEN" name = "key" value="'.$_GET['key'].'"/>'); ?>
                 <button>Reinitialiser les filtres</button>
             </form>
         <?php } ?>    
@@ -171,7 +172,7 @@
                             if(isset($_GET['classe'])) echo('<input type="HIDDEN" name="classe" value="'.$_GET['classe'].'"/>');
                             if(isset($_GET['ide'])) echo('<input type="HIDDEN" name="ide" value="'.$_GET['ide'].'"/>');
                             if(isset($_GET['idp'])) echo('<input type="HIDDEN" name="idp" value="'.$_GET['idp'].'"/>');
-                            if(isset($_GET['key']) && $_GET['key']='consecteturadipiscingelit') echo('<input type="HIDDEN" name = "key" value="consecteturadipiscingelit"/>');
+                            if(isset($_GET['key']) && test_id($_GET['key'])) echo('<input type="HIDDEN" name = "key" value="'.$_GET['key'].'"/>');
                             ?>
                             <button>Validé</button>
                         </form>
@@ -180,9 +181,10 @@
                 <td class="head" style="width : 14vw">
                     <form action="" method="get">
                         <div>
-                            <?php select_elleves(); ?>
+
+                            <?php select_elleves();?>
                             <input type="HIDDEN" name="semaine" value="<?php echo($_GET['semaine']);?>"/>
-                            <?php if(isset($_GET['key']) && $_GET['key']='consecteturadipiscingelit') echo('<input type="HIDDEN" name = "key" value="consecteturadipiscingelit"/>');
+                            <?php if(isset($_GET['key']) && test_id($_GET['key'])) echo('<input type="HIDDEN" name = "key" value="'.$_GET['key'].'"/>');
                             if(isset($_GET['date'])) echo('<input type="HIDDEN" name = "date" value="'.$_GET['date'].'"/>'); ?>
                             <button>Validé</button>
                         </div>
@@ -193,7 +195,7 @@
                         <div>
                             <?php select_classe(); ?>
                             <input type="HIDDEN" name="semaine" value="<?php echo($_GET['semaine']);?>"/>
-                            <?php if(isset($_GET['key']) && $_GET['key']='consecteturadipiscingelit') echo('<input type="HIDDEN" name = "key" value="consecteturadipiscingelit"/>');
+                            <?php if(isset($_GET['key']) && test_id($_GET['key'])) echo('<input type="HIDDEN" name = "key" value="'.$_GET['key'].'"/>');
                             if(isset($_GET['date'])) echo('<input type="HIDDEN" name = "date" value="'.$_GET['date'].'"/>');
                             if(isset($_GET['idp'])) echo('<input type="HIDDEN" name = "idp" value="'.$_GET['idp'].'"/>'); ?>
                             
@@ -212,7 +214,7 @@
                             <?php if(isset($_GET['classe'])){
                                 echo('<input type="HIDDEN" name="classe" value="'.$_GET['classe'].'"/>');
                             }
-                            if(isset($_GET['key']) && $_GET['key']='consecteturadipiscingelit') echo('<input type="HIDDEN" name = "key" value="consecteturadipiscingelit"/>');
+                            if(isset($_GET['key']) && test_id($_GET['key'])) echo('<input type="HIDDEN" name = "key" value="'.$_GET['key'].'"/>');
                             if(isset($_GET['date'])) echo('<input type="HIDDEN" name = "date" value="'.$_GET['date'].'"/>'); ?>
                             <button>Validé</button>
                         </div>
@@ -232,7 +234,7 @@
                         if((isset($_GET['idp']) && $rdv[$i]->id_prof == $_GET['idp']) || isset($_GET['idp']) == FALSE || $_GET['idp'] == 0){ 
                             if((isset($_GET['classe']) && str_replace(' ','',$rdv[$i]->classe_eleve) == $_GET['classe']) || isset($_GET['classe']) == FALSE || $_GET['classe'] == 'no'){
                                 if((isset($_GET['date']) && $_GET['date'] == date("Y-m-d", $rdv[$i]->date)) || isset($_GET['date']) == FALSE){
-                                    if(isset($_GET['id']) && isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit" && $_GET['id'] == $rdv[$i]->id){
+                                    if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key']) && $_GET['id'] == $rdv[$i]->id){
                                         //requette sql de recherche du rdv dans la bdd :
                                         $sqlquery = "SELECT * FROM rdv WHERE id =".$_GET['id'];
                                         $recipesStatement = $pdo->prepare($sqlquery);
@@ -241,7 +243,7 @@
                                         foreach ($recipes as $res){ ?>
                                             <tr>
                                                 <td colspan="8" id="position">
-                                                    <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if($_GET['key'] == "consecteturadipiscingelit"){echo("&key=consecteturadipiscingelit");}?>">
+                                                    <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
                                                         <label for="rdv">nom du rdv</label> <input type="text"  name="rdv" id="rdv" value="<?php echo($res['nom']);?>"/><br />
                                                         <label for="ide"> eleves</label>
                                                         <?php select_elleves($res['id_elleve']); ?>
@@ -271,8 +273,8 @@
                                                             <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Excuser</option>
                                                         </select><br />
                                                         <input type="submit" name="Envoyer" value="Envoyer" />
-                                                        <a href = "<?php echo("edt_general.php?semaine=".$_GET['semaine']);if($_GET['key'] == "consecteturadipiscingelit"){echo("&key=consecteturadipiscingelit");}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
-                                                        <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr_general.php?semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=consecteturadipiscingelit");?>"><img src="icon/trash.png" style="height : 5vh;"/></a>
+                                                        <a href = "<?php echo("edt_general.php?semaine=".$_GET['semaine']);if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
+                                                        <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr_general.php?semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=".$_GET['key']);?>"><img src="icon/trash.png" style="height : 5vh;"/></a>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -281,9 +283,8 @@
                     
                                 <tr>
                                     <?php
-                                    if(isset($_GET['key']) && $_GET['key']='consecteturadipiscingelit')$lien_rdv = 'onclick="location.href=\'?semaine='.$_GET['semaine'].'&id='.$rdv[$i]->id.'&key=consecteturadipiscingelit#position\'"';
+                                    if(isset($_GET['key']) && test_id($_GET['key']))$lien_rdv = 'onclick="location.href=\'?semaine='.$_GET['semaine'].'&id='.$rdv[$i]->id.'&key='.$_GET['key'].'#position\'"';
                                     else $lien_rdv = '';
-                                    
                                     $color = "";
                                     $deco = "";
                                     if($rdv[$i]->abs == -1){

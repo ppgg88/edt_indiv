@@ -1,14 +1,14 @@
 <?php 
+include('fonction.php');
 if(isset($_GET['ide'])){
-    if($_GET['ide'] == 0 && isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
-        header("Location: index.php?key=consecteturadipiscingelit");
+    if($_GET['ide'] == 0 && isset($_GET['key']) && test_id($_GET['key'])){
+        header("Location: index.php?key=".$_GET['key']);
     }
     if(!isset($_GET['semaine'])){
-        if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit") header("Location: edt.php?ide=".$_GET['ide']."&semaine=".date('W', time())."&key=consecteturadipiscingelit");
+        if(isset($_GET['key']) && test_id($_GET['key'])) header("Location: edt.php?ide=".$_GET['ide']."&semaine=".date('W', time())."&key=".$_GET['key']);
         else header("Location: edt.php?ide=".$_GET['ide']."&semaine=".date('W', time()));
     }
     include('log_bdd.php');
-    include('fonction.php');
     //extraction du numero de la semaine :
     if(strpos($_GET['semaine'],"-W")!=FALSE){
         if(isset($_GET['semaine'][7])){
@@ -18,12 +18,12 @@ if(isset($_GET['ide'])){
             $s = $_GET['semaine'][6];
         }
 
-        if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
+        if(isset($_GET['key']) && test_id($_GET['key'])){
             if(isset($_GET['id'])){
-                header("Location: edt.php?ide=".$_GET['ide']."&semaine=".$s."&id=".$_GET['id']."&key=consecteturadipiscingelit");
+                header("Location: edt.php?ide=".$_GET['ide']."&semaine=".$s."&id=".$_GET['id']."&key=".$_GET['key']);
             }
             else{
-                header("Location: edt.php?ide=".$_GET['ide']."&semaine=".$s."&key=consecteturadipiscingelit");
+                header("Location: edt.php?ide=".$_GET['ide']."&semaine=".$s."&key=".$_GET['key']);
             } 
         }
         else{
@@ -109,31 +109,31 @@ if(isset($_GET['ide'])){
     <img  id="page-wrapper" src="icon/roville_logo.png" id="logo" style="height: 20vh; float: right; margin-right:5vw; margin-top:5vh;"/>
     <!-- SELECTION DE L'AFFICHAGE -->
 <?php 
-if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
+if(isset($_GET['key']) && test_id($_GET['key'])){ ?>
     <h4 onclick="window.print();" class="no_print" style="background: #ADFF2F; display: inline-block; padding: 1vh;"> Imprimer </h4>
 
     <form class="no_print" action="" method="get">
         <label for="ide">De qui voulez vous afficher l'EDT ?</label>
         <?php select_elleves($_GET['ide']); ?>
-        <label for="semaine">quelle semaine ?</label> <input type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".date('W', time())); ?>"require/>
-        <input type="HIDDEN" name="key" value="consecteturadipiscingelit"/>
+        <label for="semaine">quelle semaine ?</label> <input type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".$_GET['semaine']); ?>"require/>
+        <input type="HIDDEN" name="key" value="<?php echo($_GET['key']);?>"/>
         <button>Validé</button>
     </form>
-    <form class="no_print" action="index.php?key=consecteturadipiscingelit" method="POST">
+    <form class="no_print" action="index.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>" method="POST">
         <button>RETOUR ACCUEIL</button>
     </form>
 <?php } ?>
 
     <!-- modification eventuel de l'EDT -->
 <?php 
-if(isset($_GET['id']) && isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
+if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key'])){
     //requette sql de recherche du rdv dans la bdd :
     $sqlquery = "SELECT * FROM rdv WHERE id =".$_GET['id'];
         $recipesStatement = $pdo->prepare($sqlquery);
         $recipesStatement->execute();
         $recipes = $recipesStatement->fetchAll();
         foreach ($recipes as $res){ ?>
-            <form class="no_print" method="post" action="update.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if($_GET['key'] == "consecteturadipiscingelit"){echo("&key=consecteturadipiscingelit");}?>">
+            <form class="no_print" method="post" action="update.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
                 <label for="rdv">nom du rdv</label> <input type="text"  name="rdv" id="rdv" value="<?php echo($res['nom']);?>"/><br />
                 <label for="ide"> eleves</label>
                 <?php select_elleves($res['id_elleve']); ?>
@@ -162,8 +162,8 @@ if(isset($_GET['id']) && isset($_GET['key']) && $_GET['key'] == "consecteturadip
                     <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Excuser</option>
                 </select><br />
                 <input type="submit" name="Envoyer" value="Envoyer" />
-                <a href = "<?php echo("edt.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']);if($_GET['key'] == "consecteturadipiscingelit"){echo("&key=consecteturadipiscingelit");}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
-                <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=consecteturadipiscingelit");?>"><img src="icon/trash.png" style="height : 5vh;"/></a>
+                <a href = "<?php echo("edt.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']);if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
+                <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=".$_GET['key']);?>"><img src="icon/trash.png" style="height : 5vh;"/></a>
             </form>
 <?php } } ?>
 
@@ -212,7 +212,7 @@ if(isset($_GET['id']) && isset($_GET['key']) && $_GET['key'] == "consecteturadip
                 if($c<10)$c = "0".$c;
                 $heure = $b.":".$c;
                 if(substr($heure,-3,3) == ":00"){
-                    echo("<td onclick=\"location.href='?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&key=consecteturadipiscingelit'\" class=\"time\" rowspan=\"60\">".$b."h-".($b+1)."h</td>");
+                    echo("<td onclick=\"location.href='?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&key=".$_GET['key']."'\" class=\"time\" rowspan=\"60\">".$b."h-".($b+1)."h</td>");
                 }
             }
             $test = FALSE;
@@ -220,8 +220,8 @@ if(isset($_GET['id']) && isset($_GET['key']) && $_GET['key'] == "consecteturadip
                 //echo($heure." // ".date("H:i", $rdv_[$k]->date)."\n");
                 if(date("l", $rdv_[$k]->date) == $jour[$i+1] && date("H:i", $rdv_[$k]->date) == $heure && $rdv_[$k]->id_eleves == $_GET['ide']&& date('W', $rdv_[$k]->date) == $_GET['semaine']){
                 $a = "ROWSPAN=\"".($rdv_[$k]->durré)."\"";
-                if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
-                    echo("<td ".$a." onclick=\"location.href='?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&id=".$rdv_[$k]->id."&key=consecteturadipiscingelit'\" style=\"background-color:".$rdv_[$k]->couleur."; border : 1px solid black !important;\">");
+                if(isset($_GET['key']) && test_id($_GET['key'])){
+                    echo("<td ".$a." onclick=\"location.href='?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&id=".$rdv_[$k]->id."&key=".$_GET['key']."'\" style=\"background-color:".$rdv_[$k]->couleur."; border : 1px solid black !important;\">");
                 }
                 else{
                     echo("<td ".$a." style=\"background-color:".$rdv_[$k]->couleur.";border : 1px solid black !important;\">");
@@ -251,7 +251,7 @@ if(isset($_GET['id']) && isset($_GET['key']) && $_GET['key'] == "consecteturadip
                 }
             }
             if($test == FALSE && $pass_day[$i]==0){
-                echo "<td onclick=\"test-False:location.href='?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&time=".$heure."&jour=".$jour[$i+1]."&key=consecteturadipiscingelit'\">";
+                echo "<td onclick=\"test-False:location.href='?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&time=".$heure."&jour=".$jour[$i+1]."&key=".$_GET['key']."'\">";
             }
             else if($pass_day[$i]!=0) $pass_day[$i] = $pass_day[$i]-1;
             echo "</td>";
