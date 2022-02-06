@@ -212,7 +212,7 @@ if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key'])){
                 if($c<10)$c = "0".$c;
                 $heure = $b.":".$c;
                 if(substr($heure,-3,3) == ":00"){
-                    echo("<td onclick=\"location.href='?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&key=".$_GET['key']."'\" class=\"time\" rowspan=\"60\">".$b."h-".($b+1)."h</td>");
+                    echo("<td class=\"time\" rowspan=\"60\">".$b."h-".($b+1)."h</td>");
                 }
             }
             $test = FALSE;
@@ -251,7 +251,7 @@ if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key'])){
                 }
             }
             if($test == FALSE && $pass_day[$i]==0){
-                echo "<td onclick=\"test-False:location.href='?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&time=".$heure."&jour=".$jour[$i+1]."&key=".$_GET['key']."'\">";
+                echo "<td>";
             }
             else if($pass_day[$i]!=0) $pass_day[$i] = $pass_day[$i]-1;
             echo "</td>";

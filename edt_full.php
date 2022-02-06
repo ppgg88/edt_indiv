@@ -13,7 +13,7 @@ else
 $url_base .= "://"; 
 $url_base .= $_SERVER['HTTP_HOST']; 
 
-if(!(isset($_GET['key']) && $_GET['key'] == 'consecteturadipiscingelit')) header("Location: edt.php");
+if(!(isset($_GET['key']) && test_id($_GET['key']))) header("Location: edt.php");
 
 class rdv{
     public $id;
@@ -59,12 +59,12 @@ if(isset($_GET['semaine'])){
             $s = $_GET['semaine'][6];
         }
 
-        if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
+        if(isset($_GET['key']) && test_id($_GET['key'])){
             if(isset($_GET['id'])){
-                header("Location: edt_full.php?semaine=".$s."&key=consecteturadipiscingelit");
+                header("Location: edt_full.php?semaine=".$s."&key=".$_GET['key']);
             }
             else{
-                header("Location: edt_full.php?semaine=".$s."&key=consecteturadipiscingelit");
+                header("Location: edt_full.php?semaine=".$s."&key=".$_GET['key']);
             } 
         }
         else{
@@ -113,22 +113,22 @@ if(isset($_GET['semaine'])){
     
 <!-- SELECTION DE L'AFFICHAGE -->
     <h4 onclick="window.print();" class="no_print" style="background: #ADFF2F; display: inline-block; padding: 1vh;"> Imprimer </h4>
-    <?php if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
-        <form class="no_print" action="index.php?key=consecteturadipiscingelit" method="POST" style="margin-left : 7vw; display: inline-block;">
+    <?php if(isset($_GET['key']) && test_id($_GET['key'])){ ?>
+        <form class="no_print" action="index.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>" method="POST" style="margin-left : 7vw; display: inline-block;">
             <button>RETOUR ACCUEIL</button>
         </form>
     <?php } ?>
     <?php if(isset($_GET['qr']) && $_GET['qr'] == 'off'){ ?>
         <form class="no_print" action="" method="get" style="margin-left : 7vw; display: inline-block;">
             <input type="HIDDEN"  name="semaine" id="semaine" value="<?php echo($_GET['semaine']); ?>"/>
-            <input type="HIDDEN" name="key" value="consecteturadipiscingelit"/>
+            <input type="HIDDEN" name="key" value="<?php echo($_GET['key']);?>"/>
             <input type="HIDDEN" name="qr" value="on"/>
             <button>Afficher les QR codes</button>
         </form>
     <?php }else{ ?>
         <form class="no_print" action="" method="get" style="margin-left : 7vw; display: inline-block;">
             <input type="HIDDEN"  name="semaine" id="semaine" value="<?php echo($_GET['semaine']); ?>"/>
-            <input type="HIDDEN" name="key" value="consecteturadipiscingelit"/>
+            <input type="HIDDEN" name="key" value="<?php echo($_GET['key']);?>"/>
             <input type="HIDDEN" name="qr" value="off"/>
             <button>Cacher les QR codes</button>
         </form>
@@ -191,7 +191,7 @@ if(isset($_GET['semaine'])){
                 if($c<10)$c = "0".$c;
                 $heure = $b.":".$c;
                 if(substr($heure,-3,3) == ":00"){
-                    echo("<td onclick=\"location.href='?ide=".$get_ide."&semaine=".$_GET['semaine']."&key=consecteturadipiscingelit'\" class=\"time\" rowspan=\"60\">".$b."h-".($b+1)."h</td>");
+                    echo("<td onclick=\"location.href='?ide=".$get_ide."&semaine=".$_GET['semaine']."&key=".$_GET['key']."'\" class=\"time\" rowspan=\"60\">".$b."h-".($b+1)."h</td>");
                 }
             }
             $test = FALSE;
@@ -223,7 +223,7 @@ if(isset($_GET['semaine'])){
                 }
             }
             if($test == FALSE && $pass_day[$i]==0){
-                echo "<td onclick=\"test-False:location.href='?ide=".$get_ide."&semaine=".$_GET['semaine']."&time=".$heure."&jour=".$jour[$i+1]."&key=consecteturadipiscingelit'\">";
+                echo "<td onclick=\"test-False:location.href='?ide=".$get_ide."&semaine=".$_GET['semaine']."&time=".$heure."&jour=".$jour[$i+1]."&key=".$_GET['key']."'\">";
             }
             else if($pass_day[$i]!=0) $pass_day[$i] = $pass_day[$i]-1;
             echo "</td>";

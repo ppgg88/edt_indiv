@@ -1,5 +1,6 @@
 <?php
-if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
+include('fonction.php');
+if(isset($_GET['key']) && test_id($_GET['key'])){
     include('log_bdd.php');
 
 if(isset($_POST['Envoyer'])){
@@ -43,6 +44,6 @@ function error($code){
     }
 }
 
-header("Location: edt_general.php?&semaine=".$_GET['semaine']."&id=".$_GET['id']."&key=consecteturadipiscingelit");
+header("Location: edt_general.php?&semaine=".$_GET['semaine']."&id=".$_GET['id']."&key=".$_GET['key']);
 }
 ?>

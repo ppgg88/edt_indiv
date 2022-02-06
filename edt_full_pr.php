@@ -1,5 +1,6 @@
 <?php
-
+include('fonction.php');
+if(isset($_GET['key']) && test_id($_GET['key'])){
 if(strpos($_GET['semaine'],"-W")!=FALSE){
     if(isset($_GET['semaine'][7])){
         $s = $_GET['semaine'][6].$_GET['semaine'][7];
@@ -7,32 +8,10 @@ if(strpos($_GET['semaine'],"-W")!=FALSE){
     else {
         $s = $_GET['semaine'][6];
     }
-    header("Location: edt_full_pr.php?idp=".$id_p."&semaine=".$s."&key=consecteturadipiscingelit");
+    header("Location: edt_full_pr.php?idp=".$id_p."&semaine=".$s."&key=".$_GET['key']);
 } 
 
-
 include('log_bdd.php');
-include('fonction.php');
-?>
-<h4 onclick="window.print();" class="no_print" style="background: #ADFF2F; display: inline-block; padding: 1vh;"> Imprimer </h4>
-<form class="no_print" action="index.php?key=consecteturadipiscingelit" method="POST" style = "display: inline-block">
-    <button>RETOUR ACCUEIL</button>
-</form>
-<?php if(isset($_GET['qr']) && $_GET['qr'] == 'off'){ ?>
-        <form class="no_print" action="" method="get" style="margin-left : 7vw; display: inline-block;">
-            <input type="HIDDEN"  name="semaine" id="semaine" value="<?php echo($_GET['semaine']); ?>"/>
-            <input type="HIDDEN" name="key" value="consecteturadipiscingelit"/>
-            <input type="HIDDEN" name="qr" value="on"/>
-            <button>Afficher les QR codes</button>
-        </form>
-    <?php }else{ ?>
-        <form class="no_print" action="" method="get" style="margin-left : 7vw; display: inline-block;">
-            <input type="HIDDEN"  name="semaine" id="semaine" value="<?php echo($_GET['semaine']); ?>"/>
-            <input type="HIDDEN" name="key" value="consecteturadipiscingelit"/>
-            <input type="HIDDEN" name="qr" value="off"/>
-            <button>Cacher les QR codes</button>
-        </form>
-<?php }
 
 if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 {
@@ -44,8 +23,8 @@ else
 }  
 $url_base .= "://"; 
 $url_base .= $_SERVER['HTTP_HOST']; 
-
-if(!(isset($_GET['key']) && $_GET['key'] == 'consecteturadipiscingelit')) header("Location: edt.php");
+}
+if(!(isset($_GET['key']) && test_id($_GET['key']))) header("Location: edt.php");
     function getStartAndEndDate($week, $year) {
         $dto = new DateTime();
         $dto->setISODate($year, $week*1);
@@ -175,7 +154,25 @@ if(!(isset($_GET['key']) && $_GET['key'] == 'consecteturadipiscingelit')) header
     </style>
 </head>
 <body>
-
+<h4 onclick="window.print();" class="no_print" style="background: #ADFF2F; display: inline-block; padding: 1vh;"> Imprimer </h4>
+<form class="no_print" action="index.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>" method="POST" style = "display: inline-block">
+    <button>RETOUR ACCUEIL</button>
+</form>
+<?php if(isset($_GET['qr']) && $_GET['qr'] == 'off'){ ?>
+        <form class="no_print" action="" method="get" style="margin-left : 7vw; display: inline-block;">
+            <input type="HIDDEN"  name="semaine" id="semaine" value="<?php echo($_GET['semaine']); ?>"/>
+            <input type="HIDDEN" name="key" value="<?php echo($_GET['key']);?>"/>
+            <input type="HIDDEN" name="qr" value="on"/>
+            <button>Afficher les QR codes</button>
+        </form>
+    <?php }else{ ?>
+        <form class="no_print" action="" method="get" style="margin-left : 7vw; display: inline-block;">
+            <input type="HIDDEN"  name="semaine" id="semaine" value="<?php echo($_GET['semaine']); ?>"/>
+            <input type="HIDDEN" name="key" value="<?php echo($_GET['key']);?>"/>
+            <input type="HIDDEN" name="qr" value="off"/>
+            <button>Cacher les QR codes</button>
+        </form>
+<?php } ?>
     <!-- EMPLOIE DU TEMPS -->
 <div class="brake">
 <table  id="page-wrapper">
@@ -220,7 +217,7 @@ if(!(isset($_GET['key']) && $_GET['key'] == 'consecteturadipiscingelit')) header
                 if($c<10)$c = "0".$c;
                 $heure = $b.":".$c;
                 if(substr($heure,-3,3) == ":00"){
-                    echo("<td onclick=\"location.href='?idp=".$id_p."&semaine=".$_GET['semaine']."&key=consecteturadipiscingelit'\" class=\"time\" rowspan=\"60\">".$b."h-".($b+1)."h</td>");
+                    echo("<td onclick=\"location.href='?idp=".$id_p."&semaine=".$_GET['semaine']."&key=".$_GET['key']."'\" class=\"time\" rowspan=\"60\">".$b."h-".($b+1)."h</td>");
                 }
             }
             $test = FALSE;
@@ -259,7 +256,7 @@ if(!(isset($_GET['key']) && $_GET['key'] == 'consecteturadipiscingelit')) header
                 }
             }
             if($test == FALSE && $pass_day[$i]==0){
-                echo "<td onclick=\"test-False:location.href='?idp=".$id_p."&semaine=".$_GET['semaine']."&time=".$heure."&jour=".$jour[$i+1]."&key=consecteturadipiscingelit'\">";
+                echo "<td onclick=\"test-False:location.href='?idp=".$id_p."&semaine=".$_GET['semaine']."&time=".$heure."&jour=".$jour[$i+1]."&key=".$_GET['key']."'\">";
             }
             else if($pass_day[$i]!=0) $pass_day[$i] = $pass_day[$i]-1;
             echo "</td>";

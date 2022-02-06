@@ -1,15 +1,15 @@
 <?php 
+
+include('fonction.php');
 if(isset($_GET['idp'])){
-    if($_GET['idp'] == 0 && isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
-        header("Location: index.php?key=consecteturadipiscingelit");
+    if($_GET['idp'] == 0 && isset($_GET['key']) && test_id($_GET['key'])){
+        header("Location: index.php?key=".$_GET['key']);
     }
     if(!isset($_GET['semaine'])){
-        if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit") header("Location: edt.php?idp=".$_GET['idp']."&semaine=".date('W', time())."&key=consecteturadipiscingelit");
+        if(isset($_GET['key']) && test_id($_GET['key'])) header("Location: edt.php?idp=".$_GET['idp']."&semaine=".date('W', time())."&key=".$_GET['key']);
         else header("Location: edtpr.php?idp=".$_GET['idp']."&semaine=".date('W', time()));
     }
     include('log_bdd.php');
-    include('fonction.php');
-
     //extraction du numero de la semaine
     if(strpos($_GET['semaine'],"-W")!=FALSE){
         if(isset($_GET['semaine'][7])){
@@ -19,12 +19,12 @@ if(isset($_GET['idp'])){
             $s = $_GET['semaine'][6];
         }
 
-        if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){
+        if(isset($_GET['key']) && test_id($_GET['key'])){
             if(isset($_GET['id'])){
-                header("Location: edtpr.php?idp=".$_GET['idp']."&semaine=".$s."&id=".$_GET['id']."&key=consecteturadipiscingelit");
+                header("Location: edtpr.php?idp=".$_GET['idp']."&semaine=".$s."&id=".$_GET['id']."&key=".$_GET['key']);
             }
             else{
-                header("Location: edtpr.php?idp=".$_GET['idp']."&semaine=".$s."&key=consecteturadipiscingelit");
+                header("Location: edtpr.php?idp=".$_GET['idp']."&semaine=".$s."&key=".$_GET['key']);
             } 
         }
         else{
@@ -153,7 +153,7 @@ if(isset($_GET['idp'])){
     <img  id="page-wrapper" src="icon/roville_logo.png" id="logo" style="height: 20vh; float: right; margin-right:5vw; margin-top:5vh;"/>
     <!-- SELECTION DE L'AFFICHAGE -->
 <?php 
-if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
+if(isset($_GET['key']) && test_id($_GET['key'])){ ?>
     <h4 onclick="window.print();" class="no_print" style="background: #ADFF2F; display: inline-block; padding: 1vh;"> Imprimer </h4>
 
     <form class="no_print" action="" method="get">
@@ -161,10 +161,10 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
         <label for="ide">De qui voulez vous afficher l'EDT ?</label>
         <?php select_profs($_GET['idp']); ?>
         <label for="semaine">quelle semaine ?</label> <input type="week"  name="semaine" id="semaine" value="<?php echo(date('Y', time())."-W".date('W', time())); ?>"require/>
-        <input type="HIDDEN" name="key" value="consecteturadipiscingelit"/>
+        <input type="HIDDEN" name="key" value="<?php echo($_GET['key']);?>"/>
         <button>Validé</button>
     </form>
-    <form class="no_print" action="index.php?key=consecteturadipiscingelit" method="POST">
+    <form class="no_print" action="index.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>" method="POST">
         <button>RETOUR ACCUEIL</button>
     </form>
 <?php } ?>
@@ -214,7 +214,7 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
                 if($c<10)$c = "0".$c;
                 $heure = $b.":".$c;
                 if(substr($heure,-3,3) == ":00"){
-                    echo("<td onclick=\"location.href='?idp=".$_GET['idp']."&semaine=".$_GET['semaine']."&key=consecteturadipiscingelit'\" class=\"time\" rowspan=\"60\">".$b."h-".($b+1)."h</td>");
+                    echo("<td class=\"time\" rowspan=\"60\">".$b."h-".($b+1)."h</td>");
                 }
             }
             $test = FALSE;
@@ -257,7 +257,7 @@ if(isset($_GET['key']) && $_GET['key'] == "consecteturadipiscingelit"){ ?>
                 }
             }
             if($test == FALSE && $pass_day[$i]==0){
-                echo "<td onclick=\"test-False:location.href='?idp=".$_GET['idp']."&semaine=".$_GET['semaine']."&time=".$heure."&jour=".$jour[$i+1]."&key=consecteturadipiscingelit'\">";
+                echo "<td>";
             }
             else if($pass_day[$i]!=0) $pass_day[$i] = $pass_day[$i]-1;
             echo "</td>";
