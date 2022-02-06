@@ -156,23 +156,23 @@ $key=$_GET['key'];
                 </tr>
             </table>
 
-            <a href="add_e.php?key=<?php echo($key); ?>&semaine=<?php echo($semaine); ?>"><img onclick="" src="icon/cercle.png" id="p_ell" class="ell_portail"/></a>
-            <a href="add_p.php?key=<?php echo($key); ?>&semaine=<?php echo($semaine); ?>"><img onclick="" src="icon/cercle.png" id="p_pr" class="pr_portail"/></a>
+            <a href="add_e.php?key=<?php echo($key); ?>&semaine=<?php echo($semaine); ?>"><img onclick="" src="icon/cercle_eleves.png" id="p_ell" class="ell_portail"/></a>
+            <a href="add_p.php?key=<?php echo($key); ?>&semaine=<?php echo($semaine); ?>"><img onclick="" src="icon/cercle_profs.png" id="p_pr" class="pr_portail"/></a>
 
             <form method="get" action="edt.php" id="e_ell" class="ell_edt">
                 <?php select_elleves(); ?></br>
-                <input type="image" onclick="" src="icon/cercle.png" class="ell_edt"/>
+                <input type="image" onclick="" src="icon/cercle_eleves.png" class="ell_edt"/>
                 <input type="HIDDEN" name = "key" value="<?php echo($key); ?>"/>
                 <input type="HIDDEN" name = "semaine" value="<?php echo($semaine); ?>"/>
             </form>
             <form method="get" action="edtpr.php" id="e_pr" class="pr_edt">
                 <?php select_profs(); ?></br>
-                <input type="image" onclick="" src="icon/cercle.png" class="pr_edt"/>
+                <input type="image" onclick="" src="icon/cercle_profs.png" class="pr_edt"/>
                 <input type="HIDDEN" name = "key" value="<?php echo($key); ?>"/>
                 <input type="HIDDEN" name = "semaine" value="<?php echo($semaine); ?>"/>
             </form>
-            <a href="edt_full.php?key=<?php echo($key); ?>&semaine=<?php echo($semaine); ?>"><img onclick="" src="icon/cercle.png" id="i_ell" class="ell_imp"/></a>
-            <a href="edt_full_pr.php?key=<?php echo($key); ?>&semaine=<?php echo($semaine); ?>"><img onclick="" src="icon/cercle.png" id="i_pr" class="pr_imp"/></a>
+            <a href="edt_full.php?key=<?php echo($key); ?>&semaine=<?php echo($semaine); ?>"><img onclick="" src="icon/cercle_eleves.png" id="i_ell" class="ell_imp"/></a>
+            <a href="edt_full_pr.php?key=<?php echo($key); ?>&semaine=<?php echo($semaine); ?>"><img onclick="" src="icon/cercle_profs.png" id="i_pr" class="pr_imp"/></a>
 
         </div>
     </body>

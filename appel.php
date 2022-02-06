@@ -211,14 +211,21 @@
                     foreach ($recipes as $res){
                         $exc = '';
                         $abs = '';
+                        $pre = '';
                         $ch = '';
                         if($ress['abs'] == 2){
-                            $exc = 'Excuser';
+                            $exc = 'Annuler';
                             $ch = 'disabled="disabled"';
                         }
-                        elseif($ress['abs'] == -1)$abs = 'Absent';
+                        elseif($ress['abs'] == -1){
+                            $abs = 'Absent';
+                        }
+                        elseif($ress['abs'] == 1){
+                            $pre = 'Present';
+                            $ch = 'checked';
+                        }
                         else $ch = 'checked';
-                        echo('<div><label class="container" for="'.$res['id'].'">'.$res['nom'].' '.$res['prenom'].'<input type="checkbox" id="'.$res['id'].'" name="'.$res['id'].'" value="'.$res['id'].'"'.$ch.'><span class="checkmark"></span> </label><p id="stat" style="color: orange;">'.$exc.' </p><p id="stat" style="color: red;">'.$abs.' </p></div>');
+                        echo('<div><label class="container" for="'.$res['id'].'">'.$res['nom'].' '.$res['prenom'].'<input type="checkbox" id="'.$res['id'].'" name="'.$res['id'].'" value="'.$res['id'].'"'.$ch.'><span class="checkmark"></span> </label><p id="stat" style="color: orange;">'.$exc.' </p><p id="stat" style="color: red;">'.$abs.' </p><p id="stat" style="color: green;">'.$pre.' </p></div>');
                     }
                 }
             }

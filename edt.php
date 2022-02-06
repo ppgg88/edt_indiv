@@ -78,11 +78,33 @@ if(isset($_GET['ide'])){
 <html>
 <head>
     <title>EDT-Elèves</title>
+    <link rel="stylesheet" href="all.css" />
     <link rel="stylesheet" type="text/css" href="ent.css" />
     <style>
+        input.modif, select.modif{
+            width:20vw;
+        }
+        label.modif{
+            display:inline-block;
+            width:7vw;
+            text-align:right;
+        }
+        a{
+            text-decoration: none;
+            font-weight: bold ;
+            text-align: center;
+            color: black; 
+        }
+        #trash{
+            display:block;
+            margin-left:auto;
+            margin-right:auto;
+        }
         body{
             margin: 0px;
             padding: 8px;
+        }
+        tr{
             background-color: #F4FFF4;
         }
         @media print {
@@ -104,6 +126,7 @@ if(isset($_GET['ide'])){
                 }
             }
     </style>
+
 </head>
 <body>
     <img  id="page-wrapper" src="icon/roville_logo.png" id="logo" style="height: 20vh; float: right; margin-right:5vw; margin-top:5vh;"/>
@@ -133,38 +156,64 @@ if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key'])){
         $recipesStatement->execute();
         $recipes = $recipesStatement->fetchAll();
         foreach ($recipes as $res){ ?>
-            <form class="no_print" method="post" action="update.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
-                <label for="rdv">nom du rdv</label> <input type="text"  name="rdv" id="rdv" value="<?php echo($res['nom']);?>"/><br />
-                <label for="ide"> eleves</label>
-                <?php select_elleves($res['id_elleve']); ?>
-                <br />
-                <label for="idp"> prof</label>
-                <?php select_profs($res['id_proph']); ?>
-                <br />
-                <label for="date_j">date</label> <input type="date"  name="date_j" id="date_j" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
-                <label for="date">heure</label> <input type="time"  name="date" id="date" value="<?php echo(date('H:i:s', strtotime($res['date'])));?>"/><br />
-                <label for="durre"> durre</label> <input type="number"  name="durre" id="durre" value="<?php echo($res['durre']);?>"/><br />
-                <label for="lieu">Lieu</label> <input type="texte"  name="lieu" id="lieu" value="<?php echo($res['lieu']);?>"/><br />
-                <label for="coulleur">couleur</label>
-                <select name="coulleur">
-                    <option style="background:#7CCB06;" value='#7CCB06' <?php if($res['couleur']=='#7CCB06') echo('selected="selected"'); ?>>Pépinière</option>
-                    <option style="background:#ADFF2F;" value='#ADFF2F' <?php if($res['couleur']=='#ADFF2F') echo('selected="selected"'); ?>>Serres</option>
-                    <option style="background:#DF9FDF;" value='#DF9FDF' <?php if($res['couleur']=='#DF9FDF') echo('selected="selected"'); ?>>Individualisation</option>
-                    <option style="background:#DBE2D0;" value='#DBE2D0' <?php if($res['couleur']=='#DBE2D0') echo('selected="selected"'); ?>>Cours prof</option>
-                    <option style="background:#F3E768;" value='#F3E768' <?php if($res['couleur']=='#F3E768') echo('selected="selected"'); ?>>Arexhor</option>
-                    <option style="background:#FD9BAA;" value='#FD9BAA' <?php if($res['couleur']=='#FD9BAA') echo('selected="selected"'); ?>>A confirmer</option>
-                </select><br />
-                <label for="abs">statut absence</label>
-                <select name="abs">
-                    <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
-                    <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
-                    <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
-                    <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Excuser</option>
-                </select><br />
-                <input type="submit" name="Envoyer" value="Envoyer" />
-                <a href = "<?php echo("edt.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']);if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
-                <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=".$_GET['key']);?>"><img src="icon/trash.png" style="height : 5vh;"/></a>
-            </form>
+        <table>
+            <tr>
+                <td>
+                    <form style="margin-top:1vh;" class="no_print" method="post" action="update.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
+                        <label class="modif" for="rdv">Nom du RDV</label> <input class="modif" type="text"  name="rdv" id="rdv" value="<?php echo($res['nom']);?>"/><br />
+                        <label class="modif" for="ide">Eleves</label>
+                        <?php select_elleves($res['id_elleve'], "modif"); ?>
+                        <br />
+                        <label class="modif" for="idp">Prof</label>
+                        <?php select_profs($res['id_proph'], "modif"); ?>
+                        <br />
+                        <label class="modif" for="date_j">Date</label> <input class="modif" type="date"  name="date_j" id="date_j" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
+                        <label class="modif" for="date">Heure</label> <input class="modif" type="time"  name="date" id="date" value="<?php echo(date('H:i:s', strtotime($res['date'])));?>"/><br />
+                        <label class="modif" for="durre">Durre</label> <input class="modif" type="number"  name="durre" id="durre" value="<?php echo($res['durre']);?>"/><br />
+                        <label class="modif" for="lieu">Lieu</label> <input class="modif" type="texte"  name="lieu" id="lieu" value="<?php echo($res['lieu']);?>"/><br />
+                        <label class="modif" for="coulleur">Couleur</label>
+                        <select class="modif" name="coulleur">
+                            <option style="background:#7CCB06;" value='#7CCB06' <?php if($res['couleur']=='#7CCB06') echo('selected="selected"'); ?>>Pépinière</option>
+                            <option style="background:#ADFF2F;" value='#ADFF2F' <?php if($res['couleur']=='#ADFF2F') echo('selected="selected"'); ?>>Serres</option>
+                            <option style="background:#DF9FDF;" value='#DF9FDF' <?php if($res['couleur']=='#DF9FDF') echo('selected="selected"'); ?>>Individualisation</option>
+                            <option style="background:#DBE2D0;" value='#DBE2D0' <?php if($res['couleur']=='#DBE2D0') echo('selected="selected"'); ?>>Cours prof</option>
+                            <option style="background:#F3E768;" value='#F3E768' <?php if($res['couleur']=='#F3E768') echo('selected="selected"'); ?>>Arexhor</option>
+                            <option style="background:#FD9BAA;" value='#FD9BAA' <?php if($res['couleur']=='#FD9BAA') echo('selected="selected"'); ?>>A confirmer</option>
+                        </select><br />
+                        <label class="modif" for="abs">Statut Absence</label>
+                        <select class="modif" name="abs">
+                            <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
+                            <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
+                            <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
+                            <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annuler</option>
+                        </select><br />
+                        <input class="modif" style="margin-top:1vh;" type="submit" name="Envoyer" value="Envoyer" />
+                        <a style="margin-top:2vh;" href = "<?php echo("edt.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']);if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
+                    </form>
+                </td>
+                <td>
+                    <form class="modif" class="no_print" method="post" action="update.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
+                        <input type="HIDDEN" name = "ide" value="<?php echo($res['id_elleve']); ?>"/>
+                        <label class="modif" for="abs">Absence</label>
+                        <select class="modif" name="abs">
+                            <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
+                            <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
+                            <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
+                            <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annuler</option>
+                        </select><br />
+                        <label class="modif" for="date_d">Date Debut</label> <input class="modif" type="date"  name="date_d" id="date_d" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
+                        <label class="modif" for="date_f">Date Fin</label> <input class="modif" type="date"  name="date_f" id="date_f" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
+                        <input style="margin-top:1vh;" class="modif" type="submit" name="absent" value="Declarer Absent" />
+                    </form>
+                </td>
+                <td>
+                    <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=".$_GET['key']);?>">
+                        <p>Supprimer</p>
+                        <img id="trash" src="icon/trash.png" style="height : 8vh;"/>
+                    </a>
+                </td>
+            </tr>
+        </table>
 <?php } } ?>
 
     <!-- EMPLOIE DU TEMPS -->
@@ -242,7 +291,7 @@ if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key'])){
                         echo("<p>".$res['prenom'][0]." ".$res['nom']."</p>");
                     }
                     if($rdv_[$k]->abs == -1) echo('<p style="color:red">Absent</p>');
-                    elseif($rdv_[$k]->abs == 2) echo('<p style="color:#CC8822">Excuser</p>');     
+                    elseif($rdv_[$k]->abs == 2) echo('<p style="color:#CC8822">Annuler</p>');     
                     $test = TRUE;
                     $rdv_[$k]->durré = $rdv_[$k]->durré - 1;
                     if($rdv_[$k]->durré != 0){

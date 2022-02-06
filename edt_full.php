@@ -157,7 +157,7 @@ if(isset($_GET['semaine'])){
         }
         if($id_s>0){
         echo("<div style=\"margin-top:6vh;\">");
-        $url = $url_base.'/edt.php?ide='.$get_ide.'&semaine='.$_GET['semaine'];//http%3A%2F%2F
+        $url = $url_base.'/edt.php?ide='.$get_ide.'%26src=qr';
         $qr_path = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl='.$url.'%2F&choe=UTF-8';
         echo('<img  id="page-wrapper" src="icon/roville_logo.png" id="logo" style="height: 20vh; float: right; margin-right:5vw; margin-top:5vh;"/>');
         if(!(isset($_GET['qr']) && $_GET['qr'] == 'off')){

@@ -28,19 +28,29 @@ if(isset($_POST['Envoyer'])){
                 }
                 button.back{
                     width: 15% !important;
+                    font-size: 2vh;
                 }
                 button.reset{
                     width: 25%;
                     margin-top: 9vh;
+                    font-size: 2vh;
+                }
+                .sql_req_btn{
+                    font-size: 2vh;
                 }
                 .centre{
                     display:block;
                     margin-left: auto;
                     margin-right: auto;
                 }
-                .sql_req{
+                h3.sql_req{
+                    font-size: 2.5vh;
                     margin-top: 9vh;
-                    width: 25%;
+                    text-align:center;
+                }
+                textarea.sql_req{
+                    width: 40%;
+                    height: 5vh;
                 }
             </style>
         </head>
@@ -53,8 +63,9 @@ if(isset($_POST['Envoyer'])){
             </form>
             <form action="" method="POST" id="pr" onsubmit="if(confirm('Vous allez envoyer une requette à la base de donnée, Etes-vous sur ?')){return true;}else{return false;}">
                 <div>
-                    <input class="centre sql_req" type="text" name="sql"/>
-                    <input class="centre" type="submit" name="Envoyer" value="Envoyer la Requête" />
+                    <h3 class="centre sql_req">Requête SQL : </h3>
+                    <textarea class="centre  sql_req" name="sql"></textarea>
+                    <input class="centre sql_req_btn" type="submit" name="Envoyer" value="Envoyer la Requête" />
                 </div>
             </form>
             </br></br>

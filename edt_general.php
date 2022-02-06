@@ -76,7 +76,30 @@
         <title>EDT-General</title>
         <link rel="stylesheet" href="all.css" />
         <style>
-            .modif{
+            input.modif, select.modif{
+                width:20vw;
+            }
+            label.modif{
+                display:inline-block;
+                width:10vw;
+                text-align:right;
+            }
+            .centre{
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            a{
+                text-decoration: none;
+                text-align: center;
+                color: black; 
+            }
+            #trash{
+                display:block;
+                margin-left:auto;
+                margin-right:auto;
+            }
+            form.modif{
                 margin-top: 5vh;
                 margin-bottom: 0px;
                 margin-left: 4vw;
@@ -104,6 +127,10 @@
             }
             .content{
                 padding-left: 1.1vw !important;
+            }
+            .close{
+                padding-left: 4vw;
+                margin-top:2vh;
             }
 
             @media print {
@@ -181,7 +208,6 @@
                 <td class="head" style="width : 14vw">
                     <form action="" method="get">
                         <div>
-
                             <?php select_elleves();?>
                             <input type="HIDDEN" name="semaine" value="<?php echo($_GET['semaine']);?>"/>
                             <?php if(isset($_GET['key']) && test_id($_GET['key'])) echo('<input type="HIDDEN" name = "key" value="'.$_GET['key'].'"/>');
@@ -198,7 +224,6 @@
                             <?php if(isset($_GET['key']) && test_id($_GET['key'])) echo('<input type="HIDDEN" name = "key" value="'.$_GET['key'].'"/>');
                             if(isset($_GET['date'])) echo('<input type="HIDDEN" name = "date" value="'.$_GET['date'].'"/>');
                             if(isset($_GET['idp'])) echo('<input type="HIDDEN" name = "idp" value="'.$_GET['idp'].'"/>'); ?>
-                            
                             <button>Validé</button>
                         </div>
                     </form>
@@ -242,22 +267,21 @@
                                         $recipes = $recipesStatement->fetchAll();
                                         foreach ($recipes as $res){ ?>
                                             <tr>
-                                                <td colspan="8" id="position">
+                                                <td colspan="3" id="position">
                                                     <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
-                                                        <label for="rdv">nom du rdv</label> <input type="text"  name="rdv" id="rdv" value="<?php echo($res['nom']);?>"/><br />
-                                                        <label for="ide"> eleves</label>
-                                                        <?php select_elleves($res['id_elleve']); ?>
+                                                        <label class="modif" for="rdv">Nom du RDV</label> <input class="modif" type="text"  name="rdv" id="rdv" value="<?php echo($res['nom']);?>"/><br />
+                                                        <label class="modif" for="ide">Eleves</label>
+                                                        <?php select_elleves($res['id_elleve'], "modif"); ?>
                                                         <br />
-                                                        <label for="idp"> prof</label>
-                                                        <?php select_profs($res['id_proph']); ?>
+                                                        <label class="modif" for="idp">Prof</label>
+                                                        <?php select_profs($res['id_proph'], "modif"); ?>
                                                         <br />
-                                                        <label for="date_j">date</label> <input type="date"  name="date_j" id="date_j" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
-                                                        <label for="date">heure</label> <input type="time"  name="date" id="date" value="<?php echo(date('H:i:s', strtotime($res['date'])));?>"/><br />
-                                                        <label for="durre"> durre</label> <input type="number"  name="durre" id="durre" value="<?php echo($res['durre']);?>"/><br />
-                                                        <label for="lieu">Lieu</label> <input type="texte"  name="lieu" id="lieu" value="<?php echo($res['lieu']);?>"/><br />
-                                                        <label for="coulleur">couleur</label>
-                                                        <select name="coulleur">
-                                                            <option style="background:#9BD9EE;" value='#9BD9EE' <?php if($res['couleur']=='#9BD9EE') echo('selected="selected"'); ?>>CDR</option>
+                                                        <label class="modif" for="date_j">Date</label> <input class="modif" type="date"  name="date_j" id="date_j" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
+                                                        <label class="modif" for="date">Heure</label> <input class="modif" type="time"  name="date" id="date" value="<?php echo(date('H:i:s', strtotime($res['date'])));?>"/><br />
+                                                        <label class="modif" for="durre">Durée</label> <input class="modif" type="number"  name="durre" id="durre" value="<?php echo($res['durre']);?>"/><br />
+                                                        <label class="modif" for="lieu">Lieu</label> <input class="modif" type="texte"  name="lieu" id="lieu" value="<?php echo($res['lieu']);?>"/><br />
+                                                        <label class="modif" for="coulleur">Couleur</label>
+                                                        <select class="modif" name="coulleur">
                                                             <option style="background:#7CCB06;" value='#7CCB06' <?php if($res['couleur']=='#7CCB06') echo('selected="selected"'); ?>>Pépinière</option>
                                                             <option style="background:#ADFF2F;" value='#ADFF2F' <?php if($res['couleur']=='#ADFF2F') echo('selected="selected"'); ?>>Serres</option>
                                                             <option style="background:#DF9FDF;" value='#DF9FDF' <?php if($res['couleur']=='#DF9FDF') echo('selected="selected"'); ?>>Individualisation</option>
@@ -265,17 +289,34 @@
                                                             <option style="background:#F3E768;" value='#F3E768' <?php if($res['couleur']=='#F3E768') echo('selected="selected"'); ?>>Arexhor</option>
                                                             <option style="background:#FD9BAA;" value='#FD9BAA' <?php if($res['couleur']=='#FD9BAA') echo('selected="selected"'); ?>>A confirmer</option>
                                                         </select><br />
-                                                        <label for="abs">statut absence</label>
-                                                        <select name="abs">
+                                                        <label class="modif" for="abs">Statut Absence</label>
+                                                        <select class="modif" name="abs">
                                                             <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
                                                             <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
                                                             <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
-                                                            <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Excuser</option>
+                                                            <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annuler</option>
                                                         </select><br />
-                                                        <input type="submit" name="Envoyer" value="Envoyer" />
-                                                        <a href = "<?php echo("edt_general.php?semaine=".$_GET['semaine']);if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
-                                                        <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr_general.php?semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=".$_GET['key']);?>"><img src="icon/trash.png" style="height : 5vh;"/></a>
+                                                        <input class="modif centre" style="margin-top:1vh;" type="submit" name="Envoyer" value="Envoyer" />
                                                     </form>
+                                                    <a class="centre close" href = "<?php echo("edt_general.php?semaine=".$_GET['semaine']);if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
+                                                </td>
+                                                <td colspan="3">
+                                                    <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
+                                                        <input type="HIDDEN" name = "ide" value="<?php echo($res['id_elleve']); ?>"/>
+                                                        <label class="modif" for="abs">Absence</label>
+                                                        <select class="modif" name="abs">
+                                                            <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
+                                                            <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
+                                                            <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
+                                                            <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annuler</option>
+                                                        </select><br />
+                                                        <label class="modif" for="date_d">Date Debut</label> <input class="modif" type="date"  name="date_d" id="date_d" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
+                                                        <label class="modif" for="date_f">Date Fin</label> <input class="modif" type="date"  name="date_f" id="date_f" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
+                                                        <input class="modif centre" style="margin-top:1vh;" type="submit" name="absent" value="Declarer Absent" />
+                                                    </form>
+                                                </td>
+                                                <td colspan="1">
+                                                    <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr_general.php?semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=".$_GET['key']);?>"><p>Supprimer</p><img id="trash" src="icon/trash.png" style="height : 8vh;"/></a>
                                                 </td>
                                             </tr>
                                     <?php } } ?>
@@ -324,9 +365,9 @@
                                     </td>
                                     <td <?php echo($lien_rdv); ?> class = "content" style="background-color: <?php echo($rdv[$i]->couleur);?> !important; color:<?php echo($color);?> !important">
                                         <?php 
-                                        if($rdv[$i]->abs == -1) echo("Abs");
-                                        elseif($rdv[$i]->abs == 1)echo("Pre");
-                                        elseif($rdv[$i]->abs == 2)echo("Exc");
+                                        if($rdv[$i]->abs == -1) echo("Absent");
+                                        elseif($rdv[$i]->abs == 1)echo("Present");
+                                        elseif($rdv[$i]->abs == 2)echo("Annuler");
                                         else echo("NR"); ?>
                                     </td>
                                 </tr>
