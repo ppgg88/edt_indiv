@@ -9,10 +9,9 @@ if(isset($_GET['key']) && test_id($_GET['key'])){
     // INSERTION rdv : INSERT INTO `rdv` (`id`, `nom`, `date`, `durre`, `couleur`, `id_elleve`, `id_proph`) VALUES (NULL, 'test_rdv_bdd', '2021-12-10 16:00:00', '60', '#FF00FF', '1', '1');
     // Ecriture de la requête
     if(isset($_POST['Envoyer'])){
-        $query=$pdo->prepare("INSERT INTO proph (nom, prenom) VALUES (:n, :p, :c)");
+        $query=$pdo->prepare("INSERT INTO proph (nom, prenom) VALUES (:n, :p)");
         $query->bindValue(':n', $_POST['nom'], PDO::PARAM_STR);
         $query->bindValue(':p', $_POST['prenom'], PDO::PARAM_STR);
-        $query->bindValue(':c', $_POST['class'], PDO::PARAM_STR);
         $query->execute();
         $query->CloseCursor();
     }
