@@ -99,7 +99,7 @@
                     <td>
                         <iframe id="edt_view"
                             title="edt_view"
-                            src="http://edt-indiv/edt.php?semaine=<?php echo($s);?>&view=0&ide=<?php echo($ide);?>&key=<?php echo($_GET['key']);?>">
+                            src="edt.php?semaine=<?php echo($s);?>&view=0&ide=<?php echo($ide);?>&key=<?php echo($_GET['key']);?>">
                         </iframe>
                     </td>
                 </tr>
