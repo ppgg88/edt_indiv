@@ -282,12 +282,13 @@
                                                         <label class="modif" for="lieu">Lieu</label> <input class="modif" type="texte"  name="lieu" id="lieu" value="<?php echo($res['lieu']);?>"/><br />
                                                         <label class="modif" for="coulleur">Couleur</label>
                                                         <select class="modif" name="coulleur">
-                                                            <option style="background:#7CCB06;" value='#7CCB06' <?php if($res['couleur']=='#7CCB06') echo('selected="selected"'); ?>>Pépinière</option>
-                                                            <option style="background:#ADFF2F;" value='#ADFF2F' <?php if($res['couleur']=='#ADFF2F') echo('selected="selected"'); ?>>Serres</option>
-                                                            <option style="background:#DF9FDF;" value='#DF9FDF' <?php if($res['couleur']=='#DF9FDF') echo('selected="selected"'); ?>>Individualisation</option>
-                                                            <option style="background:#DBE2D0;" value='#DBE2D0' <?php if($res['couleur']=='#DBE2D0') echo('selected="selected"'); ?>>Cours prof</option>
-                                                            <option style="background:#F3E768;" value='#F3E768' <?php if($res['couleur']=='#F3E768') echo('selected="selected"'); ?>>Arexhor</option>
-                                                            <option style="background:#FD9BAA;" value='#FD9BAA' <?php if($res['couleur']=='#FD9BAA') echo('selected="selected"'); ?>>A confirmer</option>
+                                                            <option style="background:#9BD9EE;" value='#9BD9EE' <?php if(strtoupper($res['couleur'])=='#9BD9EE') echo('selected="selected"'); ?>>CDR</option>
+                                                            <option style="background:#7CCB06;" value='#7CCB06' <?php if(strtoupper($res['couleur'])=='#7CCB06') echo('selected="selected"'); ?>>Pépinière</option>
+                                                            <option style="background:#ADFF2F;" value='#ADFF2F' <?php if(strtoupper($res['couleur'])=='#ADFF2F') echo('selected="selected"'); ?>>Serres</option>
+                                                            <option style="background:#DF9FDF;" value='#DF9FDF' <?php if(strtoupper($res['couleur'])=='#DF9FDF') echo('selected="selected"'); ?>>Individualisation</option>
+                                                            <option style="background:#DBE2D0;" value='#DBE2D0' <?php if(strtoupper($res['couleur'])=='#DBE2D0') echo('selected="selected"'); ?>>Cours prof</option>
+                                                            <option style="background:#F3E768;" value='#F3E768' <?php if(strtoupper($res['couleur'])=='#F3E768') echo('selected="selected"'); ?>>Arexhor</option>
+                                                            <option style="background:#FD9BAA;" value='#FD9BAA' <?php if(strtoupper($res['couleur'])=='#FD9BAA') echo('selected="selected"'); ?>>A confirmer</option>
                                                         </select><br />
                                                         <label class="modif" for="abs">Statut Absence</label>
                                                         <select class="modif" name="abs">
