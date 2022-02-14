@@ -134,7 +134,7 @@ if(isset($_GET['ide'])){
 <body>
     <?php if(!(isset($_GET['view'])) || $_GET['view']==1){ ?><img  id="page-wrapper" src="icon/roville_logo.png" id="logo" style="height: 20vh; float: right; margin-right:5vw; margin-top:5vh;"/>
     <!-- SELECTION DE L'AFFICHAGE -->
-<?php }
+<?php
 if(isset($_GET['key']) && test_id($_GET['key'])){ ?>
     <h4 onclick="window.print();" class="no_print" style="background: #ADFF2F; display: inline-block; padding: 1vh;"> Imprimer </h4>
 
@@ -148,7 +148,8 @@ if(isset($_GET['key']) && test_id($_GET['key'])){ ?>
     <form class="no_print" action="index.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>" method="POST">
         <button>RETOUR ACCUEIL</button>
     </form>
-<?php } ?>
+<?php } 
+}?>
 
     <!-- modification eventuel de l'EDT -->
 <?php 
