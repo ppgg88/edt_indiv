@@ -57,7 +57,7 @@
         }
     }
 
-    $sqlquery = "SELECT rdv.id, rdv.nom, rdv.date, rdv.durre, rdv.couleur, rdv.lieu, elleve.nom as e_nom, elleve.prenom as e_prenom, elleve.classe as e_classe, elleve.id as ide ,proph.nom as p_nom, proph.prenom as p_prenom, proph.id as idp, abs FROM rdv, elleve, proph WHERE rdv.id_elleve = elleve.id and rdv.id_proph = proph.id order by date;";
+    $sqlquery = "SELECT rdv.id, rdv.nom, rdv.date, rdv.durre, rdv.couleur, rdv.lieu, elleve.nom as e_nom, elleve.prenom as e_prenom, elleve.classe as e_classe, elleve.id as ide ,proph.nom as p_nom, proph.prenom as p_prenom, proph.id as idp, abs FROM rdv, elleve, proph WHERE rdv.id_elleve = elleve.id and rdv.id_proph = proph.id order by date, proph.nom, elleve.nom;";
     $recipesStatement = $pdo->prepare($sqlquery);
     $recipesStatement->execute();
     $recipes = $recipesStatement->fetchAll();
@@ -78,11 +78,13 @@
         <style>
             input.modif, select.modif{
                 width:20vw;
+                margin-bottom: 0.5vh;
             }
             label.modif{
-                display:inline-block;
-                width:10vw;
-                text-align:right;
+                display: inline-block;
+                width: 7vw;
+                text-align: right;
+                font-size: small;
             }
             .centre{
                 display: block;
@@ -102,7 +104,7 @@
             form.modif{
                 margin-top: 5vh;
                 margin-bottom: 0px;
-                margin-left: 4vw;
+                margin-left: 0.5vw;
             }
             table{
                 width: 100% !important;
@@ -128,9 +130,20 @@
             .content{
                 padding-left: 1.1vw !important;
             }
-            .close{
-                padding-left: 4vw;
-                margin-top:2vh;
+            div.close {
+                position: relative;
+                height: inherit;
+            }
+            img.close {
+                position: relative;
+                right: 0px;
+                margin-left: 100%;
+            }
+            
+            a.close{
+                position: relative;
+                right: 0px;
+                display: block;
             }
 
             @media print {
@@ -258,71 +271,7 @@
                     if((isset($_GET['ide']) && $rdv[$i]->id_eleve == $_GET['ide']) || isset($_GET['ide']) == FALSE || $_GET['ide'] == 0){
                         if((isset($_GET['idp']) && $rdv[$i]->id_prof == $_GET['idp']) || isset($_GET['idp']) == FALSE || $_GET['idp'] == 0){ 
                             if((isset($_GET['classe']) && str_replace(' ','',$rdv[$i]->classe_eleve) == $_GET['classe']) || isset($_GET['classe']) == FALSE || $_GET['classe'] == 'no'){
-                                if((isset($_GET['date']) && $_GET['date'] == date("Y-m-d", $rdv[$i]->date)) || isset($_GET['date']) == FALSE){
-                                    if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key']) && $_GET['id'] == $rdv[$i]->id){
-                                        //requette sql de recherche du rdv dans la bdd :
-                                        $sqlquery = "SELECT * FROM rdv WHERE id =".$_GET['id'];
-                                        $recipesStatement = $pdo->prepare($sqlquery);
-                                        $recipesStatement->execute();
-                                        $recipes = $recipesStatement->fetchAll();
-                                        foreach ($recipes as $res){ ?>
-                                            <tr>
-                                                <td colspan="3" id="position">
-                                                    <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
-                                                        <label class="modif" for="rdv">Nom du RDV</label> <input class="modif" type="text"  name="rdv" id="rdv" value="<?php echo($res['nom']);?>"/><br />
-                                                        <label class="modif" for="ide">Eleves</label>
-                                                        <?php select_elleves($res['id_elleve'], "modif"); ?>
-                                                        <br />
-                                                        <label class="modif" for="idp">Prof</label>
-                                                        <?php select_profs($res['id_proph'], "modif"); ?>
-                                                        <br />
-                                                        <label class="modif" for="date_j">Date</label> <input class="modif" type="date"  name="date_j" id="date_j" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
-                                                        <label class="modif" for="date">Heure</label> <input class="modif" type="time"  name="date" id="date" value="<?php echo(date('H:i:s', strtotime($res['date'])));?>"/><br />
-                                                        <label class="modif" for="durre">Durée</label> <input class="modif" type="number"  name="durre" id="durre" value="<?php echo($res['durre']);?>"/><br />
-                                                        <label class="modif" for="lieu">Lieu</label> <input class="modif" type="texte"  name="lieu" id="lieu" value="<?php echo($res['lieu']);?>"/><br />
-                                                        <label class="modif" for="coulleur">Couleur</label>
-                                                        <select class="modif" name="coulleur">
-                                                            <option style="background:#9BD9EE;" value='#9BD9EE' <?php if(strtoupper($res['couleur'])=='#9BD9EE') echo('selected="selected"'); ?>>CDR</option>
-                                                            <option style="background:#7CCB06;" value='#7CCB06' <?php if(strtoupper($res['couleur'])=='#7CCB06') echo('selected="selected"'); ?>>Pépinière</option>
-                                                            <option style="background:#ADFF2F;" value='#ADFF2F' <?php if(strtoupper($res['couleur'])=='#ADFF2F') echo('selected="selected"'); ?>>Serres</option>
-                                                            <option style="background:#DF9FDF;" value='#DF9FDF' <?php if(strtoupper($res['couleur'])=='#DF9FDF') echo('selected="selected"'); ?>>Individualisation</option>
-                                                            <option style="background:#DBE2D0;" value='#DBE2D0' <?php if(strtoupper($res['couleur'])=='#DBE2D0') echo('selected="selected"'); ?>>Cours prof</option>
-                                                            <option style="background:#F3E768;" value='#F3E768' <?php if(strtoupper($res['couleur'])=='#F3E768') echo('selected="selected"'); ?>>Arexhor</option>
-                                                            <option style="background:#FD9BAA;" value='#FD9BAA' <?php if(strtoupper($res['couleur'])=='#FD9BAA') echo('selected="selected"'); ?>>A confirmer</option>
-                                                        </select><br />
-                                                        <label class="modif" for="abs">Statut Absence</label>
-                                                        <select class="modif" name="abs">
-                                                            <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
-                                                            <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
-                                                            <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
-                                                            <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annuler</option>
-                                                        </select><br />
-                                                        <input class="modif centre" style="margin-top:1vh;" type="submit" name="Envoyer" value="Envoyer" />
-                                                    </form>
-                                                    <a class="centre close" href = "<?php echo("edt_general.php?semaine=".$_GET['semaine']);if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
-                                                </td>
-                                                <td colspan="3">
-                                                    <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
-                                                        <input type="HIDDEN" name = "ide" value="<?php echo($res['id_elleve']); ?>"/>
-                                                        <label class="modif" for="abs">Absence</label>
-                                                        <select class="modif" name="abs">
-                                                            <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
-                                                            <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
-                                                            <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
-                                                            <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annuler</option>
-                                                        </select><br />
-                                                        <label class="modif" for="date_d">Date Debut</label> <input class="modif" type="date"  name="date_d" id="date_d" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
-                                                        <label class="modif" for="date_f">Date Fin</label> <input class="modif" type="date"  name="date_f" id="date_f" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
-                                                        <input class="modif centre" style="margin-top:1vh;" type="submit" name="absent" value="Declarer Absent" />
-                                                    </form>
-                                                </td>
-                                                <td colspan="1">
-                                                    <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr_general.php?semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=".$_GET['key']);?>"><p>Supprimer</p><img id="trash" src="icon/trash.png" style="height : 8vh;"/></a>
-                                                </td>
-                                            </tr>
-                                    <?php } } ?>
-                    
-                    
+                                if((isset($_GET['date']) && $_GET['date'] == date("Y-m-d", $rdv[$i]->date)) || isset($_GET['date']) == FALSE){ ?>
                                 <tr>
                                     <?php
                                     if(isset($_GET['key']) && test_id($_GET['key']))$lien_rdv = 'onclick="location.href=\'?semaine='.$_GET['semaine'].'&id='.$rdv[$i]->id.'&key='.$_GET['key'].'#position\'"';
@@ -372,10 +321,73 @@
                                         else echo("NR"); ?>
                                     </td>
                                 </tr>
-            <?php
-                }}}}}
-            }
-        }
+                                <?php
+
+                                if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key']) && $_GET['id'] == $rdv[$i]->id){
+                                    //requette sql de recherche du rdv dans la bdd :
+                                    $sqlquery = "SELECT * FROM rdv WHERE id =".$_GET['id'];
+                                    $recipesStatement = $pdo->prepare($sqlquery);
+                                    $recipesStatement->execute();
+                                    $recipes = $recipesStatement->fetchAll();
+                                    foreach ($recipes as $res){ ?>
+                                        <tr>
+                                            <td colspan="3" id="position">
+                                                <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
+                                                    <label class="modif" for="rdv">Nom du RDV</label> <input class="modif" type="text"  name="rdv" id="rdv" value="<?php echo($res['nom']);?>"/><br />
+                                                    <label class="modif" for="ide">Eleves</label>
+                                                    <?php select_elleves($res['id_elleve'], "modif"); ?>
+                                                    <br />
+                                                    <label class="modif" for="idp">Prof</label>
+                                                    <?php select_profs($res['id_proph'], "modif"); ?>
+                                                    <br />
+                                                    <label class="modif" for="date_j">Date</label> <input class="modif" type="date"  name="date_j" id="date_j" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
+                                                    <label class="modif" for="date">Heure</label> <input class="modif" type="time"  name="date" id="date" value="<?php echo(date('H:i:s', strtotime($res['date'])));?>"/><br />
+                                                    <label class="modif" for="durre">Durée</label> <input class="modif" type="number"  name="durre" id="durre" value="<?php echo($res['durre']);?>"/><br />
+                                                    <label class="modif" for="lieu">Lieu</label> <input class="modif" type="texte"  name="lieu" id="lieu" value="<?php echo($res['lieu']);?>"/><br />
+                                                    <label class="modif" for="coulleur">Couleur</label>
+                                                    <select class="modif" name="coulleur">
+                                                        <option style="background:#9BD9EE;" value='#9BD9EE' <?php if(strtoupper($res['couleur'])=='#9BD9EE') echo('selected="selected"'); ?>>CDR</option>
+                                                        <option style="background:#7CCB06;" value='#7CCB06' <?php if(strtoupper($res['couleur'])=='#7CCB06') echo('selected="selected"'); ?>>Pépinière</option>
+                                                        <option style="background:#ADFF2F;" value='#ADFF2F' <?php if(strtoupper($res['couleur'])=='#ADFF2F') echo('selected="selected"'); ?>>Serres</option>
+                                                        <option style="background:#DF9FDF;" value='#DF9FDF' <?php if(strtoupper($res['couleur'])=='#DF9FDF') echo('selected="selected"'); ?>>Individualisation</option>
+                                                        <option style="background:#DBE2D0;" value='#DBE2D0' <?php if(strtoupper($res['couleur'])=='#DBE2D0') echo('selected="selected"'); ?>>Cours prof</option>
+                                                        <option style="background:#F3E768;" value='#F3E768' <?php if(strtoupper($res['couleur'])=='#F3E768') echo('selected="selected"'); ?>>Arexhor</option>
+                                                        <option style="background:#FD9BAA;" value='#FD9BAA' <?php if(strtoupper($res['couleur'])=='#FD9BAA') echo('selected="selected"'); ?>>A confirmer</option>
+                                                    </select><br />
+                                                    <label class="modif" for="abs">Statut Absence</label>
+                                                    <select class="modif" name="abs">
+                                                        <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
+                                                        <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
+                                                        <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
+                                                        <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annuler</option>
+                                                    </select><br />
+                                                    <input class="modif centre" style="margin-top:1vh;" type="submit" name="Envoyer" value="Envoyer" />
+                                                </form>
+                                            </td>
+                                            <td colspan="3">
+                                                <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
+                                                    <input type="HIDDEN" name = "ide" value="<?php echo($res['id_elleve']); ?>"/>
+                                                    <label class="modif" for="abs">Absence</label>
+                                                    <select class="modif" name="abs">
+                                                        <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
+                                                        <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
+                                                        <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
+                                                        <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annuler</option>
+                                                    </select><br />
+                                                    <label class="modif" for="date_d">Date Debut</label> <input class="modif" type="date"  name="date_d" id="date_d" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
+                                                    <label class="modif" for="date_f">Date Fin</label> <input class="modif" type="date"  name="date_f" id="date_f" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
+                                                    <input class="modif centre" style="margin-top:1vh;" type="submit" name="absent" value="Declarer Absent" />
+                                                </form>
+                                            </td>
+                                            <td colspan="1" style="height: 100%;">
+                                                <div class="close">
+                                                    <a class="close" href = "<?php echo("edt_general.php?semaine=".$_GET['semaine']);if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>"><img class="close" src="icon/close.png" style="height : 5vh;"/></a>
+                                                    <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr_general.php?semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=".$_GET['key']);?>"><p style="margin-top:30%;">Supprimer</p><img id="trash" src="icon/trash.png" style="height : 8vh;"/></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+            
+    <?php }  }   }   }   }   }   }   }   }            
         else{
             header("Location: edt_general.php?semaine=".date("W", time()));
         }

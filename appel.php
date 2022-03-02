@@ -61,9 +61,12 @@
     foreach ($recipes as $res){
         $rdv_[$id_max] = new rdv($res['id'],strtotime($res['date']), $res['nom'], $res['durre'], $res['couleur'],$res['id_elleve'], $res['id_proph'], $res['lieu']);
         $crai_exist = false;
+        //echo('ell : '.$rdv_[$id_max]->id." // ");
         foreach($craineau as $crai){
-            if((($crai->date_min >= $rdv_[$id_max]->date) and (($rdv_[$id_max]->date+60*$rdv_[$id_max]->durré) > $crai->date_min)) or ((($crai->date_min+60*$crai->durré_max) >$rdv_[$id_max]->date) and (($rdv_[$id_max]->date+60*$rdv_[$id_max]->durré) > ($crai->date_min+60*$crai->durré_max)))){
+            if((($crai->date_min <= $rdv_[$id_max]->date) and ($rdv_[$id_max]->date < $crai->date_min+60*$crai->durré_max)) or ((($crai->date_min) < ($rdv_[$id_max]->date+60*$rdv_[$id_max]->durré)) and (($rdv_[$id_max]->date+60*$rdv_[$id_max]->durré) <= ($crai->date_min+60*$crai->durré_max)))){
                 $crai->id_eleves[]=$rdv_[$id_max]->id_eleves;
+                //echo('add : '.$rdv_[$id_max]->id_eleves." // ");
+                $crai->abs[]= $res['abs'];
                 $crai->date[]=$rdv_[$id_max]->date;
                 $crai->durré[]=$rdv_[$id_max]->durré;
                 $crai->id_rdv[]=$rdv_[$id_max]->id;
@@ -73,7 +76,8 @@
             }
         }
         if($crai_exist == false){
-            $craineau[$craineau_max] = new craineau($rdv_[$id_max]->date, $rdv_[$id_max]->nom, $rdv_[$id_max]->durré, $rdv_[$id_max]->couleur, $rdv_[$id_max]->id_eleves, $rdv_[$id_max]->id_proph, $rdv_[$id_max]->lieu,$rdv_[$id_max]->id);
+            //echo('create : '.$rdv_[$id_max]->id_eleves." // ");
+            $craineau[$craineau_max] = new craineau($rdv_[$id_max]->date, $rdv_[$id_max]->nom, $rdv_[$id_max]->durré, $rdv_[$id_max]->couleur, $rdv_[$id_max]->id_eleves, $rdv_[$id_max]->id_proph, $rdv_[$id_max]->lieu,$rdv_[$id_max]->id, $res['abs']);
             $craineau_max =$craineau_max + 1;
         }
         $id_max = $id_max + 1;

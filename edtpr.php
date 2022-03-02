@@ -99,9 +99,11 @@ if(isset($_GET['idp'])){
     foreach ($recipes as $res){
         $rdv_[$id_max] = new rdv($res['id'],strtotime($res['date']), $res['nom'], $res['durre'], $res['couleur'],$res['id_elleve'], $res['id_proph'], $res['lieu']);
         $crai_exist = false;
+        //echo('ell : '.$rdv_[$id_max]->id." // ");
         foreach($craineau as $crai){
-            if((($crai->date_min >= $rdv_[$id_max]->date) and (($rdv_[$id_max]->date+60*$rdv_[$id_max]->durré) > $crai->date_min)) or ((($crai->date_min+60*$crai->durré_max) >$rdv_[$id_max]->date) and (($rdv_[$id_max]->date+60*$rdv_[$id_max]->durré) > ($crai->date_min+60*$crai->durré_max)))){
+            if((($crai->date_min <= $rdv_[$id_max]->date) and ($rdv_[$id_max]->date < $crai->date_min+60*$crai->durré_max)) or ((($crai->date_min) < ($rdv_[$id_max]->date+60*$rdv_[$id_max]->durré)) and (($rdv_[$id_max]->date+60*$rdv_[$id_max]->durré) <= ($crai->date_min+60*$crai->durré_max)))){
                 $crai->id_eleves[]=$rdv_[$id_max]->id_eleves;
+                //echo('add : '.$rdv_[$id_max]->id_eleves." // ");
                 $crai->abs[]= $res['abs'];
                 $crai->date[]=$rdv_[$id_max]->date;
                 $crai->durré[]=$rdv_[$id_max]->durré;
@@ -112,6 +114,7 @@ if(isset($_GET['idp'])){
             }
         }
         if($crai_exist == false){
+            //echo('create : '.$rdv_[$id_max]->id_eleves." // ");
             $craineau[$craineau_max] = new craineau($rdv_[$id_max]->date, $rdv_[$id_max]->nom, $rdv_[$id_max]->durré, $rdv_[$id_max]->couleur, $rdv_[$id_max]->id_eleves, $rdv_[$id_max]->id_proph, $rdv_[$id_max]->lieu,$rdv_[$id_max]->id, $res['abs']);
             $craineau_max =$craineau_max + 1;
         }
@@ -150,6 +153,23 @@ if(isset($_GET['idp'])){
     </style>
 </head>
 <body>
+    <?php
+    if(isset($_GET['key']) and (test_id_prof($_GET['idp'], $_GET['semaine'], $_GET['key']) or test_id($_GET['key']))){
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+        {
+            $url_base = "https";
+        }
+        else
+        {
+            $url_base = "http"; 
+        }  
+        $url_base .= "://"; 
+        $url_base .= $_SERVER['HTTP_HOST']; 
+        $url = $url_base.'/edtpr.php?idp='.$_GET['idp'].'%26semaine='.$_GET['semaine']."%26key=".id_prof($_GET['idp'], $_GET['semaine']); 
+        $qr_path = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl='.$url.'%2F&choe=UTF-8';
+        echo('<img  id="page-wrapper" src="'.$qr_path.'" id="logo" style="height: 20vh; float: right; margin-right:5vw; margin-top:5vh;"/>');
+    }
+    ?> 
     <img  id="page-wrapper" src="icon/roville_logo.png" id="logo" style="height: 20vh; float: right; margin-right:5vw; margin-top:5vh;"/>
     <!-- SELECTION DE L'AFFICHAGE -->
 <?php 
@@ -166,6 +186,9 @@ if(isset($_GET['key']) && test_id($_GET['key'])){ ?>
     </form>
     <form class="no_print" action="index.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>" method="POST">
         <button>RETOUR ACCUEIL</button>
+    </form>
+    <form class="no_print" action="mail.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>&idp=<?php echo($_GET['idp']);?>" method="POST" onsubmit="if(confirm('Vous allez envoyer le lien par mail, Etes-vous sur ?')){return true;}else{return false;}">
+        <button>ENVOYER PAR MAIL</button>
     </form>
 <?php } ?>
 
