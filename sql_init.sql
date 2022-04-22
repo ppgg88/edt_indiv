@@ -6,6 +6,7 @@ create table `elleve`(
     `id` int AUTO_INCREMENT,
     `nom` varchar(50) not null,
     `prenom` varchar(50) not null,
+    `mail` varchar(100),
     `classe` varchar(50),
     `id_importation` int,
     primary key(`id`)
@@ -15,6 +16,7 @@ create table `proph`(
     `id` int AUTO_INCREMENT,
     `nom` varchar(50) not null,
     `prenom` varchar(50) not null,
+    `mail` varchar(100),
     `id_importation` int,
     primary key(`id`)
 )ENGINE=InnoDB;
