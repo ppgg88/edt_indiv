@@ -125,4 +125,56 @@ function notifier_prof($id_proph, $n_semaine){
         echo '<p>Votre message n\'a pas pu être envoyé à '.$res['prenom'].' '.$res['nom'].'. verifier qu\'une adresse mail à ete rensseigner dans le portail/profs</p>';
     }
 }
+
+function notifier_eleve($id_eleve, $n_semaine){
+    include("log_bdd.php");
+    $sqlqueryy = "SELECT * FROM `elleve` WHERE `id` = ".$id_eleve;
+    $recipesStatementt = $pdo->prepare($sqlqueryy);
+    $recipesStatementt->execute();
+    $recipess = $recipesStatementt->fetchAll();
+    foreach ($recipess as $ress){
+        $id = $ress['id'];
+        $nom_eleve = $ress['nom'];
+        $prenom_eleve = $ress['prenom'];
+        $mail_eleve = $ress['mail'];
+    }
+    if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'){
+        $url_base = "https";
+    }
+    else{
+        $url_base = "http"; 
+    }
+    $url_base .= "://"; 
+    $url_base .= $_SERVER['HTTP_HOST']; 
+    $link = $url_base.'/edt.php?ide='.$id.'&semaine='.$n_semaine;
+    $url = $url_base.'/edt.php?ide='.$id.'%26semaine='.$n_semaine; 
+    $qr_path = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl='.$url.'%2F&choe=UTF-8';
+    $destinataire = $mail_eleve;
+    $expediteur = 'no_reply@edt-individualisation.fr';
+    $copie = '';
+    $copie_cachee = '';
+    $objet = 'EDT Individualisation'; // Objet du message
+    $headers  = 'MIME-Version: 1.0' . "\n"; // Version MIME
+    $headers .= 'Content-type: text/html; charset=ISO-8859-1'."\n"; // l'en-tete Content-type pour le format HTML
+    $headers .= 'Reply-To: '.$expediteur."\n"; // Mail de reponse
+    $headers .= 'From: "EDT-Individualisation"<'.$expediteur.'>'."\n"; // Expediteur
+    $headers .= 'Delivered-to: '.$destinataire."\n"; // Destinataire
+    $headers .= 'Cc: '.$copie."\n"; // Copie Cc
+    $headers .= 'Bcc: '.$copie_cachee."\n\n"; // Copie cachée Bcc        
+    $message = '<div style="width: 100%; text-align: left; font-weight: bold">
+                    <p>Bonjour,</p>
+                    <p>Une modification a ete effectuee sur votre emploi du temps d\'individualisation, vous pouvez le consulter via le lien suivant :</p>
+                    <p><a href="'.$link.'">'.$link.'</a></p>
+                    <img  id="page-wrapper" src="'.$qr_path.'" id="logo" style="height: 20vh; float: right; margin-right:5vw;"/>
+                </div>';
+    echo($message);
+    if (mail($destinataire, $objet, $message, $headers)) // Envoi du message
+    {
+        echo '<p>Votre message a bien été envoyé à '.$res['prenom'].' '.$res['nom'].'</p>';
+    }
+    else
+    {
+        echo '<p>Votre message n\'a pas pu être envoyé à '.$res['prenom'].' '.$res['nom'].'. verifier qu\'une adresse mail à ete rensseigner dans le portail/profs</p>';
+    }
+}
 ?>
