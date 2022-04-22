@@ -187,7 +187,7 @@ if(isset($_GET['key']) && test_id($_GET['key'])){ ?>
     <form class="no_print" action="index.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>" method="POST">
         <button>RETOUR ACCUEIL</button>
     </form>
-    <form class="no_print" action="mail.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>&idp=<?php echo($_GET['idp']);?>" method="POST" onsubmit="if(confirm('Vous allez envoyer le lien par mail, Etes-vous sur ?')){return true;}else{return false;}">
+    <form class="no_print" action="mail.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>&idp=<?php echo($_GET['idp']);?>" method="POST">
         <button>ENVOYER PAR MAIL</button>
     </form>
 <?php } ?>
@@ -203,7 +203,29 @@ if(isset($_GET['key']) && test_id($_GET['key'])){ ?>
         $ret['week_end'] = $dto->format('d/m/Y');
         return $ret;
       }
-      
+    if(isset($_GET['abs']) && $_GET['abs'] == 1){
+        echo('<form class="modif" class="no_print" method="post" action="update_prof_abs.php?semaine='.$_GET['semaine']."&key=".$_GET['key'].'&idp='.$_GET['idp'].'">
+                <input type="HIDDEN" name = "idp" value="'.$_GET['idp'].'"/>
+                <label class="modif" for="abs">Absence : </label>
+                <select class="modif" name="abs">
+                    <option value=\'4\'>Absent</option>
+                    <option value=\'3\'>Present</option>
+                </select><br />
+                <label class="modif" for="date_d">Date Debut</label> <input class="modif" type="date"  name="date_d" id="date_d"/><br />
+                <label class="modif" for="date_f">Date Fin</label> <input class="modif" type="date"  name="date_f" id="date_f"/><br />
+                <label class="modif" for="notifpr">Notifier Prof</label><input class="modif" type="checkbox" name="notifpr" value="notifpr"></br>
+                <input class="modif centre" style="margin-top:1vh;" type="submit" name="absent" value="Declarer Absent" /><br />
+            </form>');
+            echo('<form class="modif" class="no_print" method="post" action="edtpr.php?semaine='.$_GET['semaine']."&key=".$_GET['key'].'&idp='.$_GET['idp'].'">
+                <input class="modif centre" style="margin-top:1vh;" type="submit" name="absent" value="Cacher Absence" />
+            </form>');
+            
+    }
+    else{
+        echo('<form class="modif" class="no_print" method="post" action="edtpr.php?semaine='.$_GET['semaine']."&key=".$_GET['key'].'&idp='.$_GET['idp'].'&abs=1">
+                <input class="modif centre" style="margin-top:1vh;" type="submit" name="absent" value="Afficher Absence" />
+            </form>');
+    }
     //affichage du nom est prenom
     $sqlquery = "SELECT * FROM `proph` where id = ".$_GET['idp'];
     $recipesStatement = $pdo->prepare($sqlquery);
@@ -266,6 +288,7 @@ if(isset($_GET['key']) && test_id($_GET['key'])){ ?>
                                 $index = array_search($res['id'], $craineau[$k]->id_eleves);
                                 if($craineau[$k]->abs[$index]==-1)$color = 'red';
                                 elseif($craineau[$k]->abs[$index]==2)$color = '#CC8822 ';
+                                elseif($craineau[$k]->abs[$index]==4)$color = '#ff8b00 ';
                                 else $color = 'black';
                                 $date_end = strtotime(date("Y-m-d H:i:s", $craineau[$k]->date[$index])."+ {$craineau[$k]->durré[$index]} minutes");
                                 echo("<p style='font-size: calc(0.7vh + 0.3vw)!important; color:".$color."!important;'><b>".$res['prenom'][0]." ".$res['nom']." ".$res['classe']." </b>".date("H:i", $craineau[$k]->date[$index])."-".date("H:i", $date_end)."</p>");

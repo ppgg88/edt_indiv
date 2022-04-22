@@ -218,7 +218,7 @@
                         $pre = '';
                         $ch = '';
                         if($ress['abs'] == 2){
-                            $exc = 'Annuler';
+                            $exc = 'Annulé';
                             $ch = 'disabled="disabled"';
                         }
                         elseif($ress['abs'] == -1){

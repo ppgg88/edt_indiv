@@ -96,7 +96,7 @@ echo('<table cellspacing="0" cellpadding="0">');
 echo('<tr style="padding-right: 0vw; width : 30vw" class="head">
         <td>Nom</td>
         <td>Prenom</td>
-        <td>Mail</td>
+        <td colspan="2">Mail</td>
     </tr>');
 foreach ($recipess as $ress){
     $id='';
@@ -106,7 +106,7 @@ foreach ($recipess as $ress){
     echo('<tr '.$id.'>
             <td onclick="location.href=\'?id='.$ress['id'].'&key='.$_GET['key'].'&semaine='.$s.'#position\'" >'.$ress['nom'].'</td>
             <td onclick="location.href=\'?id='.$ress['id'].'&key='.$_GET['key'].'&semaine='.$s.'#position\'" >'.$ress['prenom'].'</td>
-            <td onclick="location.href=\'?id='.$ress['id'].'&key='.$_GET['key'].'&semaine='.$s.'#position\'" >'.$ress['mail'].'</td>
+            <td colspan="2" onclick="location.href=\'?id='.$ress['id'].'&key='.$_GET['key'].'&semaine='.$s.'#position\'" >'.$ress['mail'].'</td>
         </tr>');
     if(isset($_GET['id']) && $_GET['id']==$ress['id']){
         $mail = "";
@@ -120,6 +120,8 @@ foreach ($recipess as $ress){
                         <input type="HIDDEN" name = "id" value="'.$ress['id'].'"/>
                         <input type="submit" name="Modifier" value="Modifier" />
                     </form>
+                </td>
+                <td>
                 </td>
                 <td>
                     <form method="post" action="">

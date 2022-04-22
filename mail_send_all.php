@@ -17,11 +17,10 @@ if(isset($_GET['key']) && test_id($_GET['key'])){
         $d->add(new DateInterval('P7D'));
         $end = date_format($d, 'Y-m-d');
 
-        $sql = "SELECT DISTINCT rdv.id_proph as id, proph.mail as mail, proph.nom as nom, proph.prenom as prenom FROM rdv, proph where rdv.id_proph = proph.id and rdv.date >= :dd and rdv.date < :df and proph.id = :id";
+        $sql = "SELECT DISTINCT rdv.id_proph as id, proph.mail as mail, proph.nom as nom, proph.prenom as prenom FROM rdv, proph where rdv.id_proph = proph.id and rdv.date >= :dd and rdv.date < :df";
         $query=$pdo->prepare($sql);
         $query->bindValue(':dd', $start, PDO::PARAM_STR);
         $query->bindValue(':df', $end, PDO::PARAM_STR);
-        $query->bindValue(':id', $_GET['idp'], PDO::PARAM_INT);
         $query->execute();
         $recipes = $query->fetchAll();
         foreach ($recipes as $res)
@@ -34,6 +33,7 @@ if(isset($_GET['key']) && test_id($_GET['key'])){
             $b = str_replace("%prenom%", $res['prenom'], $b);
             $b = str_replace("%nom%", $res['nom'], $b);
             $b = str_replace("%semaine%", $_GET['semaine'], $b);
+            echo('<p>'.$h." ".$b."</p>");
             //pour chaque proph trouver à partir de son id et de son mail
 
             if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'){
@@ -74,7 +74,7 @@ if(isset($_GET['key']) && test_id($_GET['key'])){
                             <p style="color : #888888;">* Retrouvez ici une video tutoriel d\'une minute pour comprendre le fonctionement de l\'ENT : <a href="">...</a></p>
                         
                         </div>';
-            echo($message);
+            //echo($message);
             if (mail($destinataire, $objet, $message, $headers)) // Envoi du message
             {
                 echo '<p>Votre message a bien été envoyé à '.$res['prenom'].' '.$res['nom'].'</p>';
@@ -102,7 +102,7 @@ if(isset($_GET['key']) && test_id($_GET['key'])){
         </style>
     </head>
     <body>
-        <h4>envoie Individuel : </h4>
+        <h4>envoie Groupe : </h4>
         <form action="" method="POST" onsubmit="if(confirm('Vous allez envoyer les liens par mail, Etes-vous sur ?')){return true;}else{return false;}">
             <?php 
             $head = 'Bonjour %prenom% %nom%,';
@@ -110,18 +110,17 @@ if(isset($_GET['key']) && test_id($_GET['key'])){
             ?>
             <textarea class="head" name="head"><?php echo($head); ?></textarea>
             <textarea class="body" name="body"><?php echo($corp); ?></textarea>
-            <input class="centre sql_req_btn" type="submit" name="send" value="Envoyer le Mails" />
+            <input class="centre sql_req_btn" type="submit" name="send" value="Envoyer les Mails" />
         </form>
-
-    
-        <form class="no_print" action="edtpr.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>&idp=<?php echo($_GET['idp']);?>" method="POST">
+        <form class="no_print" action="edt_full_pr.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>" method="POST">
             <button>RETOUR</button>
         </form>
-</body>
+    </body>
     <!-- 
         $nom : Nom du Profs
         $prenom : Prenom du Profs
         $semaine : Semaine
     -->
 </html>
+
 <?php } ?>

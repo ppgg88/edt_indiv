@@ -187,11 +187,12 @@ if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key'])){
                         </select><br />
                         <label class="modif" for="abs">Statut Absence</label>
                         <select class="modif" name="abs">
-                            <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
+                            <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigné</option>
                             <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
                             <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
-                            <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annuler</option>
+                            <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annulé</option>
                         </select><br />
+                        <label class="modif" for="notifpr">Notifier Prof</label><input class="modif" type="checkbox" name="notifpr" value="notifpr"></br>
                         <input class="modif" style="margin-top:1vh;" type="submit" name="Envoyer" value="Envoyer" />
                         <a style="margin-top:2vh;" href = "<?php echo("edt.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']);if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
                     </form>
@@ -201,13 +202,14 @@ if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key'])){
                         <input type="HIDDEN" name = "ide" value="<?php echo($res['id_elleve']); ?>"/>
                         <label class="modif" for="abs">Absence</label>
                         <select class="modif" name="abs">
-                            <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
+                            <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigné</option>
                             <option value='-1' <?php if($res['abs']==-1) echo('selected="selected"'); ?>>Absent</option>
                             <option value='1' <?php if($res['abs']==1) echo('selected="selected"'); ?>>Present</option>
-                            <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annuler</option>
+                            <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annulé</option>
                         </select><br />
                         <label class="modif" for="date_d">Date Debut</label> <input class="modif" type="date"  name="date_d" id="date_d" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
                         <label class="modif" for="date_f">Date Fin</label> <input class="modif" type="date"  name="date_f" id="date_f" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
+                        <label class="modif" for="notifpr">Notifier Prof</label><input class="modif" type="checkbox" name="notifpr" value="notifpr"></br>
                         <input style="margin-top:1vh;" class="modif" type="submit" name="absent" value="Declarer Absent" />
                     </form>
                 </td>
@@ -296,7 +298,8 @@ if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key'])){
                         echo("<p>".$res['prenom'][0]." ".$res['nom']."</p>");
                     }
                     if($rdv_[$k]->abs == -1) echo('<p style="color:red">Absent</p>');
-                    elseif($rdv_[$k]->abs == 2) echo('<p style="color:#CC8822">Annuler</p>');     
+                    elseif($rdv_[$k]->abs == 4) echo('<p style="color:red">Formateur Absent</p>');
+                    elseif($rdv_[$k]->abs == 2) echo('<p style="color:#CC8822">Annulé</p>');     
                     $test = TRUE;
                     $rdv_[$k]->durré = $rdv_[$k]->durré - 1;
                     if($rdv_[$k]->durré != 0){

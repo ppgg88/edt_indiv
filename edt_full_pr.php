@@ -178,6 +178,11 @@ if(!(isset($_GET['key']) && test_id($_GET['key']))) header("Location: edt.php");
                     <button>Cacher les QR codes</button>
                 </form>
         <?php } ?>
+        <form class="no_print" action="mail_send_all.php" method="GET" style="margin-left : 7vw; display: inline-block;">
+            <input type="HIDDEN"  name="semaine" id="semaine" value="<?php echo($_GET['semaine']); ?>"/>
+            <input type="HIDDEN" name="key" value="<?php echo($_GET['key']);?>"/>
+            <button>Envoyer tout les Mails</button>
+        </form>
             <!-- EMPLOIE DU TEMPS -->
         <div class="brake">
         <table  id="page-wrapper">
@@ -247,6 +252,7 @@ if(!(isset($_GET['key']) && test_id($_GET['key']))) header("Location: edt.php");
                                         $index = array_search($res['id'], $craineau[$k]->id_eleves);
                                         if($craineau[$k]->abs[$index]==-1)$color = 'red';
                                         elseif($craineau[$k]->abs[$index]==2)$color = '#CC8822 ';
+                                        elseif($craineau[$k]->abs[$index]==4)$color = '#e800ff ';
                                         else $color = 'black';
                                         $date_end = strtotime(date("Y-m-d H:i:s", $craineau[$k]->date[$index])."+ {$craineau[$k]->durré[$index]} minutes");
                                         echo("<p style='font-size: calc(0.7vh + 0.3vw)!important; color:".$color."!important;'><b>".$res['prenom'][0]." ".$res['nom']." ".$res['classe']." </b>".date("H:i", $craineau[$k]->date[$index])."-".date("H:i", $date_end)."</p>");

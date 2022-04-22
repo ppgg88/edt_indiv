@@ -36,6 +36,10 @@ if(isset($_POST['Envoyer'])){
     $query->bindValue(':ab', $_POST['abs'], PDO::PARAM_INT);
     $query->execute();
     
+    if(isset($_POST['notifpr'])){
+        notifier_prof($_POST['idp'], $_GET['semaine']);
+    }
+
 }
 
 if(isset($_POST['absent'])){
@@ -58,6 +62,10 @@ if(isset($_POST['absent'])){
         $query->bindValue(':ab', $_POST['abs'], PDO::PARAM_INT);
         $query->bindValue(':id', $ress['id'], PDO::PARAM_INT);
         $query->execute();
+
+        if(isset($_POST['notifpr'])){
+            notifier_prof($ress['id_proph'], $_GET['semaine']);
+        }
     }
 }
 
