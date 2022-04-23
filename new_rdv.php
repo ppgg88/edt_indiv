@@ -1,9 +1,11 @@
 <?php
     include('fonction.php');
     if(isset($_GET['key']) && test_id($_GET['key'])){
+        
         if(!isset($_GET['nbe'])){
             header("location: new_rdv.php?key=".$_GET['key']."&semaine=".$_GET['semaine']."&nbe=1");
         }
+
         if(isset($_POST['addeleve'])){
             $nbe = $_GET['nbe'];
             $nbe++;
@@ -19,8 +21,8 @@
             $nrepeat = "";
 
             for($k=0; $k<$nbe; $k++){
-                if(isset($_POST['ide'.$k])){
-                    $elleve .= '&ide'.$k.'='.$_POST['ide'.$k];
+                if(isset($_POST['idell'.$k])){
+                    $elleve .= '&idell'.$k.'='.$_POST['idell'.$k];
                 }
             }
             if(isset($_POST['date_j']) && $_POST['date_j'] != ""){
@@ -49,6 +51,7 @@
             }
             header("location: new_rdv.php?key=".$_GET['key']."&semaine=".$_GET['semaine']."&nbe=".$nbe.$elleve.$date_j.$heure.$idp.$durre.$rdv.$lieu.$coulleur.$nrepeat);
         }
+
         if(isset($_POST['mineleve'])){
             $nbe = $_GET['nbe'];
             $nbe--;
@@ -63,8 +66,8 @@
             $nrepeat = "";
 
             for($k=0; $k<$nbe; $k++){
-                if(isset($_POST['ide'.$k])){
-                    $elleve .= '&ide'.$k.'='.$_POST['ide'.$k];
+                if(isset($_POST['idell'.$k])){
+                    $elleve .= '&idell'.$k.'='.$_POST['idell'.$k];
                 }
             }
             if(isset($_POST['date_j']) && $_POST['date_j'] != ""){
@@ -93,8 +96,6 @@
             }
             header("location: new_rdv.php?key=".$_GET['key']."&semaine=".$_GET['semaine']."&nbe=".$nbe.$elleve.$date_j.$heure.$idp.$durre.$rdv.$lieu.$coulleur.$nrepeat);
         }
-        if(isset($_GET['ide']))$ide = $_GET['ide'];
-        else $ide = -1;
 
         if(isset($_GET['s']))$s = $_GET['s'];
         else $s = $_GET['semaine'];
@@ -139,7 +140,7 @@
                             $query->bindValue(':idp', $_POST['idp'], PDO::PARAM_INT);
                         }
                         $query->bindValue(':rdv', $_POST['rdv'], PDO::PARAM_STR);
-                        $query->bindValue(':ide', $_POST['ide'.$k], PDO::PARAM_INT);
+                        $query->bindValue(':ide', $_POST['idell'.$k], PDO::PARAM_INT);
                         $query->bindValue(':date', $ddd, PDO::PARAM_STR);
                         $query->bindValue(':durre', $_POST['durre'], PDO::PARAM_INT);
                         $query->bindValue(':coulleur', $_POST['coulleur'], PDO::PARAM_STR);
@@ -149,7 +150,7 @@
                 }
                 $ddd = date('Y-m-d H:i:s', strtotime("+ 7 day", strtotime($ddd)));
             }
-            header("location: new_rdv.php?key=".$_GET['key']."&semaine=".$_GET['semaine']."&ide=".$_POST['ide0']."&s=".date('W', strtotime($d))."&nbe=1");
+            header("location: new_rdv.php?key=".$_GET['key']."&semaine=".$_GET['semaine']."&idel=".$_POST['idell0']."&s=".date('W', strtotime($d))."&nbe=1");
         }
 
     ?>
@@ -196,8 +197,9 @@
                                 <?php 
                                 for($i=0; $i<$_GET['nbe'];$i++){
                                     echo('<label class="modif" for="ide'.$i.'"> élève '.($i+1).' : </label>');
-                                    if(isset($_GET['ide'.$i])) $ide = $_GET['ide'.$i];
-                                    select_elleves($ide, "modif", $i);
+                                    if(isset($_GET['idell'.$i])) $ide = $_GET['idell'.$i];
+                                    else $ide = 0;
+                                    select_elleves($ide, "modif", 'll'.$i);
                                     echo('<br/>');
                                 }
                                 ?>
@@ -235,6 +237,14 @@
                         </form>
                     </td>
                     <td>
+                        <?php 
+                        if(!isset($_GET['idel'])){
+                            $ide=-1;
+                        }
+                        else{
+                            $ide=$_GET['idel'];
+                        }?>
+
                         <iframe id="edt_view"
                             title="edt_view"
                             src="edt.php?semaine=<?php echo($s);?>&view=0&ide=<?php echo($ide);?>&key=<?php echo($_GET['key']);?>">

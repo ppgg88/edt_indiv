@@ -371,6 +371,7 @@
                                                         <option value='4' <?php if($res['abs']==4) echo('selected="selected"'); ?>>Formateur Absent</option>
                                                     </select><br />
                                                     <label class="modif" for="notifpr">Notifier Prof</label><input class="modif" type="checkbox" name="notifpr" value="notifpr"></br>
+                                                    <label class="modif" for="notife">Notifier Elève</label><input class="modif" type="checkbox" name="notife" value="notife"></br>
                                                     <input class="modif centre" style="margin-top:1vh;" type="submit" name="Envoyer" value="Envoyer" />
                                                 </form>
                                             </td>
@@ -387,6 +388,7 @@
                                                     <label class="modif" for="date_d">Date Debut</label> <input class="modif" type="date"  name="date_d" id="date_d" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
                                                     <label class="modif" for="date_f">Date Fin</label> <input class="modif" type="date"  name="date_f" id="date_f" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
                                                     <label class="modif" for="notifpr">Notifier Prof</label><input class="modif" type="checkbox" name="notifpr" value="notifpr"></br>
+                                                    <label class="modif" for="notife">Notifier Elève</label><input class="modif" type="checkbox" name="notife" value="notife"></br>
                                                     <input class="modif centre" style="margin-top:1vh;" type="submit" name="absent" value="Declarer Absent" />
                                                 </form>
                                             </td>
@@ -419,6 +421,7 @@
                                                                 <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annuler</option>
                                                             </select><br />
                                                             <label class="modif" for="notifpr">Notifier Prof</label><input class="modif" type="checkbox" name="notifpr" value="notifpr"></br>
+                                                            <label class="modif" for="notife">Notifier Elève</label><input class="modif" type="checkbox" name="notife" value="notife"></br>
                                                             <input type="HIDDEN" name = "idp" value="<?php echo($res['id_proph']); ?>"/>
                                                             <input type="HIDDEN" name = "ide" value="<?php echo($res['id_elleve']); ?>"/>
                                                             <input class="modif" type="HIDDEN"  name="date" id="date" value="<?php echo($res['date']);?>"/><br />
@@ -438,6 +441,7 @@
                                                             <label class="modif" for="date_d">Date Debut</label> <input class="modif" type="date"  name="date_d" id="date_d" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
                                                             <label class="modif" for="date_f">Date Fin</label> <input class="modif" type="date"  name="date_f" id="date_f" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
                                                             <label class="modif" for="notifpr">Notifier Prof</label><input class="modif" type="checkbox" name="notifpr" value="notifpr"></br>
+                                                            <label class="modif" for="notife">Notifier Elève</label><input class="modif" type="checkbox" name="notife" value="notife"></br>
                                                             <input class="modif centre" style="margin-top:1vh;" type="submit" name="absent" value="Declarer Absent" />
                                                         </form>
                                                         <a class="close" href = "<?php echo("edt_general.php?semaine=".$_GET['semaine']."&key=".$_GET['key']);?>"><img class="close" src="icon/close.png" style="height : 5vh;"/></a>

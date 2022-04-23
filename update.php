@@ -38,6 +38,9 @@ if(isset($_POST['Envoyer'])){
     if(isset($_POST['notifpr'])){
         notifier_prof($_POST['idp'], $_GET['semaine']);
     }
+    if(isset($_POST['notife'])){
+        notifier_eleve($_POST['ide'], $_GET['semaine']);
+    }
     
 }
 
@@ -63,8 +66,14 @@ if(isset($_POST['absent'])){
         $query->execute();
 
         if(isset($_POST['notifpr'])){
-            notifier_prof($ress['id_proph'], $_GET['semaine']);
+            if(!isset($temp[$ress['id_proph']])){
+                $temp[$ress['id_proph']] = 1;
+                notifier_prof($ress['id_proph'], $_GET['semaine']);
+            }
         }
+    }
+    if(isset($_POST['notife'])){
+        notifier_eleve($_POST['ide'], $_GET['semaine']);
     }
 }
 function error($code){

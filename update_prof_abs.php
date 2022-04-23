@@ -21,11 +21,18 @@ if(isset($_GET['key']) && test_id($_GET['key'])){
         $query->bindValue(':ab', $_POST['abs'], PDO::PARAM_INT);
         $query->bindValue(':id', $ress['id'], PDO::PARAM_INT);
         $query->execute();
-        
-        if(isset($_POST['notifpr'])){
-            notifier_prof($_POST['idp'], $_GET['semaine']);
+        if(isset($_POST['notife'])){
+            if(!isset($temp[$ress['id_elleve']])){
+                notifier_eleve($ress['id_elleve'], $_GET['semaine']);
+                $temp[$ress['id_elleve']] = 1;
+            }
         }
+        
     }
+    if(isset($_POST['notifpr'])){
+        notifier_prof($_POST['idp'], $_GET['semaine']);
+    }
+    
 }
 header('Location: edtpr.php?key='.$_GET['key'].'&semaine='.$_GET['semaine'].'&idp='.$_GET['idp'].'&abs=1');
 

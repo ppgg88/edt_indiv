@@ -193,6 +193,7 @@ if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key'])){
                             <option value='2' <?php if($res['abs']==2) echo('selected="selected"'); ?>>Annulé</option>
                         </select><br />
                         <label class="modif" for="notifpr">Notifier Prof</label><input class="modif" type="checkbox" name="notifpr" value="notifpr"></br>
+                        <label class="modif" for="notife">Notifier Elève</label><input class="modif" type="checkbox" name="notife" value="notife"></br>
                         <input class="modif" style="margin-top:1vh;" type="submit" name="Envoyer" value="Envoyer" />
                         <a style="margin-top:2vh;" href = "<?php echo("edt.php?ide=".$_GET['ide']."&semaine=".$_GET['semaine']);if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>"><img src="icon/close.png" style="height : 5vh;"/></a>
                     </form>
@@ -210,6 +211,7 @@ if(isset($_GET['id']) && isset($_GET['key']) && test_id($_GET['key'])){
                         <label class="modif" for="date_d">Date Debut</label> <input class="modif" type="date"  name="date_d" id="date_d" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
                         <label class="modif" for="date_f">Date Fin</label> <input class="modif" type="date"  name="date_f" id="date_f" value="<?php echo(date('Y-m-d', strtotime($res['date'])));?>"/><br />
                         <label class="modif" for="notifpr">Notifier Prof</label><input class="modif" type="checkbox" name="notifpr" value="notifpr"></br>
+                        <label class="modif" for="notife">Notifier Elève</label><input class="modif" type="checkbox" name="notife" value="notife"></br>
                         <input style="margin-top:1vh;" class="modif" type="submit" name="absent" value="Declarer Absent" />
                     </form>
                 </td>

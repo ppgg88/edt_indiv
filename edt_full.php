@@ -117,6 +117,9 @@ if(isset($_GET['semaine'])){
         <form class="no_print" action="index.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>" method="POST" style="margin-left : 7vw; display: inline-block;">
             <button>RETOUR ACCUEIL</button>
         </form>
+        <form class="no_print" action="fiche_suivit.php?key=<?php echo($_GET['key']);?>&semaine=<?php echo($_GET['semaine']);?>" method="POST" style="margin-left : 7vw; display: inline-block;">
+            <button>Fiche De Suivit</button>
+        </form>
     <?php } ?>
     <?php if(isset($_GET['qr']) && $_GET['qr'] == 'off'){ ?>
         <form class="no_print" action="" method="get" style="margin-left : 7vw; display: inline-block;">
@@ -165,7 +168,6 @@ if(isset($_GET['semaine'])){
         }
         echo('<h3 id="nom_prenom"  id="page-wrapper" style=" padding-top : 15vh;">'.$el['prenom'].' '.$el['nom'].' '.$el['classe'].'</h3>');
         echo('<h3 id="nom_prenom"  id="page-wrapper">Semaine du '.getStartAndEndDate($_GET['semaine'], date('Y', time()))['week_start'].' au '.getStartAndEndDate($_GET['semaine'], date('Y', time()))['week_end'].'</h3>');
-    
     
         //afichage de l'edt
     echo("<table  id=\"page-wrapper\">");

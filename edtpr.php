@@ -214,6 +214,7 @@ if(isset($_GET['key']) && test_id($_GET['key'])){ ?>
                 <label class="modif" for="date_d">Date Debut</label> <input class="modif" type="date"  name="date_d" id="date_d"/><br />
                 <label class="modif" for="date_f">Date Fin</label> <input class="modif" type="date"  name="date_f" id="date_f"/><br />
                 <label class="modif" for="notifpr">Notifier Prof</label><input class="modif" type="checkbox" name="notifpr" value="notifpr"></br>
+                <label class="modif" for="notife">Notifier Elève</label><input class="modif" type="checkbox" name="notife" value="notife"></br>
                 <input class="modif centre" style="margin-top:1vh;" type="submit" name="absent" value="Declarer Absent" /><br />
             </form>');
             echo('<form class="modif" class="no_print" method="post" action="edtpr.php?semaine='.$_GET['semaine']."&key=".$_GET['key'].'&idp='.$_GET['idp'].'">
