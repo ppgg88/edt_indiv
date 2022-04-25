@@ -67,6 +67,23 @@ function error($code){
     }
 }
 
-header("Location: edt_general.php?&semaine=".$_GET['semaine']."&id=".$_GET['id']."&key=".$_GET['key']);
+$classe = "";
+$date = "";
+$idpp = "";
+$idee = "";
+if(isset($_GET['classe'])){
+    $classe = "&classe=".$_GET['classe'];
+}
+if(isset($_GET['date'])){
+    $date = "&date=".$_GET['date'];
+}
+if(isset($_GET['idp'])){
+    $idpp = "&idp=".$_GET['idp'];
+}
+if(isset($_GET['ide'])){
+    $idee = "&ide=".$_GET['ide'];
+}
+
+header("Location: edt_general.php?&semaine=".$_GET['semaine']."&id=".$_GET['id']."&key=".$_GET['key'].$classe.$date.$idpp.$idee."#position");
 }
 ?>

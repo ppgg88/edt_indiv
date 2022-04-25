@@ -280,8 +280,25 @@
                                 if((isset($_GET['date']) && $_GET['date'] == date("Y-m-d", $rdv[$i]->date)) || isset($_GET['date']) == FALSE){ ?>
                                 <tr>
                                     <?php
+                                    $classe = "";
+                                    $date = "";
+                                    $idpp = "";
+                                    $idee = "";
+                                    if(isset($_GET['classe'])){
+                                        $classe = "&classe=".$_GET['classe'];
+                                    }
+                                    if(isset($_GET['date'])){
+                                        $date = "&date=".$_GET['date'];
+                                    }
+                                    if(isset($_GET['idp'])){
+                                        $idpp = "&idp=".$_GET['idp'];
+                                    }
+                                    if(isset($_GET['ide'])){
+                                        $idee = "&ide=".$_GET['ide'];
+                                    }
+
                                     $lien_rdv = '';
-                                    if(isset($_GET['key']) && (test_id($_GET['key']) || $_GET['key'] == "viesco"))$lien_rdv = 'onclick="location.href=\'?semaine='.$_GET['semaine'].'&id='.$rdv[$i]->id.'&key='.$_GET['key'].'#position\'"';
+                                    if(isset($_GET['key']) && (test_id($_GET['key']) || $_GET['key'] == "viesco"))$lien_rdv = 'onclick="location.href=\'?semaine='.$_GET['semaine'].'&id='.$rdv[$i]->id.'&key='.$_GET['key'].$classe.$date.$idpp.$idee.'#position\'"';
                                     //else $lien_rdv = '';
                                     $color = "";
                                     $deco = "";
@@ -340,7 +357,7 @@
                                     foreach ($recipes as $res){ ?>
                                         <tr>
                                             <td colspan="3" id="position">
-                                                <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
+                                                <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);} echo($classe.$date.$idpp.$idee);?>">
                                                     <label class="modif" for="rdv">Nom du RDV</label> <input class="modif" type="text"  name="rdv" id="rdv" value="<?php echo($res['nom']);?>"/><br />
                                                     <label class="modif" for="ide">Eleves</label>
                                                     <?php select_elleves($res['id_elleve'], "modif"); ?>
@@ -376,7 +393,7 @@
                                                 </form>
                                             </td>
                                             <td colspan="3">
-                                                <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>">
+                                                <form class="modif" class="no_print" method="post" action="update_general.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']); if(test_id($_GET['key'])){echo("&key=".$_GET['key']);echo($classe.$date.$idpp.$idee);}?>">
                                                     <input type="HIDDEN" name = "ide" value="<?php echo($res['id_elleve']); ?>"/>
                                                     <label class="modif" for="abs">Absence</label>
                                                     <select class="modif" name="abs">
@@ -394,8 +411,8 @@
                                             </td>
                                             <td colspan="1" style="height: 100%;">
                                                 <div class="close">
-                                                    <a class="close" href = "<?php echo("edt_general.php?semaine=".$_GET['semaine']);if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}?>"><img class="close" src="icon/close.png" style="height : 5vh;"/></a>
-                                                    <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr_general.php?semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=".$_GET['key']);?>"><p style="margin-top:30%;">Supprimer</p><img id="trash" src="icon/trash.png" style="height : 8vh;"/></a>
+                                                    <a class="close" href = "<?php echo("edt_general.php?semaine=".$_GET['semaine']);if(test_id($_GET['key'])){echo("&key=".$_GET['key']);}echo($classe.$date.$idpp.$idee);?>"><img class="close" src="icon/close.png" style="height : 5vh;"/></a>
+                                                    <a onclick="if(confirm('Vous allez suprimer le rendez-vous, Etes-vous sur ?')){return true;}else{return false;}" href = "<?php echo("edt_supr_general.php?semaine=".$_GET['semaine']."&idrdv=".$_GET['id']."&key=".$_GET['key'].$classe.$date.$idpp.$idee);?>"><p style="margin-top:30%;">Supprimer</p><img id="trash" src="icon/trash.png" style="height : 8vh;"/></a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -412,7 +429,7 @@
                                             foreach ($recipes as $res){ ?>
                                                 <tr>
                                                     <td colspan="4" id="position">
-                                                        <form class="modif" class="no_print" method="post" action="update_general_abs.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']."&key=".$_GET['key']);?>">
+                                                        <form class="modif" class="no_print" method="post" action="update_general_abs.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']."&key=".$_GET['key']); echo($classe.$date.$idpp.$idee);?>">
                                                             <label class="modif" for="abs">Statut Absence</label>
                                                             <select class="modif" name="abs">
                                                                 <option value='3' <?php if($res['abs']==0) echo('selected="selected"'); ?>>Non Renseigner</option>
@@ -429,7 +446,7 @@
                                                         </form>
                                                     </td>
                                                     <td colspan="3">
-                                                        <form class="modif" class="no_print" method="post" action="update_general_abs.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']."&key=".$_GET['key']);?>">
+                                                        <form class="modif" class="no_print" method="post" action="update_general_abs.php?id=<?php echo($_GET['id']); ?>&semaine=<?php echo($_GET['semaine']."&key=".$_GET['key']);echo($classe.$date.$idpp.$idee);?>">
                                                             <input type="HIDDEN" name = "ide" value="<?php echo($res['id_elleve']); ?>"/>
                                                             <label class="modif" for="abs">Absence</label>
                                                             <select class="modif" name="abs">
@@ -444,7 +461,7 @@
                                                             <label class="modif" for="notife">Notifier Elève</label><input class="modif" type="checkbox" name="notife" value="notife"></br>
                                                             <input class="modif centre" style="margin-top:1vh;" type="submit" name="absent" value="Declarer Absent" />
                                                         </form>
-                                                        <a class="close" href = "<?php echo("edt_general.php?semaine=".$_GET['semaine']."&key=".$_GET['key']);?>"><img class="close" src="icon/close.png" style="height : 5vh;"/></a>
+                                                        <a class="close" href = "<?php echo("edt_general.php?semaine=".$_GET['semaine']."&key=".$_GET['key']); echo($classe.$date.$idpp.$idee);?>"><img class="close" src="icon/close.png" style="height : 5vh;"/></a>
                                                     </td>
                                                 </tr>
 
