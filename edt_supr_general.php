@@ -11,6 +11,7 @@ if(isset($_GET['key']) && test_id($_GET['key'])){
     $date = "";
     $idpp = "";
     $idee = "";
+    $lieu = "";
     if(isset($_GET['classe'])){
         $classe = "&classe=".$_GET['classe'];
     }
@@ -23,8 +24,11 @@ if(isset($_GET['key']) && test_id($_GET['key'])){
     if(isset($_GET['ide'])){
         $idee = "&ide=".$_GET['ide'];
     }
+    if(isset($_GET['lieu'])){
+        $lieu = "&lieu=".$_GET['lieu'];
+    }
 
-    header("Location: edt_general.php?&semaine=".$_GET['semaine']."&key=".$_GET['key'].$classe.$date.$idpp.$idee);
+    header("Location: edt_general.php?&semaine=".$_GET['semaine']."&key=".$_GET['key'].$classe.$date.$idpp.$idee.$lieu);
 }
 else{
     echo("erreur");

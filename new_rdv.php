@@ -146,11 +146,47 @@
                         $query->bindValue(':coulleur', $_POST['coulleur'], PDO::PARAM_STR);
                         $query->bindValue(':lieu', $_POST['lieu'], PDO::PARAM_STR);
                         $query->execute();
+
                     }
                 }
                 $ddd = date('Y-m-d H:i:s', strtotime("+ 7 day", strtotime($ddd)));
             }
-            header("location: new_rdv.php?key=".$_GET['key']."&semaine=".$_GET['semaine']."&idel=".$_POST['idell0']."&s=".date('W', strtotime($d))."&nbe=1");
+            $nbe = $_GET['nbe'];
+            $date_j = "";
+            $elleve = "";
+            $heure = "";
+            $idp = "";
+            $durre = "";
+            $rdv = "";
+            $lieu = "";
+            $coulleur = "";
+            for($k=0; $k<$nbe; $k++){
+                if(isset($_POST['idell'.$k])){
+                    $elleve .= '&idell'.$k.'='.$_POST['idell'.$k];
+                }
+            }
+            if(isset($_POST['date_j']) && $_POST['date_j'] != ""){
+                $date_j .= '&date_j='.$_POST['date_j'];
+            }
+            if(isset($_POST['date']) && $_POST['date'] != ""){
+                    $heure .= '&heure='.$_POST['date'];
+            }
+            if(isset($_POST['idp']) && $_POST['idp'] != 0){
+                    $idp .= '&idp='.$_POST['idp'];
+            }
+            if(isset($_POST['durre']) && $_POST['durre'] != 0){
+                    $durre .= '&durre='.$_POST['durre'];
+            }
+            if(isset($_POST['rdv']) && $_POST['rdv'] != ""){
+                    $rdv .= '&rdv='.$_POST['rdv'];
+            }
+            if(isset($_POST['lieu']) && $_POST['lieu'] != ""){
+                    $lieu .= '&lieu='.$_POST['lieu'];
+            }
+            if(isset($_POST['coulleur'])){
+                $coulleur = '&coulleur='.str_replace('#', 'Z', $_POST['coulleur']);
+            }
+            header("location: new_rdv.php?key=".$_GET['key']."&semaine=".$_GET['semaine']."&idel=".$_POST['idell0']."&s=".date('W', strtotime($d))."&nbe=".$nbe.$elleve.$date_j.$heure.$idp.$durre.$rdv.$lieu.$coulleur);
         }
 
     ?>
