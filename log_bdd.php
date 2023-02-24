@@ -5,5 +5,5 @@
 
 <?php 
 //Serveur
-$pdo = new PDO('mysql:host=mysql-edt-individualisation.alwaysdata.net;dbname=edt-individualisation_edt;charset=utf8', "258160_paul" , "roville-2022");
+$pdo = new PDO('mysql:host=;dbname=;charset=utf8', "" , "");
 ?>
